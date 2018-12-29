@@ -1,0 +1,32 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Leonid Batyuk
+	email = leonid.batyuk@meltwater.com
+	signingkey = BFFD9D12D429B27D
+[push]
+	default = simple
+[core]
+	excludesfile = ~/.gitignore
+	precomposeunicode = true
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[merge]
+	tool = vimdiff3
+[commit]
+	gpgsign = true
+
+[difftool "dwdiff"]
+	cmd = dwdiff -C3 --color $LOCAL $REMOTE
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse

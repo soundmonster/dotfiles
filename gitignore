@@ -1,0 +1,14 @@
+.rake_tasks
+.elixir_ls
+.idea
+*.iml
+.*.swp
+.#*
+TAGS
+GTAGS
+GRTAGS
+GPATH
+.gradletasknamecache
+.dir-local.el
+.DS_Store
+.solargraph.yml
