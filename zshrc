@@ -137,8 +137,7 @@ z() {
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
 
-KERL_INSTALL_MANPAGES=yes
-KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads
+export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads
                         --enable-kernel-poll --with-wx
                         --with-ssl=/usr/local/opt/openssl
                         --with-odbc=/usr/local/opt/unixodbc"
