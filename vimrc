@@ -6,7 +6,7 @@ execute pathogen#infect()
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'base16_ashes'
+"" let g:airline_theme = 'base16_ashes'
 set fillchars+=vert:│
 
 "" CtrlP
@@ -30,7 +30,8 @@ let g:gutentags_cache_dir = '~/.tags_cache'
 autocmd! BufWritePost * Neomake
 let g:alchemist_tag_disable = 1
 
-colo darcula
+"colo darcula
+colo gruvbox
 
 "" always show status line w/filename
 set laststatus=2

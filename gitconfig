@@ -1,8 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Leonid Batyuk
-	email = leonid.batyuk@meltwater.com
-	signingkey = BFFD9D12D429B27D
+	name = Leo B
+	email = leo.the.soundmonster@gmail.com
 [push]
 	default = simple
 [core]
@@ -11,8 +10,6 @@
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [merge]
 	tool = vimdiff3
-[commit]
-	gpgsign = true
 
 [difftool "dwdiff"]
 	cmd = dwdiff -C3 --color $LOCAL $REMOTE

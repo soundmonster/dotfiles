@@ -123,6 +123,8 @@ source <(stern --completion=zsh)
 # source /usr/local/Cellar/powerline/2.3/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
+export ERL_AFLAGS="-kernel shell_history enabled"
+
 export PATH="/usr/local/sbin:$PATH"
 
 # source /usr/local/opt/kube-ps1/share/kube-ps1.sh
