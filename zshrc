@@ -80,7 +80,7 @@ plugins=(
 # User configuration
 
 export PATH="/Users/leonid/bin:/Library/TeX/texbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PATH="$(python -m site --user-base)/bin:${PATH}"
+# export PATH="$(python -m site --user-base)/bin:${PATH}"
 export PATH="${PATH}:/Users/leonid/Projects/platform-scripts/bin"
 export PATH="${PATH}:/Users/leonid/goroot/bin"
 export PATH="${PATH}:/Users/leonid/anaconda3/bin"
