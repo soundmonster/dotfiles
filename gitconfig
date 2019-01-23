@@ -27,3 +27,7 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = false
