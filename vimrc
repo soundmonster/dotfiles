@@ -1,7 +1,19 @@
 "" vim-powerline
 "source /Users/leonid/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim/plugin/powerline.vim
 
+
 execute pathogen#infect()
+
+set omnifunc=syntaxcomplete#Complete
+
+"" deoplete code completion
+let g:deoplete#enable_at_startup = 1
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+" use tab for completion
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
 "" vim-airline
 
 let g:airline_powerline_fonts = 1
