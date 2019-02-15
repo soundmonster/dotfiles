@@ -84,3 +84,7 @@ set clipboard=unnamed
 let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
 
 set list listchars=tab:→\ ,trail:·
+
+"" NERD Commenter
+let g:NERDSpaceDelims = 1
+let g:NERDDefaultAlign = 'left'
