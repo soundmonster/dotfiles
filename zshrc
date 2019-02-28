@@ -141,3 +141,5 @@ z() {
 
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --with-wx --with-ssl=/usr/local/opt/openssl --with-odbc=/usr/local/opt/unixodbc"
 
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
