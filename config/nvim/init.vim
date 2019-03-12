@@ -19,6 +19,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'elzr/vim-json'
+"" fzf
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 " Plug 'fatih/vim-go'
 " Plug 'guns/vim-clojure-static'
 Plug 'hashivim/vim-terraform'
@@ -136,3 +139,7 @@ let g:python3_host_prog = '/Users/leonid/.pyenv/versions/neovim3/bin/python'
 let g:deoplete#enable_at_startup = 1
 
 set mouse=a
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~20%' }
