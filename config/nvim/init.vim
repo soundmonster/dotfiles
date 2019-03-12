@@ -12,11 +12,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'Chiel92/vim-autoformat'
 " Plug 'ElmCast/elm-vim'
-" Plug 'Shougo/deoplete'
+"" Completion
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
-" Plug 'blueshirts/darcula'
-" Plug 'c-brenn/phoenix'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'elzr/vim-json'
@@ -132,5 +131,8 @@ let g:NERDDefaultAlign = 'left'
 "" Python for NeoVim
 let g:python_host_prog = '/Users/leonid/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/leonid/.pyenv/versions/neovim3/bin/python'
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
 
 set mouse=a
