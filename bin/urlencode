@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import urllib
+import sys
+
+print urllib.quote(sys.argv[1], safe='')
