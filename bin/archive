@@ -1,6 +1,5 @@
 #!/bin/sh
 
-if [ -d "$1" ]
-then
-	tar cf - "$1" | pv -s `gdu -sb "$1" | awk '{print $1}'` -N tar  | bzip2 > "$1".tar.bz2
+if [ -d "$1" ]; then
+	tar cf - "$1" | pv -s $(gdu -sb "$1" | awk '{print $1}') -N tar | bzip2 >"$1".tar.bz2
 fi

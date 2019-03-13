@@ -4,4 +4,3 @@ set -x
 
 git branch | grep -ve '^\*' | grep -v master | xargs git branch -D
 git remote prune origin
-
