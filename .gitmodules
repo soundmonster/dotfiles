@@ -109,3 +109,9 @@
 [submodule "vim/bundle/vim-hug-neovim-rpc"]
 	path = vim/bundle/vim-hug-neovim-rpc
 	url = git@github.com:roxma/vim-hug-neovim-rpc.git
+[submodule "dotfile-submodules/kube-tmux"]
+	path = dotfile-submodules/kube-tmux
+	url = git@github.com:jonmosco/kube-tmux.git
+[submodule "dotfile-submodules/tmux-themepack"]
+	path = dotfile-submodules/tmux-themepack
+	url = https://github.com/jimeh/tmux-themepack.git
