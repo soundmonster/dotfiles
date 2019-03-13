@@ -143,3 +143,7 @@ set mouse=a
 " Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~20%' }
+
+"" Format Elixir on save
+autocmd BufWrite *.exs,*.ex :Autoformat
+
