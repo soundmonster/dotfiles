@@ -56,7 +56,6 @@ ZSH_THEME="agnoster"
 plugins=(
 		asdf
 		brew
-		brew-cask
 		git
 		bundler
 		rvm
@@ -70,20 +69,20 @@ plugins=(
 		docker-compose
 		aws
 		tmux
-		zsh-syntax-highlighting
 		history-substring-search
 		z
 		mix
 		gradle
+		zsh-syntax-highlighting
 	)
 
 # User configuration
 
 export PATH="/Users/leonid/.bin:/Users/leonid/bin:/Library/TeX/texbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-# export PATH="$(python -m site --user-base)/bin:${PATH}"
-export PATH="${PATH}:/Users/leonid/Projects/platform-scripts/bin"
-export PATH="${PATH}:/Users/leonid/goroot/bin"
-export PATH="${PATH}:/Users/leonid/anaconda3/bin"
+export PATH="$(python -m site --user-base)/bin:${PATH}"
+# export PATH="${PATH}:/Users/leonid/Projects/platform-scripts/bin"
+# export PATH="${PATH}:/Users/leonid/goroot/bin"
+# export PATH="${PATH}:/Users/leonid/anaconda3/bin"
 # export TERM=xterm-256color
 # export MANPATH="/usr/local/man:$MANPATH"
 
