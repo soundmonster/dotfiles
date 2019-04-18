@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Leo B
-	email = leo.the.soundmonster@gmail.com
+	name = Leo Batyuk
+	email = leonid.batyuk@wooga.net
 [push]
 	default = simple
 [core]
