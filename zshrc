@@ -54,6 +54,7 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git history-substring-search brew brew-cask bundler rake-fast rails colored-man-pages docker docker-compose osx pip rbenv)
 plugins=(
+		aws
 		asdf
 		brew
 		git
