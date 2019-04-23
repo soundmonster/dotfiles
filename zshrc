@@ -123,7 +123,6 @@ source <(stern --completion=zsh)
 # source /usr/local/Cellar/powerline/2.3/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
-export ERL_AFLAGS="-kernel shell_history enabled"
 
 export PATH="/usr/local/sbin:$PATH"
 
@@ -140,6 +139,7 @@ z() {
 }
 
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --with-wx --with-ssl=/usr/local/opt/openssl --with-odbc=/usr/local/opt/unixodbc"
+export ERL_AFLAGS="-kernel shell_history enabled"
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
