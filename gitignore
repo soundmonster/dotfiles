@@ -12,3 +12,4 @@ GPATH
 .dir-local.el
 .DS_Store
 .solargraph.yml
+.iex.exs
