@@ -106,9 +106,6 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 let NERDTreeHijackNetrw=1
 
-"" use these settings for yaml files in puppet-site
-autocmd BufRead ~/Projects/puppet-site/*.yaml set sw=2 ts=2 et
-
 "" Syntastic and Rubocop
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
