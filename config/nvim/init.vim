@@ -53,7 +53,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 " Plug 'vim-scripts/grep'
 Plug 'vim-syntastic/syntastic'
- 
+" coc is a language server client
+" Use release branch
+" TODO investigate again when more mature
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 
 " Initialize plugin system
 call plug#end()
