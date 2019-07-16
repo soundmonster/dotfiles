@@ -19,6 +19,7 @@
                         "description": "Fn Navigation HJKL UIOP",
                         "manipulators": [
                             {
+                                "type": "basic",
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
@@ -31,10 +32,10 @@
                                     {
                                         "key_code": "left_arrow"
                                     }
-                                ],
-                                "type": "basic"
+                                ]
                             },
                             {
+                                "type": "basic",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": {
@@ -47,10 +48,10 @@
                                     {
                                         "key_code": "right_arrow"
                                     }
-                                ],
-                                "type": "basic"
+                                ]
                             },
                             {
+                                "type": "basic",
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": {
@@ -63,10 +64,10 @@
                                     {
                                         "key_code": "down_arrow"
                                     }
-                                ],
-                                "type": "basic"
+                                ]
                             },
                             {
+                                "type": "basic",
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": {
@@ -79,8 +80,7 @@
                                     {
                                         "key_code": "up_arrow"
                                     }
-                                ],
-                                "type": "basic"
+                                ]
                             }
                         ]
                     }
@@ -161,14 +161,6 @@
                             },
                             "to": {
                                 "consumer_key_code": "display_brightness_increment"
-                            }
-                        },
-                        {
-                            "from": {
-                                "key_code": "caps_lock"
-                            },
-                            "to": {
-                                "key_code": "fn"
                             }
                         }
                     ]
