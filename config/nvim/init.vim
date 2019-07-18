@@ -28,7 +28,7 @@ Plug 'brooth/far.vim'
 " Plug 'guns/vim-clojure-static'
 Plug 'hashivim/vim-terraform'
 " Plug 'leafgarland/typescript-vim'
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
@@ -94,9 +94,9 @@ endif
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 "" Setup for Elixir: https://bitboxer.de/2016/11/13/vim-for-elixir/
-let g:gutentags_cache_dir = '~/.tags_cache'
+" let g:gutentags_cache_dir = '~/.tags_cache'
 " autocmd! BufWritePost * Neomake
-let g:alchemist_tag_disable = 1
+" let g:alchemist_tag_disable = 1
 " always show status line w/filename
 set laststatus=2
 
