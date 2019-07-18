@@ -140,6 +140,20 @@ let g:python3_host_prog = '/Users/leonid/.pyenv/versions/neovim3/bin/python'
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
+" Using custom variables to configure values
+" - range_above = Search for words N lines above.
+" - range_below = Search for words N lines below.
+" - mark_above = Mark shown for words N lines above.
+" - mark_below = Mark shown for words N lines below.
+" - mark_changes = Mark shown for words in the changelist.
+call deoplete#custom#var('around', {
+\   'range_above': 15,
+\   'range_below': 15,
+\   'mark_above': '[↑]',
+\   'mark_below': '[↓]',
+\   'mark_changes': '[*]',
+\})
+call deoplete#custom#var('member', { 'prefix_patterns': {} } )
 
 set mouse=a
 
