@@ -19,6 +19,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'elzr/vim-json'
+Plug 'OmniSharp/omnisharp-vim' " C#/Unity stuff
 "" fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
