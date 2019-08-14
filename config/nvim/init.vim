@@ -14,12 +14,19 @@ Plug 'Chiel92/vim-autoformat'
 " Plug 'ElmCast/elm-vim'
 "" Completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/echodoc.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
+" Plug 'slashmili/alchemist.vim'
+
+"" Language server foo
+Plug 'dense-analysis/ale'
+Plug 'GrzegorzKozub/vim-elixirls', { 'do': ':ElixirLsCompileSync' }
+
 Plug 'elzr/vim-json'
-Plug 'OmniSharp/omnisharp-vim' " C#/Unity stuff
+" Plug 'OmniSharp/omnisharp-vim' " C#/Unity stuff
 "" fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -42,7 +49,6 @@ Plug 'rhysd/vim-gfm-syntax'
 " Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'slashmili/alchemist.vim'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
@@ -96,6 +102,19 @@ endif
 "" Avoid applying EditorConfig to Fugitive buffers
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
+"" Setup ALE for Elixir: https://github.com/GrzegorzKozub/vim-elixirls#how-to-integrate-with-ale
+let s:user_dir = stdpath('data')
+let g:ale_elixir_elixir_ls_release = s:user_dir . '/plugged/vim-elixirls/elixir-ls/release'
+" TODO maybe enable Dialyzer again at some point
+" let g:ale_elixir_elixir_ls_config = { 'elixirLS': { 'dialyzerEnabled': v:false } }
+
+let g:ale_linters = {}
+let g:ale_linters.elixir = [ 'credo', 'elixir-ls' ]
+autocmd FileType elixir,eelixir nnoremap <C-]> :ALEGoToDefinition<CR>
+autocmd FileType elixir,eelixir nnoremap <C-\> :ALEFindReferences<CR>
+autocmd FileType elixir,eelixir nnoremap <s-k> :ALEHover<CR>
+let g:ale_set_baloons=1
+
 "" Setup for Elixir: https://bitboxer.de/2016/11/13/vim-for-elixir/
 " let g:gutentags_cache_dir = '~/.tags_cache'
 " autocmd! BufWritePost * Neomake
@@ -144,6 +163,16 @@ let g:NERDDefaultAlign = 'left'
 let g:python_host_prog = '/Users/leonid/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/leonid/.pyenv/versions/neovim3/bin/python'
 
+"" Setup completion
+" Use echodoc for function signatures in command line
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'virtual'
+" To use a custom highlight for the float window,
+" change Pmenu to your highlight group
+highlight link EchoDocFloat Pmenu
+
+" Don't show mode in command line since we have it airline
+set noshowmode
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 " Using custom variables to configure values
