@@ -32,6 +32,8 @@ Plug 'hashivim/vim-terraform'
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
+" Themes
+Plug 'dunstontc/vim-vscode-theme'
 Plug 'morhetz/gruvbox'
 " Plug 'neomake/neomake'
 " Plug 'powerman/vim-plugin-AnsiEsc'
@@ -124,6 +126,9 @@ let g:syntastic_python_python_exec = '/usr/local/bin/python3' " always use pytho
 
 set hlsearch
 set number
+"" When a file has been detected to have been changed outside of Vim and it has not
+"" been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
+set autoread
 
 set clipboard=unnamed
 
@@ -163,5 +168,10 @@ set mouse=a
 let g:fzf_layout = { 'down': '~20%' }
 
 "" Format Elixir on save
+" fun! FormatAndRefresh()
+"   ![ -f .formatter.exs ] && mix format || true
+"   checktime
+" endfun
+" autocmd BufWritePost *.exs,*.ex call FormatAndRefresh()
 autocmd BufWrite *.exs,*.ex :Autoformat
 
