@@ -66,6 +66,7 @@ Plug 'vim-syntastic/syntastic'
 " Use release branch
 " TODO investigate again when more mature
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'easymotion/vim-easymotion'
 
 
 " Initialize plugin system
