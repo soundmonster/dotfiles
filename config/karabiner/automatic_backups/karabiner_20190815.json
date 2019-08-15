@@ -19,22 +19,19 @@
                         "description": "Fn to Esc on double tap",
                         "manipulators": [
                             {
+                                "from": { "key_code": "fn" },
+                                "to": { "key_code": "escape" },
                                 "conditions": [
                                     {
-                                        "name": "fn pressed",
                                         "type": "variable_if",
+                                        "name": "fn pressed",
                                         "value": 1
                                     }
                                 ],
-                                "from": {
-                                    "key_code": "fn"
-                                },
-                                "to": {
-                                    "key_code": "escape"
-                                },
                                 "type": "basic"
                             },
                             {
+                                "type": "basic",
                                 "from": {
                                     "key_code": "fn",
                                     "modifiers": {
@@ -55,14 +52,6 @@
                                     }
                                 ],
                                 "to_delayed_action": {
-                                    "to_if_canceled": [
-                                        {
-                                            "set_variable": {
-                                                "name": "fn pressed",
-                                                "value": 0
-                                            }
-                                        }
-                                    ],
                                     "to_if_invoked": [
                                         {
                                             "set_variable": {
@@ -70,9 +59,16 @@
                                                 "value": 0
                                             }
                                         }
+                                    ],
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "fn pressed",
+                                                "value": 0
+                                            }
+                                        }
                                     ]
-                                },
-                                "type": "basic"
+                                }
                             }
                         ]
                     },
@@ -80,17 +76,8 @@
                         "description": "Fn Enter with Blank",
                         "manipulators": [
                             {
-                                "from": {
-                                    "key_code": "spacebar",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "fn"
-                                        ]
-                                    }
-                                },
-                                "to": {
-                                    "key_code": "return_or_enter"
-                                },
+                                "from": { "key_code": "spacebar", "modifiers": { "mandatory": [ "fn" ] } },
+                                "to": { "key_code": "return_or_enter" },
                                 "type": "basic"
                             }
                         ]
@@ -107,11 +94,7 @@
                                         ]
                                     }
                                 },
-                                "to": [
-                                    {
-                                        "key_code": "page_up"
-                                    }
-                                ],
+                                "to": [ { "key_code": "page_up" } ],
                                 "type": "basic"
                             },
                             {
@@ -750,6 +733,9 @@
                             },
                             "to": {
                                 "key_code": "fn"
+                            },
+                            "to_if_alone": {
+                                "key_code": "escape"
                             }
                         },
                         {
