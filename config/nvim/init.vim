@@ -198,10 +198,8 @@ set mouse=a
 let g:fzf_layout = { 'down': '~20%' }
 
 "" Format Elixir on save
-" fun! FormatAndRefresh()
-"   ![ -f .formatter.exs ] && mix format || true
-"   checktime
-" endfun
-" autocmd BufWritePost *.exs,*.ex call FormatAndRefresh()
 autocmd BufWrite *.exs,*.ex :Autoformat
+"" Use jq for formatting JSON
+let g:formatdef_my_custom_json = '"jq ."'
+let g:formatters_json = ['my_custom_json']
 
