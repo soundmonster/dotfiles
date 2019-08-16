@@ -61,7 +61,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 " Plug 'vim-scripts/grep'
-Plug 'vim-syntastic/syntastic'
+" Plug 'vim-syntastic/syntastic'
 " coc is a language server client
 " Use release branch
 " TODO investigate again when more mature
@@ -114,7 +114,12 @@ let g:ale_linters.elixir = [ 'credo', 'elixir-ls' ]
 autocmd FileType elixir,eelixir nnoremap <C-]> :ALEGoToDefinition<CR>
 autocmd FileType elixir,eelixir nnoremap <C-\> :ALEFindReferences<CR>
 autocmd FileType elixir,eelixir nnoremap <s-k> :ALEHover<CR>
-let g:ale_set_baloons=1
+" let g:ale_set_baloons=1
+let g:ale_sign_error = "\u2717"
+let g:ale_sign_warning = "\u26A0"
+let g:ale_sign_info = "\u2B95"
+let g:ale_sign_style_error = "!"
+let g:ale_sign_style_warning = "?"
 
 "" Setup for Elixir: https://bitboxer.de/2016/11/13/vim-for-elixir/
 " let g:gutentags_cache_dir = '~/.tags_cache'
@@ -138,11 +143,15 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_python_exec = '/usr/local/bin/python3' " always use python3
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 1
+" let g:syntastic_error_symbol = "\u2717"
+" let g:syntastic_warning_symbol = "\u26A0"
+" let g:syntastic_style_error_symbol = "\u26A1"
+" let g:syntastic_style_warning_symbol = "\u2717"
+" let g:syntastic_python_python_exec = '/usr/local/bin/python3' " always use python3
 
 set hlsearch
 set number
