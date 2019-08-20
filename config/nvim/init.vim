@@ -106,7 +106,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 "" Setup ALE for Elixir: https://github.com/GrzegorzKozub/vim-elixirls#how-to-integrate-with-ale
 let s:user_dir = stdpath('data')
 let g:ale_elixir_elixir_ls_release = s:user_dir . '/plugged/vim-elixirls/elixir-ls/release'
-" TODO maybe enable Dialyzer again at some point
+" Uncomment the following line to disable Dialyzer
 " let g:ale_elixir_elixir_ls_config = { 'elixirLS': { 'dialyzerEnabled': v:false } }
 
 let g:ale_linters = {}
