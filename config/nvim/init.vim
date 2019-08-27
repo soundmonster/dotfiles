@@ -176,6 +176,7 @@ let g:python3_host_prog = '/Users/leonid/.pyenv/versions/neovim3/bin/python'
 "" Setup completion
 " Use echodoc for function signatures in command line
 let g:echodoc#enable_at_startup = 1
+" let g:echodoc#type = 'echo'
 let g:echodoc#type = 'virtual'
 " To use a custom highlight for the float window,
 " change Pmenu to your highlight group
@@ -199,6 +200,8 @@ call deoplete#custom#var('around', {
 \   'mark_changes': '[*]',
 \})
 call deoplete#custom#var('member', { 'prefix_patterns': {} } )
+"" close the preview window after completion done
+autocmd CompleteDone * silent! pclose!
 
 set mouse=a
 
