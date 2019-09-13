@@ -137,6 +137,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
 let NERDTreeHijackNetrw=1
+nmap <F4> :NERDTreeFind<CR>
 
 "" Syntastic and Rubocop
 set statusline+=%#warningmsg#
