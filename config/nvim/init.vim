@@ -41,7 +41,7 @@ Plug 'brooth/far.vim'
 Plug 'hashivim/vim-terraform'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'ludovicchabant/vim-gutentags'
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 " Themes
 Plug 'dunstontc/vim-vscode-theme'
@@ -88,7 +88,7 @@ colo gruvbox
 "" vim-airline
 
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 set fillchars+=vert:│
 
 "" CtrlP
