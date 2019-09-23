@@ -71,7 +71,8 @@ Plug 'vim-airline/vim-airline'
 " TODO investigate again when more mature
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'easymotion/vim-easymotion'
-
+" Vim HardTime
+Plug 'takac/vim-hardtime'
 
 " Initialize plugin system
 call plug#end()
@@ -220,3 +221,9 @@ autocmd BufWrite *.exs,*.ex :Autoformat
 let g:formatdef_my_custom_json = '"jq ."'
 let g:formatters_json = ['my_custom_json']
 
+let g:hardtime_default_on = 1
+let g:hardtime_showmsg = 1
+let g:hardtime_ignore_buffer_patterns = [ "NERD.*" ]
+let g:hardtime_ignore_quickfix = 1
+let g:hardtime_allow_different_key = 1
+let g:hardtime_maxcount = 5
