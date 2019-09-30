@@ -75,6 +75,7 @@ plugins=(
 		mix
 		gradle
 		zsh-syntax-highlighting
+		kube-ps1
 	)
 
 # User configuration
@@ -127,7 +128,8 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
 export PATH="/usr/local/sbin:$PATH"
 
 # source /usr/local/opt/kube-ps1/share/kube-ps1.sh
-# PROMPT='$(kube_ps1)'$PROMPT
+export KUBE_PS1_ENABLED=false
+PROMPT='$(kube_ps1)'$PROMPT
 
 # Use the fuck, an awesome command post-correction tool
 eval $(thefuck --alias)
