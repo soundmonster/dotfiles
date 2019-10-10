@@ -1,0 +1,3 @@
+{
+  "elixir.pathToElixirLS": "~/dotfiles/elixir-ls/release/language_server.sh"
+}
