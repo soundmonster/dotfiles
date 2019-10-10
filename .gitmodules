@@ -115,3 +115,6 @@
 [submodule "dotfile-submodules/tmux-themepack"]
 	path = dotfile-submodules/tmux-themepack
 	url = https://github.com/jimeh/tmux-themepack.git
+[submodule "elixir-ls"]
+	path = elixir-ls
+	url = https://github.com/JakeBecker/elixir-ls.git
