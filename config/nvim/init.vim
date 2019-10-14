@@ -38,7 +38,7 @@ Plug 'elzr/vim-json'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 "" Find and replace
-" Plug 'brooth/far.vim'
+Plug 'brooth/far.vim'
 " Plug 'fatih/vim-go'
 " Plug 'guns/vim-clojure-static'
 Plug 'hashivim/vim-terraform'
