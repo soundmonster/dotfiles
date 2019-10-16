@@ -24,6 +24,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 " Plug 'slashmili/alchemist.vim'
+Plug 'liuchengxu/vim-clap'
 
 "" Language server foo
 " Plug 'dense-analysis/ale'
