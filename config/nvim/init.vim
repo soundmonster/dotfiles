@@ -76,6 +76,8 @@ set fillchars+=vert:│
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 nmap <c-p> :Clap gfiles<CR>
 nmap <F5> :Clap grep<CR>
+command Cg Clap grep
+command Cb Clap buffers
 
 "" Tagbar
 nmap <F8> :TagbarToggle<CR>
