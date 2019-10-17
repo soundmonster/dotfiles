@@ -15,46 +15,29 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'Chiel92/vim-autoformat'
-" Plug 'ElmCast/elm-vim'
-"" Completion
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'Shougo/echodoc.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
-" Plug 'slashmili/alchemist.vim'
 Plug 'liuchengxu/vim-clap'
-
-"" Language server foo
-" Plug 'dense-analysis/ale'
-" Plug 'GrzegorzKozub/vim-elixirls', { 'do': ':ElixirLsCompileSync' }
 
 " Use CoC release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'elzr/vim-json'
-" Plug 'OmniSharp/omnisharp-vim' " C#/Unity stuff
 "" fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 "" Find and replace
 Plug 'brooth/far.vim'
-" Plug 'fatih/vim-go'
-" Plug 'guns/vim-clojure-static'
 Plug 'hashivim/vim-terraform'
-" Plug 'leafgarland/typescript-vim'
 " Plug 'ludovicchabant/vim-gutentags'
 " Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
 " Themes
 " Plug 'dunstontc/vim-vscode-theme'
 Plug 'morhetz/gruvbox'
-" Plug 'neomake/neomake'
-" Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'rhysd/vim-gfm-syntax'
-" Plug 'roxma/nvim-yarp'
-" Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-bundler'
@@ -65,15 +48,8 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-sensible'
 " Automatically adjust whitespace formatting
 Plug 'tpope/vim-sleuth'
-" Plug 'udalov/kotlin-vim'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-" Plug 'vim-scripts/grep'
-" Plug 'vim-syntastic/syntastic'
-" coc is a language server client
-" Use release branch
-" TODO investigate again when more mature
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'easymotion/vim-easymotion'
 
 " Initialize plugin system
@@ -95,9 +71,10 @@ let g:airline_powerline_fonts = 1
 set fillchars+=vert:│
 
 "" CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+nmap <c-p> :Clap gfiles<CR>
 
 "" Tagbar
 nmap <F8> :TagbarToggle<CR>
