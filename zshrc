@@ -76,6 +76,7 @@ plugins=(
 		gradle
 		zsh-syntax-highlighting
 		kube-ps1
+		kubectl
 	)
 
 # User configuration
