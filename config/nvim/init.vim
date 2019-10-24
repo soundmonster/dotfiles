@@ -20,6 +20,7 @@ Plug 'airblade/vim-gitgutter'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'liuchengxu/vim-clap'
+Plug 'dhruvasagar/vim-zoom'
 
 " Use CoC release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -125,6 +126,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 let NERDTreeHijackNetrw=1
 nmap <F4> :NERDTreeFind<CR>
+nmap <F3> :NERDTreeToggle<CR>
 
 "" Syntastic and Rubocop
 set statusline+=%#warningmsg#
