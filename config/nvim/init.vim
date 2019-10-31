@@ -205,7 +205,23 @@ let g:formatdef_my_custom_json = '"jq ."'
 let g:formatters_json = ['my_custom_json']
 
 "" CoC.nvim
-
+let g:coc_global_extensions = [
+      \ 'coc-elixir',
+      \ 'coc-css',
+      \ 'coc-git',
+      \ 'coc-github',
+      \ 'coc-highlight',
+      \ 'coc-html',
+      \ 'coc-json',
+      \ 'coc-lists',
+      \ 'coc-rls',
+      \ 'coc-sh',
+      \ 'coc-syntax',
+      \ 'coc-yaml',
+      \ 'coc-yank'
+      \ ]
+      " \ 'coc-snippets',
+      " \ 'coc-solargraph',
 " if hidden is not set, TextEdit might fail.
 set hidden
 
