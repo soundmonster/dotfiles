@@ -41,10 +41,10 @@ Plug 'morhetz/gruvbox'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-bundler'
+" Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-rails'
+" Plug 'tpope/vim-rails'
 " Sensible set of defaults
 Plug 'tpope/vim-sensible'
 " Automatically adjust whitespace formatting
@@ -82,9 +82,9 @@ nnoremap <silent> <space>b  :<C-u>Clap buffers<cr>
 "" Tagbar
 nmap <F8> :TagbarToggle<CR>
 
-"" Ack/AG (The Silver Searcher)
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+"" ripgrep
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
 endif
 
 "" Avoid applying EditorConfig to Fugitive buffers
@@ -117,11 +117,11 @@ set laststatus=2
 
 
 "" open NERDTree automatically ...
-autocmd StdinReadPre * let s:std_in=1
+" autocmd StdinReadPre * let s:std_in=1
 "" if no files are specified ...
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 "" or given a dir
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
 let NERDTreeHijackNetrw=1
 nmap <F4> :NERDTreeFind<CR>
@@ -208,18 +208,18 @@ let g:formatters_json = ['my_custom_json']
 let g:coc_global_extensions = [
       \ 'coc-elixir',
       \ 'coc-css',
-      \ 'coc-git',
-      \ 'coc-github',
       \ 'coc-highlight',
       \ 'coc-html',
-      \ 'coc-json',
       \ 'coc-lists',
+      \ 'coc-json',
       \ 'coc-rls',
       \ 'coc-sh',
       \ 'coc-syntax',
       \ 'coc-yaml',
       \ 'coc-yank'
       \ ]
+      " \ 'coc-github',
+      " \ 'coc-git',
       " \ 'coc-snippets',
       " \ 'coc-solargraph',
 " if hidden is not set, TextEdit might fail.
