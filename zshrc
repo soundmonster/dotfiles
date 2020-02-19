@@ -81,7 +81,7 @@ plugins=(
 
 # User configuration
 
-export PATH="/Users/leonid/.bin:/Users/leonid/bin:/Library/TeX/texbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/Users/leonid/.bin:/Users/leonid/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$(python -m site --user-base)/bin:${PATH}"
 # export PATH="${PATH}:/Users/leonid/Projects/platform-scripts/bin"
 # export PATH="${PATH}:/Users/leonid/goroot/bin"
@@ -125,9 +125,6 @@ source <(stern --completion=zsh)
 # source /usr/local/Cellar/powerline/2.3/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
-
-export PATH="/usr/local/sbin:$PATH"
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # source /usr/local/opt/kube-ps1/share/kube-ps1.sh
 export KUBE_PS1_ENABLED=false
