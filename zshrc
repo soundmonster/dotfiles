@@ -127,6 +127,7 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
 
 export PATH="/usr/local/sbin:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # source /usr/local/opt/kube-ps1/share/kube-ps1.sh
 export KUBE_PS1_ENABLED=false
