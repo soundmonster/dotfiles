@@ -52,6 +52,8 @@ Plug 'tpope/vim-sleuth'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'easymotion/vim-easymotion'
+Plug 'janko/vim-test'
+Plug 'benmills/vimux'
 
 " Initialize plugin system
 call plug#end()
@@ -224,6 +226,18 @@ let g:coc_global_extensions = [
       " \ 'coc-solargraph',
 " if hidden is not set, TextEdit might fail.
 set hidden
+
+" Vim Test
+" let test#strategy = 'neovim'
+let test#strategy = 'vimux'
+
+function! SBSElixirTransform(cmd) abort
+  let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
+  return "make dockerless dockerless=true cmd='".command."'"
+endfunction
+
+let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform')}
+let g:test#transformation = 'sbs_elixir'
 
 " Some servers have issues with backup files, see #649
 " set nobackup
