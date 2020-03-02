@@ -19,7 +19,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
-Plug 'liuchengxu/vim-clap'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'dhruvasagar/vim-zoom'
 
 " Use CoC release branch
