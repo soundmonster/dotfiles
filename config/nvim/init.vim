@@ -54,6 +54,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'janko/vim-test'
 Plug 'benmills/vimux'
+" Let's have a hard time
+Plug 'takac/vim-hardtime'
 
 " Initialize plugin system
 call plug#end()
@@ -364,3 +366,12 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+
+" Set up hardtime
+let g:hardtime_default_on = 1
+" let g:hardtime_timeout = 1000
+" let g:hardtime_ignore_buffer_patterns = [ "NERD.*" ]
+" let g:hardtime_ignore_quickfix = 1
+" let g:hardtime_allow_different_key = 1
+let g:hardtime_maxcount = 3
