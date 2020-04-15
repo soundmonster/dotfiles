@@ -77,7 +77,7 @@ set fillchars+=vert:│
 " let g:ctrlp_map = '<c-p>'
 " let g:ctrlp_cmd = 'CtrlP'
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-nmap <c-p> :Clap gfiles<CR>
+nmap <c-p> :Clap files<CR>
 nnoremap <silent> <space>g  :<C-u>Clap grep<cr>
 nnoremap <silent> <space>b  :<C-u>Clap buffers<cr>
 
