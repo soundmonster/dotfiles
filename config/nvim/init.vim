@@ -56,6 +56,7 @@ Plug 'janko/vim-test'
 Plug 'benmills/vimux'
 " Let's have a hard time
 Plug 'takac/vim-hardtime'
+Plug 'tpope/vim-abolish'
 
 " Initialize plugin system
 call plug#end()
@@ -67,8 +68,8 @@ filetype plugin indent on
 set background=dark
 let g:gruvbox_contrast_dark = 'medium'
 colo gruvbox
+set textwidth=120
 
- 
 "" vim-airline
 
 let g:airline_powerline_fonts = 1
@@ -231,6 +232,8 @@ set hidden
 
 " Vim Test
 " let test#strategy = 'neovim'
+nnoremap <space>t  :<C-u>TestNearest<cr>
+nnoremap <space>T  :<C-u>TestFile<cr>
 let test#strategy = 'vimux'
 
 function! SBSElixirTransform(cmd) abort
@@ -369,7 +372,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 
 " Set up hardtime
-let g:hardtime_default_on = 1
+let g:hardtime_default_on = 0
 " let g:hardtime_timeout = 1000
 let g:hardtime_ignore_buffer_patterns = [ "NERD.*" ]
 " let g:hardtime_ignore_quickfix = 1
