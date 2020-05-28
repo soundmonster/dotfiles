@@ -47,6 +47,8 @@ Plug 'tpope/vim-projectionist'
 " Plug 'tpope/vim-rails'
 " Sensible set of defaults
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 " Automatically adjust whitespace formatting
 Plug 'tpope/vim-sleuth'
 Plug 'vim-airline/vim-airline-themes'
@@ -95,28 +97,6 @@ endif
 "" Avoid applying EditorConfig to Fugitive buffers
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
-"" Setup ALE for Elixir: https://github.com/GrzegorzKozub/vim-elixirls#how-to-integrate-with-ale
-let s:user_dir = stdpath('data')
-let g:ale_elixir_elixir_ls_release = s:user_dir . '/plugged/vim-elixirls/elixir-ls/release'
-" Uncomment the following line to disable Dialyzer
-" let g:ale_elixir_elixir_ls_config = { 'elixirLS': { 'dialyzerEnabled': v:false } }
-
-let g:ale_linters = {}
-let g:ale_linters.elixir = [ 'credo', 'elixir-ls' ]
-" autocmd FileType elixir,eelixir nnoremap <C-]> :ALEGoToDefinition<CR>
-" autocmd FileType elixir,eelixir nnoremap <C-\> :ALEFindReferences<CR>
-" autocmd FileType elixir,eelixir nnoremap <s-k> :ALEHover<CR>
-" let g:ale_set_baloons=1
-let g:ale_sign_error = "\u2717"
-let g:ale_sign_warning = "\u26A0"
-let g:ale_sign_info = "\u2B95"
-let g:ale_sign_style_error = "!"
-let g:ale_sign_style_warning = "?"
-
-"" Setup for Elixir: https://bitboxer.de/2016/11/13/vim-for-elixir/
-" let g:gutentags_cache_dir = '~/.tags_cache'
-" autocmd! BufWritePost * Neomake
-" let g:alchemist_tag_disable = 1
 " always show status line w/filename
 set laststatus=2
 
@@ -132,28 +112,14 @@ let NERDTreeHijackNetrw=1
 nmap <F4> :NERDTreeFind<CR>
 nmap <F3> :NERDTreeToggle<CR>
 
-"" Syntastic and Rubocop
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 1
-" let g:syntastic_error_symbol = "\u2717"
-" let g:syntastic_warning_symbol = "\u26A0"
-" let g:syntastic_style_error_symbol = "\u26A1"
-" let g:syntastic_style_warning_symbol = "\u2717"
-" let g:syntastic_python_python_exec = '/usr/local/bin/python3' " always use python3
-
 set hlsearch
 set number
 "" When a file has been detected to have been changed outside of Vim and it has not
 "" been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
 set autoread
 
-set clipboard=unnamed
+"" Use system clipboard
+" set clipboard=unnamed
 
 let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
 
