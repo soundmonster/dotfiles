@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/leonid/.oh-my-zsh
+export ZSH=${HOME}/.oh-my-zsh
 
-DEFAULT_USER="leonid"
+DEFAULT_USER=$(whoami)
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -81,11 +81,11 @@ plugins=(
 
 # User configuration
 
-export PATH="/Users/leonid/.bin:/Users/leonid/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$(python -m site --user-base)/bin:${PATH}"
-# export PATH="${PATH}:/Users/leonid/Projects/platform-scripts/bin"
-# export PATH="${PATH}:/Users/leonid/goroot/bin"
-# export PATH="${PATH}:/Users/leonid/anaconda3/bin"
+# export PATH="${PATH}:${HOME}/Projects/platform-scripts/bin"
+# export PATH="${PATH}:${HOME}/goroot/bin"
+# export PATH="${PATH}:${HOME}/anaconda3/bin"
 # export TERM=xterm-256color
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -121,7 +121,7 @@ source <(stern --completion=zsh)
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# source /Users/leonid/Library/Python/2.7/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
+# source ${HOME}/Library/Python/2.7/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 # source /usr/local/Cellar/powerline/2.3/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
@@ -167,3 +167,5 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 eval "$(direnv hook zsh)"
+. $(brew --prefix asdf)/asdf.sh
+

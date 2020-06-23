@@ -25,7 +25,7 @@ deactivate
 # 3.6
 pyenv activate neovim3
 pip install neovim
-deactivate
+source deactivate
 
 # python paths for neovim are already configured in .config/nvim/init.vim
 ```
