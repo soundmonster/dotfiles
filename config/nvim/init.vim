@@ -129,8 +129,8 @@ let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 
 "" Python for NeoVim
-let g:python_host_prog = '/Users/leonid/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog = '/Users/leonid/.pyenv/versions/neovim3/bin/python'
+let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
 
 "" Setup completion
 " Use echodoc for function signatures in command line
