@@ -117,4 +117,4 @@
 	url = https://github.com/jimeh/tmux-themepack.git
 [submodule "elixir-ls"]
 	path = elixir-ls
-	url = https://github.com/JakeBecker/elixir-ls.git
+	url = git@github.com:elixir-lsp/elixir-ls.git
