@@ -54,26 +54,16 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git history-substring-search brew brew-cask bundler rake-fast rails colored-man-pages docker docker-compose osx pip rbenv)
 plugins=(
-		aws
-		asdf
+		# asdf
 		brew
 		git
-		bundler
-		rvm
-		rails
-		rake-fast
-		ruby
-		python
-		pip
 		terraform
 		docker
 		docker-compose
-		aws
 		tmux
 		history-substring-search
 		z
 		mix
-		gradle
 		zsh-syntax-highlighting
 		kube-ps1
 		kubectl
@@ -148,8 +138,8 @@ fh() {
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --with-wx --with-ssl=/usr/local/opt/openssl --with-odbc=/usr/local/opt/unixodbc"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 
 # Less Colors for Man Pages
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
