@@ -18,6 +18,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'dhruvasagar/vim-zoom'
 
