@@ -86,6 +86,9 @@ nmap <c-p> :Clap files<CR>
 nnoremap <silent> <space>g  :<C-u>Clap grep<cr>
 nnoremap <silent> <space>b  :<C-u>Clap buffers<cr>
 
+"" Copy full file to system clipboard
+nnoremap <silent> <space>yy ggVG"*y
+
 "" Tagbar
 nmap <F8> :TagbarToggle<CR>
 
