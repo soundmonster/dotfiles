@@ -16,10 +16,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'Chiel92/vim-autoformat'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+" Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'dhruvasagar/vim-zoom'
 
 " Use CoC release branch
@@ -79,13 +79,13 @@ let g:airline_powerline_fonts = 1
 set fillchars+=vert:│
 
 "" CtrlP
-" let g:ctrlp_map = '<c-p>'
-" let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-nmap <c-p> :Clap files<CR>
-nnoremap <silent> <space>g  :<C-u>Clap grep<cr>
-nnoremap <silent> <space>*  :<C-u>Clap grep ++query=<cword><cr>
-nnoremap <silent> <space>b  :<C-u>Clap buffers<cr>
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" nmap <c-p> :Clap files<CR>
+" nnoremap <silent> <space>g  :<C-u>Clap grep<cr>
+" nnoremap <silent> <space>*  :<C-u>Clap grep ++query=<cword><cr>
+" nnoremap <silent> <space>b  :<C-u>CtrlPBuffer<cr>
 
 "" Copy full file to system clipboard
 nnoremap <silent> <space>yy ggVG"*y
@@ -96,6 +96,7 @@ nmap <F8> :TagbarToggle<CR>
 "" ripgrep
 if executable('rg')
   let g:ackprg = 'rg --vimgrep'
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 endif
 
 "" Avoid applying EditorConfig to Fugitive buffers
