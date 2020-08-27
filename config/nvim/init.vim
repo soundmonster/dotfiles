@@ -80,12 +80,13 @@ set fillchars+=vert:│
 
 "" CtrlP
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 " nmap <c-p> :Clap files<CR>
 " nnoremap <silent> <space>g  :<C-u>Clap grep<cr>
 " nnoremap <silent> <space>*  :<C-u>Clap grep ++query=<cword><cr>
-" nnoremap <silent> <space>b  :<C-u>CtrlPBuffer<cr>
+nnoremap <silent> <space>*  :<C-u>Ack <cword><cr>
+nnoremap <silent> <space>b  :<C-u>CtrlPBuffer<cr>
 
 "" Copy full file to system clipboard
 nnoremap <silent> <space>yy ggVG"*y
