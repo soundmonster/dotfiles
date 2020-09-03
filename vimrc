@@ -42,8 +42,8 @@ let g:gutentags_cache_dir = '~/.tags_cache'
 autocmd! BufWritePost * Neomake
 let g:alchemist_tag_disable = 1
 
-"colo darcula
-colo gruvbox
+colo darcula
+" colo gruvbox
 
 "" always show status line w/filename
 set laststatus=2

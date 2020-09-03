@@ -71,6 +71,8 @@ set background=dark
 let g:gruvbox_contrast_dark = 'medium'
 colo gruvbox
 set textwidth=120
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
 "" vim-airline
 
