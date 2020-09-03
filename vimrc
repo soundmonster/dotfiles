@@ -42,8 +42,14 @@ let g:gutentags_cache_dir = '~/.tags_cache'
 autocmd! BufWritePost * Neomake
 let g:alchemist_tag_disable = 1
 
-colo darcula
-" colo gruvbox
+" Appearance
+set background=dark
+let g:gruvbox_contrast_dark = 'medium'
+" colo darcula
+colo gruvbox
+set textwidth=120
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
 "" always show status line w/filename
 set laststatus=2
