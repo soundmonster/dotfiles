@@ -56,9 +56,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'janko/vim-test'
 Plug 'benmills/vimux'
-" Let's have a hard time
-Plug 'takac/vim-hardtime'
+" Let's not have a hard time
+" Plug 'takac/vim-hardtime'
 Plug 'tpope/vim-abolish'
+Plug 'terryma/vim-expand-region'
 
 " Initialize plugin system
 call plug#end()
