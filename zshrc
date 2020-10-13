@@ -64,9 +64,9 @@ plugins=(
 		history-substring-search
 		z
 		mix
-		zsh-syntax-highlighting
 		kube-ps1
 		kubectl
+		zsh-syntax-highlighting
 	)
 
 # User configuration
