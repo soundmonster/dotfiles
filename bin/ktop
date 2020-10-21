@@ -1,7 +1,13 @@
 #!/bin/sh
 
-if [ "$1" != "" ]; then
-	watch -n 3 "kubectl get pods -o wide | grep $1"
+if [ "$1" == "" ]; then
+	RESOURCE=pods
 else
-	watch -n 3 kubectl get pods -o wide
+	RESOURCE=$1
+fi
+
+if [ "$2" != "" ]; then
+	watch -n 3 "kubectl get $RESOURCE -o wide | grep $2"
+else
+	watch -n 3 kubectl get "$RESOURCE" -o wide
 fi
