@@ -73,11 +73,9 @@ plugins=(
 
 export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$(python -m site --user-base)/bin:${PATH}"
-# export PATH="${PATH}:${HOME}/Projects/platform-scripts/bin"
-# export PATH="${PATH}:${HOME}/goroot/bin"
-# export PATH="${PATH}:${HOME}/anaconda3/bin"
-# export TERM=xterm-256color
-# export MANPATH="/usr/local/man:$MANPATH"
+
+export VISUAL=$(which nvim)
+export EDITOR="$VISUAL"
 
 # enable history in Erlang/Elixir REPL
 
