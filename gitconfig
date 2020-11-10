@@ -8,12 +8,22 @@
 	excludesfile = ~/.gitignore
 	precomposeunicode = true
 	pager = diff-so-fancy | less --tabs=4 -RFX
-[merge]
-	tool = vimdiff
-	conflictstyle = diff3
+# [merge]
+#         tool = vimdiff
+#         conflictstyle = diff3
 
-[mergetool "vimdiff"]
-	cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+# [mergetool "vimdiff"]
+#         cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+# define command which will be used when "nvim" is set as a merge tool
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+# set "nvim" as tool for merging
+[merge]
+  tool = nvim
+# automatically launch merge tool without displaying a prompt
+[mergetool]
+  prompt = false
 
 [difftool "dwdiff"]
 	cmd = dwdiff -C3 --color $LOCAL $REMOTE
