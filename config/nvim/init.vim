@@ -213,7 +213,7 @@ let test#strategy = 'vimux'
 
 function! SBSElixirTransform(cmd) abort
   let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
-  return "make dockerless dockerless=true cmd='".command."'"
+  return "DONT_RESET_ECTO=true MIX_ENV=test make dockerless dockerless=true cmd='".command."'"
 endfunction
 
 let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform')}
