@@ -13,10 +13,11 @@ endif
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Chiel92/vim-autoformat'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'mustache/vim-mustache-handlebars'
 " Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
@@ -29,6 +30,13 @@ Plug 'elzr/vim-json'
 "" fzf
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+" devicons
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
+"" telescope (fzf replacement)
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 "" Find and replace
 Plug 'brooth/far.vim'
 Plug 'hashivim/vim-terraform'
@@ -60,6 +68,7 @@ Plug 'benmills/vimux'
 " Plug 'takac/vim-hardtime'
 Plug 'tpope/vim-abolish'
 Plug 'terryma/vim-expand-region'
+Plug 'AndrewRadev/sideways.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -74,6 +83,7 @@ colo gruvbox
 set textwidth=120
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+set encoding=utf8
 
 "" vim-airline
 
@@ -82,14 +92,17 @@ let g:airline_powerline_fonts = 1
 set fillchars+=vert:│
 
 "" CtrlP
-let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_map = '<c-p>'
 " let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 " nmap <c-p> :Clap files<CR>
 " nnoremap <silent> <space>g  :<C-u>Clap grep<cr>
 " nnoremap <silent> <space>*  :<C-u>Clap grep ++query=<cword><cr>
 nnoremap <silent> <space>*  :<C-u>Ack <cword><cr>
-nnoremap <silent> <space>b  :<C-u>CtrlPBuffer<cr>
+" nnoremap <silent> <space>b  :<C-u>CtrlPBuffer<cr>
+nnoremap <silent> <space>b  :<C-u>Telescope buffers<cr>
+nnoremap <silent> <space>ff   :<C-u>Telescope live_grep<cr>
+nmap <c-p> :<C-u>Telescope find_files<CR>
 
 "" Copy full file to system clipboard
 nnoremap <silent> <space>yy ggVG"*y
@@ -109,7 +122,6 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " always show status line w/filename
 set laststatus=2
 
-
 "" open NERDTree automatically ...
 " autocmd StdinReadPre * let s:std_in=1
 "" if no files are specified ...
@@ -120,9 +132,14 @@ set laststatus=2
 let NERDTreeHijackNetrw=1
 nmap <F4> :NERDTreeFind<CR>
 nmap <F3> :NERDTreeToggle<CR>
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
+let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+let g:NERDTreeDirArrowExpandable = "\u00a0"
+let g:NERDTreeDirArrowCollapsible = "\u00a0"
 
 set hlsearch
 set number
+set relativenumber
 "" When a file has been detected to have been changed outside of Vim and it has not
 "" been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
 set autoread

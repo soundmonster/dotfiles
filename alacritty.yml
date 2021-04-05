@@ -99,10 +99,10 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: Iosevka Term Medium
+    family: Iosevka Nerd Font
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
+    style: Light
 
   # Bold font face
   #bold:

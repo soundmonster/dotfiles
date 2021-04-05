@@ -62,7 +62,6 @@ plugins=(
 		docker-compose
 		tmux
 		history-substring-search
-		z
 		mix
 		kube-ps1
 		kubectl
@@ -155,5 +154,6 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh)"
 . $(brew --prefix asdf)/asdf.sh
 
