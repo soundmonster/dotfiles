@@ -83,6 +83,7 @@ source $ZSH/oh-my-zsh.sh
 source ~/.profile
 source ~/.zsh_profile
 source ~/.zsh_aliases
+alias ll='exa --long --header --git'
 source <(stern --completion=zsh)
 # source "`brew --prefix`/etc/grc.bashrc"
 
