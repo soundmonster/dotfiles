@@ -47,3 +47,5 @@
 	gpgsign = false
 [pull]
 	ff = only
+[alias]
+	recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
