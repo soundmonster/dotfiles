@@ -85,6 +85,7 @@ source ~/.zsh_profile
 source ~/.zsh_aliases
 unalias ll
 alias ll='exa --long --header --git'
+alias gbr="git branch | fzf | xargs git checkout"
 source <(stern --completion=zsh)
 # source "`brew --prefix`/etc/grc.bashrc"
 
