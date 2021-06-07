@@ -48,4 +48,4 @@
 [pull]
 	ff = only
 [alias]
-	recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
+	recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
