@@ -13,15 +13,14 @@ endif
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Chiel92/vim-autoformat'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'elixir-lang/vim-elixir'
-Plug 'mustache/vim-mustache-handlebars'
+" Plug 'mustache/vim-mustache-handlebars'
 " Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
-Plug 'dhruvasagar/vim-zoom'
+" Plug 'dhruvasagar/vim-zoom'
 
 " Use CoC release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -36,8 +35,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'elzr/vim-json'
 "" fzf
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+" Plug '/usr/local/opt/fzf'
+" Plug 'junegunn/fzf.vim'
 " devicons
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
@@ -46,7 +45,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 "" Find and replace
-Plug 'brooth/far.vim'
+" Plug 'brooth/far.vim'
 Plug 'hashivim/vim-terraform'
 " Plug 'ludovicchabant/vim-gutentags'
 " Plug 'majutsushi/tagbar'
@@ -57,9 +56,10 @@ Plug 'morhetz/gruvbox'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-projectionist'
+" Plug 'tpope/vim-projectionist'
 " Plug 'tpope/vim-rails'
 " Sensible set of defaults
 Plug 'tpope/vim-sensible'
@@ -73,8 +73,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'janko/vim-test'
 Plug 'benmills/vimux'
 Plug 'tpope/vim-abolish'
-Plug 'terryma/vim-expand-region'
-Plug 'AndrewRadev/sideways.vim'
+" Plug 'terryma/vim-expand-region'
+" Plug 'AndrewRadev/sideways.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -154,6 +154,8 @@ set autoread
 " set clipboard=unnamed
 
 let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'elixir', 'json', 'yaml', 'erlang']
+
 
 set list listchars=tab:→\ ,trail:·
 
