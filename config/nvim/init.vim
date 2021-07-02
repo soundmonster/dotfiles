@@ -1,4 +1,4 @@
-" Space is leader
+" Space is leader,
 " map <space> \
 let mapleader=" "
 
@@ -109,6 +109,18 @@ nnoremap <silent> <space>*  :<C-u>Ack <cword><cr>
 nnoremap <silent> <space>b  :<C-u>Telescope buffers<cr>
 nnoremap <silent> <space>ff   :<C-u>Telescope live_grep<cr>
 nmap <c-p> :<C-u>Telescope find_files<CR>
+
+lua << EOF
+require('telescope').setup{
+  -- Telescope settings
+  defaults = {
+    -- default sorter
+    -- file_sorter =  require'telescope.sorters'.get_fuzzy_file
+    -- change the sorter, see if it's better
+    file_sorter =  require'telescope.sorters'.get_fzy_sorter
+  }
+}
+EOF
 
 "" Copy full file to system clipboard
 nnoremap <silent> <space>yy ggVG"*y
@@ -227,6 +239,7 @@ let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform'
 let g:test#transformation = 'sbs_elixir'
 
 "" CoC.nvim
+let g:coc_node_path = '~/.asdf/installs/nodejs/16.4.0/bin/node'
 let g:coc_global_extensions = [
       \ 'coc-elixir',
       \ 'coc-css',
