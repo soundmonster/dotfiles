@@ -134,6 +134,7 @@ require'nvim-treesitter.configs'.setup {
     "gomod",
     "hcl",
     "html",
+    "java",
     "json",
     "lua",
     "python",
@@ -215,7 +216,8 @@ set autoread
 " set clipboard=unnamed
 
 let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'elixir', 'json', 'yaml', 'erlang']
+" this doesn't really work with TreeSitter-driven highlighting
+" let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'elixir', 'json', 'yaml', 'erlang']
 
 
 set list listchars=tab:→\ ,trail:·
