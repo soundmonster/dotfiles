@@ -13,7 +13,8 @@ endif
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'connorlay/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Chiel92/vim-autoformat'
 Plug 'airblade/vim-gitgutter'
 " Plug 'ctrlpvim/ctrlp.vim'
@@ -36,6 +37,8 @@ Plug 'hrsh7th/vim-vsnip-integ'
 "" fzf
 " Plug '/usr/local/opt/fzf'
 " Plug 'junegunn/fzf.vim'
+" peek at registers
+Plug 'junegunn/vim-peekaboo'
 " devicons
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
@@ -118,6 +121,12 @@ require('telescope').setup{
     -- file_sorter =  require'telescope.sorters'.get_fuzzy_file
     -- change the sorter, see if it's better
     -- file_sorter =  require'telescope.sorters'.get_fzy_sorter
+    -- file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+    -- file_previewer = require'telescope.previewers'.cat.new,
+    -- grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+    -- grep_previewer = require'telescope.previewers'.vimgrep.new,
+    -- qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+    -- qflist_previewer = require'telescope.previewers'.qflist.new,
   }
 }
 EOF
@@ -146,6 +155,7 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,              -- false will disable the whole extension
     -- disable = { "c", "rust" },  -- list of language that will be disabled
+    -- disable = { "elixir" },  -- list of language that will be disabled
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -590,8 +600,8 @@ lua << EOF
   })
 
   lspconfig.efm.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    filetypes = {"elixir"}
+   capabilities = capabilities,
+   on_attach = on_attach,
+   filetypes = {"elixir"}
   })
 EOF

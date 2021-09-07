@@ -4,7 +4,8 @@ log-level: 1
 
 tools:
   sbs_credo: &sbs_credo
-    lint-command: "make dockerless dockerless=true cmd='MIX_ENV=test mix credo suggest --format=flycheck --read-from-stdin ${INPUT}'"
+    # lint-command: "make dockerless dockerless=true cmd='MIX_ENV=test mix credo suggest --format=flycheck --read-from-stdin ${INPUT}'"
+    lint-command: "MIX_ENV=test mix credo suggest --format=flycheck --read-from-stdin ${INPUT}"
     lint-stdin: true
     lint-formats:
       - '%f:%l:%c: %t: %m'
