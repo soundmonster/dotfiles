@@ -55,6 +55,7 @@ Plug 'mileszs/ack.vim'
 " Themes
 " Plug 'dunstontc/vim-vscode-theme'
 Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -85,10 +86,13 @@ call plug#end()
 syntax on
 filetype plugin indent on
 
-" Appearance
+" Theme
 set background=dark
-let g:gruvbox_contrast_dark = 'medium'
-colo gruvbox
+" let g:gruvbox_contrast_dark = 'medium'
+" colorscheme gruvbox
+colorscheme dracula
+
+" Appearance
 set textwidth=120
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
