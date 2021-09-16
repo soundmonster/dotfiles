@@ -176,3 +176,4 @@ ASDF_DIR="$(brew --prefix asdf)/libexec"
 . "$ASDF_DIR/asdf.sh"
 # . $(brew --prefix asdf)/asdf.sh
 export GPG_TTY=$(tty)
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
