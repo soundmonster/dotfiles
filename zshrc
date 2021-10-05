@@ -161,3 +161,4 @@ eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 . $(brew --prefix asdf)/asdf.sh
 
+export GPG_TTY=$(tty)

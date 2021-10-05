@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Leo Batyuk
-	email = leonid.batyuk@wooga.net
+	name = Leo B
+	email = leo.the.soundmonster@gmail.com
 [push]
 	default = simple
 [core]
@@ -49,3 +49,6 @@
 	ff = only
 [alias]
 	recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
+
+[includeIf "gitdir:~/Projects/*/"]
+  path = ~/.gitconfig-work

@@ -55,7 +55,7 @@ Plug 'mileszs/ack.vim'
 " Themes
 " Plug 'dunstontc/vim-vscode-theme'
 Plug 'morhetz/gruvbox'
-Plug 'dracula/vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
