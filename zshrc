@@ -71,6 +71,8 @@ plugins=(
 # User configuration
 
 export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
+export GNUARMEMB_TOOLCHAIN_PATH=/Applications/ARM
 
 export VISUAL=$(which nvim)
 export EDITOR="$VISUAL"
