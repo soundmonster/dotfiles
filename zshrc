@@ -120,6 +120,7 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
 # source /usr/local/opt/kube-ps1/share/kube-ps1.sh
 export KUBE_PS1_ENABLED=false
 PROMPT='$(kube_ps1)'$PROMPT
+export HELM_EXPERIMENTAL_OCI=1
 
 # Use the fuck, an awesome command post-correction tool
 eval $(thefuck --alias)
