@@ -13,12 +13,12 @@ endif
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'connorlay/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'connorlay/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Chiel92/vim-autoformat'
 Plug 'airblade/vim-gitgutter'
 " Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'elixir-lang/vim-elixir'
+Plug 'elixir-editors/vim-elixir'
 " Plug 'mustache/vim-mustache-handlebars'
 " Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
@@ -141,7 +141,7 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {
     "c",
     "dockerfile",
-    "elixir",
+    -- "elixir",
     "erlang",
     "go",
     "gomod",
@@ -159,7 +159,7 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,              -- false will disable the whole extension
     -- disable = { "c", "rust" },  -- list of language that will be disabled
-    -- disable = { "elixir" },  -- list of language that will be disabled
+    disable = { "elixir" },  -- list of language that will be disabled
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
