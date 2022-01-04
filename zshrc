@@ -71,7 +71,6 @@ plugins=(
 # User configuration
 
 export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PATH="$(python -m site --user-base)/bin:${PATH}"
 
 export VISUAL=$(which nvim)
 export EDITOR="$VISUAL"
@@ -161,5 +160,15 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 . $(brew --prefix asdf)/asdf.sh
+
+PYTHON_USER_PATH="$(python -m site --user-base)/bin"
+if [ $? -eq 0 ]; then
+  export PATH="${PYTHON_USER_PATH}:${PATH}"
+fi
+
+MIX_PATH_FOR_ERLANGLS="$(asdf where elixir)/.mix"
+if [ $? -eq 0 ]; then
+  export PATH="${MIX_PATH_FOR_ERLANGLS}:${PATH}"
+fi
 
 export GPG_TTY=$(tty)
