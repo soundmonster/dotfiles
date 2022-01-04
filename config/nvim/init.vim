@@ -26,12 +26,14 @@ Plug 'hrsh7th/nvim-cmp'
 "" Snippets
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip'
 
 " peek at registers
 Plug 'junegunn/vim-peekaboo'
 " devicons
 Plug 'kyazdani42/nvim-web-devicons'
+"" Filesystem sidebar
+Plug 'kyazdani42/nvim-tree.lua'
+
 Plug 'ryanoasis/vim-devicons'
 "" telescope (fzf replacement)
 Plug 'nvim-lua/popup.nvim'
@@ -48,11 +50,8 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'rhysd/vim-gfm-syntax'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+
 Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-projectionist'
-" Plug 'tpope/vim-rails'
 "" Sensible set of defaults
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
@@ -81,6 +80,22 @@ let mapleader=" "
 set termguicolors
 filetype plugin indent on
 
+set hlsearch
+set number
+set relativenumber
+"" When a file has been detected to have been changed outside of Vim and it has not
+"" been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
+set autoread
+" Don't show mode in command line since we have it lualine
+set noshowmode
+set mouse=a
+
+" always show signcolumns
+set signcolumn=yes
+set list listchars=tab:→\ ,trail:·
+" always show status line w/filename
+" set laststatus=2
+
 " Theme
 set background=dark
 " let g:gruvbox_contrast_dark = 'medium'
@@ -92,15 +107,12 @@ set textwidth=120
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 set encoding=utf8
+"" Use system clipboard
+" set clipboard=unnamed
 
 "" status line (lualine)
 lua << END
-  require'lualine'.setup()
 END
-"" vim-airline
-
-let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tabline#enabled = 1
 set fillchars+=vert:│
 
 nnoremap <silent> <space>*  :<C-u>Ack <cword><cr>
@@ -108,7 +120,73 @@ nnoremap <silent> <space>b  :<C-u>Telescope buffers<cr>
 nnoremap <silent> <space>ff   :<C-u>Telescope live_grep<cr>
 nmap <c-p> :<C-u>Telescope find_files<CR>
 
+"" maximizer toggle
+let g:maximizer_set_default_mapping = 1
+let g:maximizer_set_mapping_with_bang = 0
+let g:maximizer_default_mapping_key = '<F8>'
+
+"" sideways
+nnoremap <c-h> :SidewaysLeft<cr>
+nnoremap <c-l> :SidewaysRight<cr>
+
+"" Reselect pasted text
+nnoremap gp `[v`]
+"" Copy full file to system clipboard
+nnoremap <silent> <space>yy ggVG"*y
+
+"" ripgrep
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
+endif
+
+"" Avoid applying EditorConfig to Fugitive buffers
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+
+nnoremap <F3> :NvimTreeToggle<CR>
+" nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <F4> :NvimTreeFindFile<CR>
+
+let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
+" this doesn't really work with TreeSitter-driven highlighting
+" let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'elixir', 'json', 'yaml', 'erlang']
+
+"" NERD Commenter
+let g:NERDSpaceDelims = 1
+let g:NERDDefaultAlign = 'left'
+
+"" Python for NeoVim
+let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
+
+
+"" Format Elixir on save
+" autocmd BufWrite *.exs,*.ex :Autoformat
+"" Use jq for formatting JSON
+let g:formatdef_my_custom_json = '"jq ."'
+let g:formatters_json = ['my_custom_json']
+
+let g:formatdef_my_custom_elixir = '"MIX_ENV=test mix format -"'
+let g:formatters_elixir = ['my_custom_elixir']
+
+" Vim Test
+" let test#strategy = 'neovim'
+nnoremap <space>t  :<C-u>TestNearest<cr>
+nnoremap <space>T  :<C-u>TestFile<cr>
+let test#strategy = 'vimux'
+
+function! SBSElixirTransform(cmd) abort
+  let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
+  return "DONT_RESET_ECTO=true MIX_ENV=test make dockerless dockerless=true cmd='".command."'"
+endfunction
+
+let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform')}
+let g:test#transformation = 'sbs_elixir'
+
 lua << EOF
+require'lualine'.setup()
+require'nvim-tree'.setup()
+
 require('telescope').setup{
   -- Telescope settings
   defaults = {
@@ -125,9 +203,7 @@ require('telescope').setup{
     -- qflist_previewer = require'telescope.previewers'.qflist.new,
   }
 }
-EOF
 
-lua <<EOF
 require'nvim-treesitter.configs'.setup {
   -- ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = {
@@ -168,240 +244,138 @@ require'nvim-treesitter.configs'.setup {
     },
   },
 }
-EOF
 
-"" maximizer toggle
-let g:maximizer_set_default_mapping = 1
-let g:maximizer_set_mapping_with_bang = 0
-let g:maximizer_default_mapping_key = '<F8>'
+-- LSP config
+local lspconfig = require("lspconfig")
 
-"" sideways
-nnoremap <c-h> :SidewaysLeft<cr>
-nnoremap <c-l> :SidewaysRight<cr>
+-- Enable logs for LSP
+-- vim.lsp.set_log_level("debug")
+-- Setup nvim-cmp.
+local cmp = require'cmp'
 
-"" Reselect pasted text
-nnoremap gp `[v`]
-"" Copy full file to system clipboard
-nnoremap <silent> <space>yy ggVG"*y
-
-"" ripgrep
-if executable('rg')
-  let g:ackprg = 'rg --vimgrep'
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-endif
-
-"" Avoid applying EditorConfig to Fugitive buffers
-let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-
-" always show status line w/filename
-set laststatus=2
-
-"" open NERDTree automatically ...
-" autocmd StdinReadPre * let s:std_in=1
-"" if no files are specified ...
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"" or given a dir
-" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
-let NERDTreeHijackNetrw=1
-nmap <F4> :NERDTreeFind<CR>
-nmap <F3> :NERDTreeToggle<CR>
-let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
-let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
-let g:NERDTreeDirArrowExpandable = "\u00a0"
-let g:NERDTreeDirArrowCollapsible = "\u00a0"
-
-set hlsearch
-set number
-set relativenumber
-"" When a file has been detected to have been changed outside of Vim and it has not
-"" been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
-set autoread
-
-"" Use system clipboard
-" set clipboard=unnamed
-
-let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
-" this doesn't really work with TreeSitter-driven highlighting
-" let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'elixir', 'json', 'yaml', 'erlang']
-
-
-set list listchars=tab:→\ ,trail:·
-"" NERD Commenter
-let g:NERDSpaceDelims = 1
-let g:NERDDefaultAlign = 'left'
-
-"" Python for NeoVim
-let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
-
-"" Setup completion
-
-" Don't show mode in command line since we have it airline
-set noshowmode
-set mouse=a
-
-"" Format Elixir on save
-" autocmd BufWrite *.exs,*.ex :Autoformat
-"" Use jq for formatting JSON
-let g:formatdef_my_custom_json = '"jq ."'
-let g:formatters_json = ['my_custom_json']
-
-let g:formatdef_my_custom_elixir = '"MIX_ENV=test mix format -"'
-let g:formatters_elixir = ['my_custom_elixir']
-
-" Vim Test
-" let test#strategy = 'neovim'
-nnoremap <space>t  :<C-u>TestNearest<cr>
-nnoremap <space>T  :<C-u>TestFile<cr>
-let test#strategy = 'vimux'
-
-function! SBSElixirTransform(cmd) abort
-  let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
-  return "DONT_RESET_ECTO=true MIX_ENV=test make dockerless dockerless=true cmd='".command."'"
-endfunction
-
-let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform')}
-let g:test#transformation = 'sbs_elixir'
-
-
-" Configure NeoVim's LSP client and completion
-" https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
-"
-" always show signcolumns
-set signcolumn=yes
-
-lua << EOF
-  local lspconfig = require("lspconfig")
-
-  -- Enable logs for LSP
-  -- vim.lsp.set_log_level("debug")
-  -- Setup nvim-cmp.
-  local cmp = require'cmp'
-
-  cmp.setup({
-    snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-      end,
-    },
-    mapping = {
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' },
-    }, {
-      { name = 'buffer' },
-    })
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+  }, {
+    { name = 'buffer' },
   })
+})
 
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-    sources = {
-      { name = 'buffer' }
-    }
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
   })
+})
 
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
+-- Neovim doesn't support snippets out of the box, so we need to mutate the
+-- capabilities we send to the language server to let them know we want snippets.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-  -- Neovim doesn't support snippets out of the box, so we need to mutate the
-  -- capabilities we send to the language server to let them know we want snippets.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- A callback that will get called when a buffer connects to the language server.
+-- Here we create any key maps that we want to have on that buffer.
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  -- A callback that will get called when a buffer connects to the language server.
-  -- Here we create any key maps that we want to have on that buffer.
-  local on_attach = function(client, bufnr)
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  --Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    --Enable completion triggered by <c-x><c-o>
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
 
-    -- Mappings.
-    local opts = { noremap=true, silent=true }
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-    buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-    -- format on save / autoformat
-    -- if client.resolved_capabilities.document_formatting then
-    --     vim.cmd [[augroup Format]]
-    --     vim.cmd [[autocmd! * <buffer>]]
-    --     vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
-    --     vim.cmd [[augroup END]]
-    -- end
+  -- format on save / autoformat
+  if client.resolved_capabilities.document_formatting then
+      vim.cmd [[augroup Format]]
+      vim.cmd [[autocmd! * <buffer>]]
+      vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+      vim.cmd [[augroup END]]
   end
+end
 
-  local lsp_installer = require("nvim-lsp-installer")
+local lsp_installer = require("nvim-lsp-installer")
 
-  lsp_installer.on_server_ready(function(server)
-      local opts = { capabilities = capabilities }
+lsp_installer.on_server_ready(function(server)
+    local opts = { capabilities = capabilities }
 
-      if server.name == "rust_analyzer" then
-          -- Initialize the LSP via rust-tools instead
-          require("rust-tools").setup {
-              -- The "server" property provided in rust-tools setup function are the
-              -- settings rust-tools will provide to lspconfig during init.            -- 
-              -- We merge the necessary settings from nvim-lsp-installer (server:get_default_options())
-              -- with the user's own settings (opts).
-              server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
-          }
-          server:attach_buffers()
-      elseif server.name == "elixirls" then
-          -- local path_to_elixirls = vim.fn.expand("~/dotfiles/elixir-ls/release/language_server.sh")
-          server:setup({
-              -- cmd = { path_to_elixirls },
-              capabilities = capabilities,
-              root_dir = require'lspconfig/util'.root_pattern("mix.lock", ".git"),
-              on_attach = on_attach,
-              settings = {
-                elixirLS = {
-                  dialyzerEnabled = true,
-                  fetchDeps = false
-                }
-              }
-          })
-      elseif server.name == "efm" then
-          -- lspconfig.efm.setup({
-          server:setup({
+    if server.name == "rust_analyzer" then
+        -- Initialize the LSP via rust-tools instead
+        require("rust-tools").setup {
+            -- The "server" property provided in rust-tools setup function are the
+            -- settings rust-tools will provide to lspconfig during init.            -- 
+            -- We merge the necessary settings from nvim-lsp-installer (server:get_default_options())
+            -- with the user's own settings (opts).
+            server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
+        }
+        server:attach_buffers()
+    elseif server.name == "elixirls" then
+        -- local path_to_elixirls = vim.fn.expand("~/dotfiles/elixir-ls/release/language_server.sh")
+        server:setup({
+            -- cmd = { path_to_elixirls },
             capabilities = capabilities,
+            root_dir = require'lspconfig/util'.root_pattern("mix.lock", ".git"),
             on_attach = on_attach,
-            filetypes = {"elixir"}
-          })
-      else
-          server:setup(opts)
-      end
-  end)
+            settings = {
+              elixirLS = {
+                dialyzerEnabled = true,
+                fetchDeps = false
+              }
+            }
+        })
+    elseif server.name == "efm" then
+        -- lspconfig.efm.setup({
+        server:setup({
+          capabilities = capabilities,
+          on_attach = on_attach,
+          filetypes = {"elixir"}
+        })
+    else
+        server:setup(opts)
+    end
+end)
 EOF
