@@ -159,16 +159,18 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
-. $(brew --prefix asdf)/asdf.sh
 
 PYTHON_USER_PATH="$(python -m site --user-base)/bin"
 if [ $? -eq 0 ]; then
   export PATH="${PYTHON_USER_PATH}:${PATH}"
 fi
 
-MIX_PATH_FOR_ERLANGLS="$(asdf where elixir)/.mix"
-if [ $? -eq 0 ]; then
-  export PATH="${MIX_PATH_FOR_ERLANGLS}:${PATH}"
-fi
-
+# MIX_PATH_FOR_ERLANGLS="$(asdf where elixir)/.mix"
+# if [ $? -eq 0 ]; then
+#   export PATH="${MIX_PATH_FOR_ERLANGLS}:${PATH}"
+# fi
+#
+ASDF_DIR="$(brew --prefix asdf)/libexec"
+. "$ASDF_DIR/asdf.sh"
+# . $(brew --prefix asdf)/asdf.sh
 export GPG_TTY=$(tty)
