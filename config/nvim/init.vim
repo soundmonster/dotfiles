@@ -176,8 +176,9 @@ nnoremap <space>T  :<C-u>TestFile<cr>
 let test#strategy = 'vimux'
 
 function! SBSElixirTransform(cmd) abort
-  let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
-  return "DONT_RESET_ECTO=true MIX_ENV=test make dockerless dockerless=true cmd='".command."'"
+  " let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
+  let command = substitute(a:cmd, "mix test ", "make test file=", "")
+  return "DONT_RESET_ECTO=true ".command
 endfunction
 
 let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform')}
