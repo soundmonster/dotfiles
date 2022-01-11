@@ -28,7 +28,6 @@ Plug 'onsails/lspkind-nvim'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 "" LSP stuff
-Plug 'folke/lsp-colors.nvim'
 Plug 'folke/trouble.nvim'
 
 " Plug 'hrsh7th/vim-vsnip'
