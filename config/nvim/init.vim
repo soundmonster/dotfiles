@@ -56,7 +56,7 @@ Plug 'nvim-lualine/lualine.nvim'
 
 Plug 'rhysd/vim-gfm-syntax'
 
-Plug 'scrooloose/nerdcommenter'
+Plug 'numToStr/Comment.nvim'
 
 Plug 'tpope/vim-fugitive'
 "" Sensible set of defaults
@@ -140,6 +140,7 @@ nnoremap <c-l> :SidewaysRight<cr>
 nnoremap gp `[v`]
 "" Copy full file to system clipboard
 nnoremap <silent> <space>yy ggVG"*y
+vnoremap <silent> <space>yy "*y
 
 "" ripgrep
 if executable('rg')
@@ -157,10 +158,6 @@ nnoremap <F4> :NvimTreeFindFile<CR>
 let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
 " this doesn't really work with TreeSitter-driven highlighting
 " let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'elixir', 'json', 'yaml', 'erlang']
-
-"" NERD Commenter
-let g:NERDSpaceDelims = 1
-let g:NERDDefaultAlign = 'left'
 
 "" Python for NeoVim
 let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
@@ -194,6 +191,7 @@ let g:test#transformation = 'sbs_elixir'
 lua << EOF
 require'lualine'.setup()
 require'nvim-tree'.setup()
+require'Comment'.setup()
 
 require('telescope').setup{
   -- Telescope settings
