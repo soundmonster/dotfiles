@@ -30,10 +30,6 @@ Plug 'saadparwaiz1/cmp_luasnip'
 "" LSP stuff
 Plug 'folke/trouble.nvim'
 
-" Plug 'hrsh7th/vim-vsnip'
-" Plug 'hrsh7th/vim-vsnip-integ'
-" Plug 'hrsh7th/cmp-vsnip'
-
 " peek at registers
 Plug 'junegunn/vim-peekaboo'
 " devicons
@@ -414,7 +410,7 @@ lsp_installer.on_server_ready(function(server)
             settings = {
               elixirLS = {
                 dialyzerEnabled = true,
-                fetchDeps = false
+                fetchDeps = true
               }
             }
         })
