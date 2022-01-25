@@ -158,7 +158,9 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 eval "$(direnv hook zsh)"
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --no-aliases)"
+
+alias z=__zoxide_zi
 
 PYTHON_USER_PATH="$(python -m site --user-base)/bin"
 if [ $? -eq 0 ]; then
