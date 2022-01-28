@@ -16,6 +16,7 @@ Plug 'airblade/vim-gitgutter'
 "" LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
+Plug 'j-hui/fidget.nvim'
 Plug 'simrat39/rust-tools.nvim'
 "" Completion
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -188,6 +189,7 @@ lua << EOF
 require'lualine'.setup()
 require'nvim-tree'.setup()
 require'Comment'.setup()
+require"fidget".setup{}
 
 require('telescope').setup{
   -- Telescope settings
