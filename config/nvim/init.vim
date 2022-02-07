@@ -43,6 +43,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 "" Search
 Plug 'mileszs/ack.vim'
 "" Themes
@@ -119,7 +120,9 @@ lua << END
 END
 set fillchars+=vert:│
 
-nnoremap <silent> <space>*  :<C-u>Ack <cword><cr>
+" nnoremap <silent> <space>*  :<C-u>Ack! <cword><cr>
+nnoremap <silent> <space>*  :<C-u>Telescope live_grep default_text='.expand('<cword>')<cr>
+nnoremap <silent> <space>*  <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<cr>
 nnoremap <silent> <space>b  :<C-u>Telescope buffers<cr>
 nnoremap <silent> <space>ff   :<C-u>Telescope live_grep<cr>
 nmap <c-p> :<C-u>Telescope find_files<CR>
@@ -189,28 +192,16 @@ lua << EOF
 require'lualine'.setup()
 require'nvim-tree'.setup()
 require'Comment'.setup()
-require"fidget".setup{}
+require'fidget'.setup()
+require'telescope'.setup()
 
-require('telescope').setup{
-  -- Telescope settings
-  defaults = {
-    -- default sorter
-    -- file_sorter =  require'telescope.sorters'.get_fuzzy_file
-    -- change the sorter, see if it's better
-    -- file_sorter =  require'telescope.sorters'.get_fzy_sorter
-    -- file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-    -- file_previewer = require'telescope.previewers'.cat.new,
-    -- grep_previewer = require'telescope.previewers'.cat.new,
-    -- grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-    -- grep_previewer = require'telescope.previewers'.vimgrep.new,
-    -- qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
-    -- qflist_previewer = require'telescope.previewers'.qflist.new,
-  }
-}
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')
 
 require("trouble").setup {
   padding = false,
-  }
+}
 
 require'nvim-treesitter.configs'.setup {
   -- ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
