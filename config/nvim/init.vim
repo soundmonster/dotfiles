@@ -65,7 +65,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-abolish'
 
-Plug 'easymotion/vim-easymotion'
+"" Easymotion replacement
+Plug 'phaazon/hop.nvim'
 
 "" Testing in tmux
 Plug 'janko/vim-test'
@@ -100,6 +101,8 @@ set signcolumn=yes
 set list listchars=tab:→\ ,trail:·
 " always show status line w/filename
 " set laststatus=2
+" show just one status line instead of many
+set laststatus=3
 
 " Theme
 set background=dark
@@ -115,9 +118,6 @@ set encoding=utf8
 "" Use system clipboard
 " set clipboard=unnamed
 
-"" status line (lualine)
-lua << END
-END
 set fillchars+=vert:│
 
 " nnoremap <silent> <space>*  :<C-u>Ack! <cword><cr>
@@ -181,7 +181,10 @@ let test#strategy = 'vimux'
 
 function! SBSElixirTransform(cmd) abort
   " let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
-  let command = substitute(a:cmd, "mix test ", "make test file=", "")
+  "" devspace
+  " let command = substitute(a:cmd, "mix test ", "make test file=", "")
+  "" dockerless
+  let command = substitute(a:cmd, "mix test ", "make test dockerless=true file=", "")
   return "DONT_RESET_ECTO=true ".command
 endfunction
 
@@ -190,10 +193,21 @@ let g:test#transformation = 'sbs_elixir'
 
 lua << EOF
 require'lualine'.setup()
-require'nvim-tree'.setup()
+require'nvim-tree'.setup{}
 require'Comment'.setup()
 require'fidget'.setup()
 require'telescope'.setup()
+
+require'hop'.setup()
+vim.api.nvim_set_keymap('n', '<space><space>w', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>b', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>w', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>b', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+
 
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
@@ -389,10 +403,10 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
   -- format on save / autoformat
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
       vim.cmd [[augroup Format]]
       vim.cmd [[autocmd! * <buffer>]]
-      vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+      vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = false }]]
       vim.cmd [[augroup END]]
   end
 end
