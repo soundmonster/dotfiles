@@ -70,7 +70,7 @@ plugins=(
 
 # User configuration
 
-export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
 export GNUARMEMB_TOOLCHAIN_PATH=/Applications/ARM
 
@@ -138,7 +138,7 @@ fh() {
   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
 }
 
-export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --with-wx --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=/usr/local/opt/unixodbc"
+export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-wx --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 # eval "$(pyenv init -)"
@@ -164,18 +164,32 @@ eval "$(zoxide init zsh --no-aliases)"
 
 alias z=__zoxide_zi
 
-PYTHON_USER_PATH="$(python -m site --user-base)/bin"
+python --version &> /dev/null
 if [ $? -eq 0 ]; then
+  PYTHON_USER_PATH="$(python -m site --user-base)/bin"
   export PATH="${PYTHON_USER_PATH}:${PATH}"
 fi
 
-# MIX_PATH_FOR_ERLANGLS="$(asdf where elixir)/.mix"
-# if [ $? -eq 0 ]; then
-#   export PATH="${MIX_PATH_FOR_ERLANGLS}:${PATH}"
-# fi
-#
-ASDF_DIR="$(brew --prefix asdf)/libexec"
-. "$ASDF_DIR/asdf.sh"
-# . $(brew --prefix asdf)/asdf.sh
+python3 --version &> /dev/null
+if [ $? -eq 0 ]; then
+  PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
+  export PATH="${PYTHON3_USER_PATH}:${PATH}"
+fi
+
+MIX_PATH_FOR_ERLANGLS="$(asdf where elixir)/.mix"
+if [ $? -eq 0 ]; then
+  export PATH="${MIX_PATH_FOR_ERLANGLS}:${PATH}"
+fi
+
+if [ $? -eq 0 ] ; then
+  export PATH="$(brew --prefix openjdk)/bin:$PATH"
+fi
+
+brew --prefix asdf &> /dev/null
+if [ $? -eq 0 ] ; then
+  ASDF_DIR="$(brew --prefix asdf)/libexec"
+  . "$ASDF_DIR/asdf.sh"
+fi
 export GPG_TTY=$(tty)
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
+brew --prefix openjdk &> /dev/null
+
