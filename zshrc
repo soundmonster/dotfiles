@@ -54,30 +54,20 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git history-substring-search brew brew-cask bundler rake-fast rails colored-man-pages docker docker-compose osx pip rbenv)
 plugins=(
-		# asdf
-		brew
-		git
-		terraform
-		docker
-		docker-compose
 		tmux
 		history-substring-search
-		mix
 		kube-ps1
-		kubectl
 		zsh-syntax-highlighting
 	)
 
 # User configuration
 
-export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/Library/TeX/texbin:/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
 export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
 export GNUARMEMB_TOOLCHAIN_PATH=/Applications/ARM
 
 export VISUAL=$(which nvim)
 export EDITOR="$VISUAL"
-
-# enable history in Erlang/Elixir REPL
 
 source $ZSH/oh-my-zsh.sh
 
@@ -139,6 +129,7 @@ fh() {
 }
 
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-wx --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
+# enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 # eval "$(pyenv init -)"
@@ -176,11 +167,7 @@ if [ $? -eq 0 ]; then
   export PATH="${PYTHON3_USER_PATH}:${PATH}"
 fi
 
-MIX_PATH_FOR_ERLANGLS="$(asdf where elixir)/.mix"
-if [ $? -eq 0 ]; then
-  export PATH="${MIX_PATH_FOR_ERLANGLS}:${PATH}"
-fi
-
+brew --prefix openjdk &> /dev/null
 if [ $? -eq 0 ] ; then
   export PATH="$(brew --prefix openjdk)/bin:$PATH"
 fi
@@ -190,6 +177,6 @@ if [ $? -eq 0 ] ; then
   ASDF_DIR="$(brew --prefix asdf)/libexec"
   . "$ASDF_DIR/asdf.sh"
 fi
+
 export GPG_TTY=$(tty)
-brew --prefix openjdk &> /dev/null
 

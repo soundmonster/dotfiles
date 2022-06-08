@@ -12,10 +12,10 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
 
 # setup pyenv
-LDFLAGS="-L/usr/local/opt/zlib/lib" CPPFLAGS="-I/usr/local/opt/zlib/include" PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig" pyenv install 2.7.14
-LDFLAGS="-L/usr/local/opt/zlib/lib" CPPFLAGS="-I/usr/local/opt/zlib/include" PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig" pyenv install 3.6.5
-pyenv virtualenv 2.7.14 neovim2
-pyenv virtualenv 3.6.5 neovim3
+pyenv install 2.7.18
+pyenv install 3.10.4
+pyenv virtualenv 2.7.18 neovim2
+pyenv virtualenv 3.10.4 neovim3
 
 # 2.7
 pyenv activate neovim2
