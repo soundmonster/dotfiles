@@ -68,6 +68,7 @@ export GNUARMEMB_TOOLCHAIN_PATH=/Applications/ARM
 
 export VISUAL=$(which nvim)
 export EDITOR="$VISUAL"
+export ASDF_HASHICORP_OVERWRITE_ARCH=amd64
 
 source $ZSH/oh-my-zsh.sh
 
