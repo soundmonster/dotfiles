@@ -51,6 +51,8 @@ Plug 'mileszs/ack.vim'
 " Plug 'morhetz/gruvbox'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'nvim-lualine/lualine.nvim'
+" Darken inactive windows
+Plug 'levouh/tint.nvim'
 
 Plug 'rhysd/vim-gfm-syntax'
 
@@ -192,21 +194,26 @@ let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform'
 let g:test#transformation = 'sbs_elixir'
 
 lua << EOF
-require'lualine'.setup()
-require'nvim-tree'.setup{}
-require'Comment'.setup()
-require'fidget'.setup()
-require'telescope'.setup()
+require('lualine').setup()
+require('nvim-tree').setup{}
+require('Comment').setup()
+require('fidget').setup()
+require('telescope').setup()
+require('tint').setup({
+  tint = -30,  -- Darken colors, use a positive value to brighten
+  saturation = 0.8,  -- Saturation to preserve
+})
 
-require'hop'.setup()
-vim.api.nvim_set_keymap('n', '<space><space>w', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('n', '<space><space>b', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('n', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('n', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>w', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>b', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+
+require('hop').setup()
+vim.api.nvim_set_keymap('n', '<space><space>w', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>b', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>j', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>k', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>w', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>b', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
 
 
 -- To get fzf loaded and working with telescope, you need to call
@@ -217,7 +224,7 @@ require("trouble").setup {
   padding = false,
 }
 
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   -- ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = {
     "bash",
@@ -283,7 +290,7 @@ local lspconfig = require("lspconfig")
 -- Enable logs for LSP
 -- vim.lsp.set_log_level("debug")
 -- Setup nvim-cmp.
-local cmp = require'cmp'
+local cmp = require('cmp')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
@@ -442,7 +449,7 @@ lsp_installer.on_server_ready(function(server)
         server:setup({
             -- cmd = { path_to_elixirls },
             capabilities = capabilities,
-            root_dir = require'lspconfig/util'.root_pattern("mix.lock", ".git"),
+            root_dir = require('lspconfig/util').root_pattern("mix.lock", ".git"),
             on_attach = on_attach,
             settings = {
               elixirLS = {
