@@ -194,26 +194,27 @@ let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform'
 let g:test#transformation = 'sbs_elixir'
 
 lua << EOF
-require('lualine').setup()
-require('nvim-tree').setup{}
-require('Comment').setup()
-require('fidget').setup()
-require('telescope').setup()
-require('tint').setup({
-  tint = -30,  -- Darken colors, use a positive value to brighten
-  saturation = 0.8,  -- Saturation to preserve
+require'lualine'.setup()
+require'nvim-tree'.setup{}
+require'Comment'.setup()
+require'fidget'.setup()
+require'telescope'.setup()
+require'tint'.setup({
+  tint = -45,  -- Darken colors, use a positive value to brighten
+  saturation = 0.6,  -- Saturation to preserve
 })
 
 
-require('hop').setup()
-vim.api.nvim_set_keymap('n', '<space><space>w', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('n', '<space><space>b', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('n', '<space><space>j', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('n', '<space><space>k', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>w', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>b', "<cmd>lua require('hop'.hint_words({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.AFTER_CURSOR })<cr>", {})
-vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require('hop'.hint_lines_skip_whitespace({ direction = require'hop.hint').HintDirection.BEFORE_CURSOR })<cr>", {})
+require'hop'.setup()
+
+vim.api.nvim_set_keymap('n', '<space><space>w', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>b', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('n', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>w', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>b', "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
+vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
 
 
 -- To get fzf loaded and working with telescope, you need to call
