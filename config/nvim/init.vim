@@ -8,16 +8,27 @@ endif
 "" - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'dstein64/vim-startuptime'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'stevearc/aerial.nvim'
 Plug 'Chiel92/vim-autoformat'
-Plug 'airblade/vim-gitgutter'
-" Plug 'elixir-editors/vim-elixir'
+Plug 'lewis6991/gitsigns.nvim'
 
 "" LSP
+" Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/nvim-lsp-installer'
+
+" LS status
 Plug 'j-hui/fidget.nvim'
 Plug 'simrat39/rust-tools.nvim'
+" LS for all files with handy actions; e.g. git blame
+Plug 'jose-elias-alvarez/null-ls.nvim'
+" Show a lightbulb in the gutter if actions available
+Plug 'kosayoda/nvim-lightbulb'
+
 "" Completion
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -44,6 +55,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-ui-select.nvim'
+
 "" Search
 Plug 'mileszs/ack.vim'
 "" Themes
@@ -156,6 +169,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 nnoremap <F3> :NvimTreeToggle<CR>
 " nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <F4> :NvimTreeFindFile<CR>
+nnoremap <F9> :TroubleToggle<CR>
 
 let g:vim_json_syntax_conceal = 0 " disable concealment for JSON
 " this doesn't really work with TreeSitter-driven highlighting
@@ -195,10 +209,29 @@ let g:test#transformation = 'sbs_elixir'
 
 lua << EOF
 require'lualine'.setup()
-require'nvim-tree'.setup{}
+require'nvim-tree'.setup({})
 require'Comment'.setup()
 require'fidget'.setup()
-require'telescope'.setup()
+require'gitsigns'.setup()
+require'nvim-lightbulb'.setup({autocmd = {enabled = true}})
+
+local null_ls = require'null-ls'
+null_ls.setup({
+  sources = {
+    -- null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.code_actions.shellcheck,
+    null_ls.builtins.completion.luasnip,
+    null_ls.builtins.diagnostics.codespell,
+    -- null_ls.builtins.diagnostics.vale,
+    null_ls.builtins.diagnostics.credo.with{ env = { MIX_ENV = 'test' } },
+    null_ls.builtins.diagnostics.write_good,
+    null_ls.builtins.diagnostics.yamllint,
+    null_ls.builtins.diagnostics.zsh,
+    null_ls.builtins.formatting.codespell,
+    null_ls.builtins.formatting.rustfmt,
+  }
+})
+
 require'tint'.setup({
   tint = -45,  -- Darken colors, use a positive value to brighten
   saturation = 0.6,  -- Saturation to preserve
@@ -217,11 +250,31 @@ vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require'hop'.hint_line
 vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
 
 
+local trouble = require'trouble.providers.telescope'
+local telescope = require'telescope'
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
-require('telescope').load_extension('fzf')
+-- This is your opts table
+telescope.setup {
+  defaults = {
+    mappings = {
+      i = { ["<c-t>"] = trouble.open_with_trouble },
+      n = { ["<c-t>"] = trouble.open_with_trouble },
+    },
+  },
+  extensions = {
+    ["ui-select"] = {
+      require'telescope.themes'.get_dropdown{}
+    }
+  }
+}
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+telescope.load_extension('ui-select')
+telescope.load_extension('fzf')
+telescope.load_extension('aerial')
 
-require("trouble").setup {
+require'trouble'.setup {
   padding = false,
 }
 
@@ -281,6 +334,28 @@ require('nvim-treesitter.configs').setup {
       node_incremental = "grn",
       scope_incremental = "grc",
       node_decremental = "grm",
+    },
+  },
+  textobjects = {
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
     },
   },
 }
@@ -395,6 +470,7 @@ local on_attach = function(client, bufnr)
 
   --Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  require("aerial").on_attach(client, bufnr)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -430,58 +506,52 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local lsp_installer = require("nvim-lsp-installer")
-
-lsp_installer.on_server_ready(function(server)
-    local opts = { capabilities = capabilities }
-
-    if server.name == "rust_analyzer" then
-        -- Initialize the LSP via rust-tools instead
-        require("rust-tools").setup {
-            -- The "server" property provided in rust-tools setup function are the
-            -- settings rust-tools will provide to lspconfig during init.            -- 
-            -- We merge the necessary settings from nvim-lsp-installer (server:get_default_options())
-            -- with the user's own settings (opts).
-            server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
-        }
-        server:attach_buffers()
-    elseif server.name == "elixirls" then
-        -- local path_to_elixirls = vim.fn.expand("~/dotfiles/elixir-ls/release/language_server.sh")
-        server:setup({
-            -- cmd = { path_to_elixirls },
-            capabilities = capabilities,
-            root_dir = require('lspconfig/util').root_pattern("mix.lock", ".git"),
-            on_attach = on_attach,
-            settings = {
-              elixirLS = {
-                dialyzerEnabled = true,
-                fetchDeps = true
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup_handlers {
+        -- The first entry (without a key) will be the default handler
+        -- and will be called for each installed server that doesn't have
+        -- a dedicated handler.
+        function (server_name) -- default handler (optional)
+            require("lspconfig")[server_name].setup {
+              on_attach = on_attach,
+              capabilities = capabilities,
+            }
+        end,
+        -- Next, you can provide targeted overrides for specific servers.
+        -- For example, a handler override for the `rust_analyzer`:
+        ["rust_analyzer"] = function ()
+            require("rust-tools").setup {
+              on_attach = on_attach,
+              capabilities = capabilities,
+            }
+        end,
+        ["elixirls"] = function ()
+            require("lspconfig")["elixirls"].setup {
+              on_attach = on_attach,
+              capabilities = capabilities,
+              root_dir = require("lspconfig/util").root_pattern("mix.lock", ".git"),
+              settings = {
+                elixirLS = {
+                  dialyzerEnabled = true,
+                  fetchDeps = true
+                }
               }
             }
-        })
-    elseif server.name == "efm" then
-        -- lspconfig.efm.setup({
-        server:setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          filetypes = {"elixir"}
-        })
-    else
-        server:setup(opts)
-    end
-end)
+        end
+    }
 
-local actions = require("telescope.actions")
-local trouble = require("trouble.providers.telescope")
-
-local telescope = require("telescope")
-
-telescope.setup {
-  defaults = {
-    mappings = {
-      i = { ["<c-t>"] = trouble.open_with_trouble },
-      n = { ["<c-t>"] = trouble.open_with_trouble },
-    },
-  },
+require'aerial'.setup{
+  on_attach = function(bufnr)
+    -- Toggle the aerial window with <leader>a
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>AerialToggle!<CR>', {})
+    -- Jump forwards/backwards with '{' and '}'
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '{', '<cmd>AerialPrev<CR>', {})
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '}', '<cmd>AerialNext<CR>', {})
+    -- Jump up the tree with '[[' or ']]'
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>AerialPrevUp<CR>', {})
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>AerialNextUp<CR>', {})
+  end
 }
+
 EOF
