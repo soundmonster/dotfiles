@@ -21,13 +21,17 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 
-" LS status
-Plug 'j-hui/fidget.nvim'
+" LSP status
 Plug 'simrat39/rust-tools.nvim'
 " LS for all files with handy actions; e.g. git blame
 Plug 'jose-elias-alvarez/null-ls.nvim'
 " Show a lightbulb in the gutter if actions available
 Plug 'kosayoda/nvim-lightbulb'
+
+"" Fancy UI
+Plug 'rcarriga/nvim-notify'
+Plug 'folke/noice.nvim'
+Plug 'MunifTanjim/nui.nvim'
 
 "" Completion
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -136,11 +140,10 @@ set encoding=utf8
 set fillchars+=vert:│
 
 " nnoremap <silent> <space>*  :<C-u>Ack! <cword><cr>
-nnoremap <silent> <space>*  :<C-u>Telescope live_grep default_text='.expand('<cword>')<cr>
 nnoremap <silent> <space>*  <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<cr>
 nnoremap <silent> <space>b  :<C-u>Telescope buffers<cr>
 nnoremap <silent> <space>ff   :<C-u>Telescope live_grep<cr>
-nmap <c-p> :<C-u>Telescope find_files<CR>
+nnoremap <silent> <c-p> <cmd>Telescope find_files<CR>
 
 "" maximizer toggle
 let g:maximizer_set_default_mapping = 1
@@ -211,7 +214,10 @@ lua << EOF
 require'lualine'.setup()
 require'nvim-tree'.setup({})
 require'Comment'.setup()
-require'fidget'.setup()
+require"notify".setup({
+  background_colour = "#282A36",
+})
+require'noice'.setup()
 require'gitsigns'.setup()
 require'nvim-lightbulb'.setup({autocmd = {enabled = true}})
 
@@ -487,6 +493,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', '<F6>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   -- instead of built in list, use Trouble
   -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<cr>", opts)
@@ -504,6 +511,7 @@ local on_attach = function(client, bufnr)
       vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = false }]]
       vim.cmd [[augroup END]]
   end
+  vim.cmd [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
 end
 
 require("mason").setup()
@@ -522,6 +530,7 @@ require("mason-lspconfig").setup_handlers {
         -- For example, a handler override for the `rust_analyzer`:
         ["rust_analyzer"] = function ()
             require("rust-tools").setup {
+              -- TODO find out how to set all the keymaps for rust tools
               on_attach = on_attach,
               capabilities = capabilities,
             }
