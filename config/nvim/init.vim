@@ -476,7 +476,6 @@ local on_attach = function(client, bufnr)
 
   --Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  require("aerial").on_attach(client, bufnr)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
