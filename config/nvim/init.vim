@@ -65,7 +65,7 @@ Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'mileszs/ack.vim'
 "" Themes
 " Plug 'dunstontc/vim-vscode-theme'
-" Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'nvim-lualine/lualine.nvim'
 " Darken inactive windows
@@ -131,13 +131,13 @@ colorscheme dracula
 
 " Appearance
 set textwidth=120
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+" hi! Normal ctermbg=NONE guibg=NONE
+" hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 set encoding=utf8
 "" Use system clipboard
 " set clipboard=unnamed
 
-set fillchars+=vert:│
+" set fillchars+=vert:│
 
 " nnoremap <silent> <space>*  :<C-u>Ack! <cword><cr>
 nnoremap <silent> <space>*  <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<cr>
@@ -194,8 +194,8 @@ let g:formatters_elixir = ['my_custom_elixir']
 
 " Vim Test
 " let test#strategy = 'neovim'
-nnoremap <space>t  :<C-u>TestNearest<cr>
-nnoremap <space>T  :<C-u>TestFile<cr>
+nnoremap <silent> <space>t  :TestNearest<CR>
+nnoremap <silent> <space>T  :TestFile<CR>
 let test#strategy = 'vimux'
 
 function! SBSElixirTransform(cmd) abort
@@ -231,9 +231,9 @@ null_ls.setup({
     -- null_ls.builtins.diagnostics.vale,
     null_ls.builtins.diagnostics.credo.with{ env = { MIX_ENV = 'test' } },
     null_ls.builtins.diagnostics.write_good,
-    null_ls.builtins.diagnostics.yamllint,
+    -- null_ls.builtins.diagnostics.yamllint,
     null_ls.builtins.diagnostics.zsh,
-    null_ls.builtins.formatting.codespell,
+    -- null_ls.builtins.formatting.codespell,
     null_ls.builtins.formatting.rustfmt,
   }
 })
@@ -241,8 +241,8 @@ null_ls.setup({
 require'tint'.setup({
   tint = -45,  -- Darken colors, use a positive value to brighten
   saturation = 0.6,  -- Saturation to preserve
+  highlight_ignore_patterns = { "WinSeparator", "Status.*", "Telescope*" },
 })
-
 
 require'hop'.setup()
 
@@ -466,7 +466,7 @@ cmp.setup.cmdline(':', {
 
 -- Neovim doesn't support snippets out of the box, so we need to mutate the
 -- capabilities we send to the language server to let them know we want snippets.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
@@ -563,3 +563,8 @@ require'aerial'.setup{
 }
 
 EOF
+
+if exists("g:neovide")
+    " Put anything you want to happen only in Neovide here
+    set guifont=Iosevka\ Nerd\ Font:h14
+endif
