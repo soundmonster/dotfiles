@@ -29,9 +29,14 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'kosayoda/nvim-lightbulb'
 
 "" Fancy UI
-Plug 'rcarriga/nvim-notify'
+" Plug 'rcarriga/nvim-notify'
 Plug 'folke/noice.nvim'
 Plug 'MunifTanjim/nui.nvim'
+
+"" Window zoom animations
+Plug 'anuvyklack/middleclass'
+Plug 'anuvyklack/animation.nvim'
+Plug 'anuvyklack/windows.nvim'
 
 "" Completion
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -45,9 +50,10 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 "" LSP stuff
 Plug 'folke/trouble.nvim'
+Plug 'folke/neodev.nvim'
 
-" peek at registers
-Plug 'junegunn/vim-peekaboo'
+" Key discovery
+Plug 'folke/which-key.nvim'
 " devicons
 Plug 'kyazdani42/nvim-web-devicons'
 "" Filesystem sidebar
@@ -92,7 +98,6 @@ Plug 'janko/vim-test'
 Plug 'benmills/vimux'
 
 Plug 'AndrewRadev/sideways.vim'
-Plug 'szw/vim-maximizer'
 
 " Initialize plugin system
 call plug#end()
@@ -130,6 +135,7 @@ set background=dark
 colorscheme dracula
 
 " Appearance
+set nowrap
 set textwidth=120
 " hi! Normal ctermbg=NONE guibg=NONE
 " hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
@@ -144,11 +150,6 @@ nnoremap <silent> <space>*  <cmd>lua require('telescope.builtin').grep_string({s
 nnoremap <silent> <space>b  :<C-u>Telescope buffers<cr>
 nnoremap <silent> <space>ff   :<C-u>Telescope live_grep<cr>
 nnoremap <silent> <c-p> <cmd>Telescope find_files<CR>
-
-"" maximizer toggle
-let g:maximizer_set_default_mapping = 1
-let g:maximizer_set_mapping_with_bang = 0
-let g:maximizer_default_mapping_key = '<F8>'
 
 "" sideways
 nnoremap <c-h> :SidewaysLeft<cr>
@@ -214,12 +215,20 @@ lua << EOF
 require'lualine'.setup()
 require'nvim-tree'.setup({})
 require'Comment'.setup()
-require"notify".setup({
-  background_colour = "#282A36",
-})
+-- require'notify'.setup({
+--   background_colour = "#282A36",
+-- })
 require'noice'.setup()
 require'gitsigns'.setup()
 require'nvim-lightbulb'.setup({autocmd = {enabled = true}})
+
+vim.o.winwidth = 10
+vim.o.winminwidth = 10
+vim.o.equalalways = false
+require('windows').setup({
+  autowidth = { enable = false }
+})
+vim.keymap.set('n', '<C-w>z', '<cmd>WindowsMaximize<cr>')
 
 local null_ls = require'null-ls'
 null_ls.setup({
@@ -227,7 +236,9 @@ null_ls.setup({
     -- null_ls.builtins.code_actions.gitsigns,
     null_ls.builtins.code_actions.shellcheck,
     null_ls.builtins.completion.luasnip,
-    null_ls.builtins.diagnostics.codespell,
+    null_ls.builtins.diagnostics.codespell.with({
+        extra_args = { "-L", "keypair,keypairs" },
+    }),
     -- null_ls.builtins.diagnostics.vale,
     null_ls.builtins.diagnostics.credo.with{ env = { MIX_ENV = 'test' } },
     null_ls.builtins.diagnostics.write_good,
@@ -255,6 +266,8 @@ vim.api.nvim_set_keymap('v', '<space><space>b', "<cmd>lua require'hop'.hint_word
 vim.api.nvim_set_keymap('v', '<space><space>j', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>", {})
 vim.api.nvim_set_keymap('v', '<space><space>k', "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>", {})
 
+-- TODO set up keymaps with which-key
+require'which-key'.setup{}
 
 local trouble = require'trouble.providers.telescope'
 local telescope = require'telescope'
@@ -310,6 +323,7 @@ require('nvim-treesitter.configs').setup {
     "lua",
     "make",
     "markdown",
+    "markdown_inline",
     "python",
     "regex",
     "ruby",
@@ -365,6 +379,8 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+require('neodev').setup{}
 
 -- LSP config
 local lspconfig = require("lspconfig")
@@ -497,9 +513,9 @@ local on_attach = function(client, bufnr)
   -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<cr>", opts)
   buf_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>", opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", opts)
 
