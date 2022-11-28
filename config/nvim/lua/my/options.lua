@@ -16,12 +16,10 @@ vim.opt.signcolumn = 'yes'
 vim.opt.laststatus = 3
 
 vim.opt.background = 'dark'
-vim.cmd.colorscheme('dracula')
+vim.cmd.colorscheme('nightfox')
 -- CodeLens colors
-local comment = vim.api.nvim_get_hl_by_name('Comment', true)
-local special_comment = vim.api.nvim_get_hl_by_name('SpecialComment', true)
-vim.api.nvim_set_hl(0, 'LspCodeLens', { fg = comment.foreground, italic = true, blend = 80 })
-vim.api.nvim_set_hl(0, 'LspCodeLensSeparator', { fg = special_comment.foreground, italic = true, blend = 80 })
+vim.api.nvim_set_hl(0, 'LspCodeLens', { link = 'DiagnosticVirtualTextHint' })
+vim.api.nvim_set_hl(0, 'LspCodeLensSeparator', { link = 'DiagnosticSignHint' })
 
 
 vim.cmd [[filetype plugin indent on]]

@@ -152,7 +152,18 @@ return require('packer').startup(function(use)
 	end }
 	-- Themes
 	-- use 'morhetz/gruvbox'
-	use { 'dracula/vim', as = 'dracula' }
+	-- use { 'dracula/vim', as = 'dracula' }
+	use { 'EdenEast/nightfox.nvim', config = function()
+		require('nightfox').setup({
+			options = {
+				styles = {
+					types = 'italic,bold',
+					keywords = 'bold',
+					comments = 'italic',
+				}
+			}
+		})
+	end }
 	use { 'nvim-lualine/lualine.nvim', config = function() require('lualine').setup({}) end }
 	-- Darken inactive windows
 	use { 'levouh/tint.nvim', config = function()
@@ -164,6 +175,7 @@ return require('packer').startup(function(use)
 	end }
 
 	use 'rhysd/vim-gfm-syntax'
+	use { 'norcalli/nvim-colorizer.lua', config = function() require('colorizer').setup() end }
 
 	use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
 
