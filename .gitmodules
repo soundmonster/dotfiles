@@ -115,9 +115,6 @@
 [submodule "dotfile-submodules/tmux-themepack"]
 	path = dotfile-submodules/tmux-themepack
 	url = https://github.com/jimeh/tmux-themepack.git
-[submodule "elixir-ls"]
-	path = elixir-ls
-	url = git@github.com:elixir-lsp/elixir-ls.git
 [submodule "dotfile-submodules/alactitty-theme"]
 	path = dotfile-submodules/alactitty-theme
 	url = git@github.com:eendroroy/alacritty-theme.git
