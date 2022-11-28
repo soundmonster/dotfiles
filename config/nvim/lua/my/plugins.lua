@@ -69,7 +69,14 @@ return require('packer').startup(function(use)
 		"folke/noice.nvim",
 		config = function()
 			require("noice").setup({
-				-- add any options here
+				lsp = {
+					-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
+					},
+				},
 			})
 		end,
 		requires = {
@@ -144,10 +151,9 @@ return require('packer').startup(function(use)
 		]]
 	end }
 	-- Themes
-	-- Plug 'dunstontc/vim-vscode-theme'
-	use 'morhetz/gruvbox'
+	-- use 'morhetz/gruvbox'
 	use { 'dracula/vim', as = 'dracula' }
-	use { 'nvim-lualine/lualine.nvim', config = function() require('lualine').setup() end }
+	use { 'nvim-lualine/lualine.nvim', config = function() require('lualine').setup({}) end }
 	-- Darken inactive windows
 	use { 'levouh/tint.nvim', config = function()
 		require 'tint'.setup({
