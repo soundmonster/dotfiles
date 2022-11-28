@@ -16,10 +16,19 @@ vim.opt.signcolumn = 'yes'
 vim.opt.laststatus = 3
 
 vim.opt.background = 'dark'
-vim.cmd [[colorscheme dracula]]
+vim.cmd.colorscheme('dracula')
+-- CodeLens colors
+local comment = vim.api.nvim_get_hl_by_name('Comment', {})
+local special_comment = vim.api.nvim_get_hl_by_name('SpecialComment', {})
+vim.api.nvim_set_hl(0, 'LspCodeLens', { fg = comment.foreground, italic = true, blend = 80 })
+vim.api.nvim_set_hl(0, 'LspCodeLensSeparator', { fg = special_comment.foreground, italic = true, blend = 80 })
+
+
 vim.cmd [[filetype plugin indent on]]
 
 vim.opt.wrap = false
 vim.opt.textwidth = 120
 vim.opt.encoding = 'utf8'
 
+-- Avoid applying EditorConfig to Fugitive buffers
+vim.cmd [[ let g:EditorConfig_exclude_patterns = ['fugitive://.*'] ]]

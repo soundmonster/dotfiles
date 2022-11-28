@@ -10,6 +10,12 @@ wk.register({
 	}
 })
 
+-- copy to system clipboard
+wk.register({ ['<leader>yy'] = { 'ggVG"*y', 'file to system clipboard' } }, { mode = 'n' })
+wk.register({ ['<leader>yy'] = { '"*y', 'selection to system clipboard' } }, { mode = 'v' })
+-- reselect pasted text
+wk.register({ gp = { '`[v`]', 'reselect pasted text' } })
+
 -- hop.nvim
 local hops = {
 	['<leader><leader>'] = {
