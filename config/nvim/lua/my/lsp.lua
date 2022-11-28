@@ -1,0 +1,210 @@
+require('neodev').setup {}
+
+-- Enable logs for LSP
+-- vim.lsp.set_log_level("debug")
+-- Setup nvim-cmp.
+local cmp = require('cmp')
+local lspkind = require('lspkind')
+local luasnip = require('luasnip')
+
+cmp.setup({
+	snippet = {
+		expand = function(args)
+			-- vim.fn["vsnip#anonymous"](args.body)
+			luasnip.lsp_expand(args.body)
+		end,
+	},
+	mapping = cmp.mapping.preset.insert({
+		['<C-b>'] = cmp.mapping.scroll_docs(-4),
+		['<C-f>'] = cmp.mapping.scroll_docs(4),
+		-- C-space is taken by language switcher and also not sure what this is for; the completion is super aggressive already
+		-- ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+		['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+		['<C-e>'] = cmp.mapping.abort(),
+		['<CR>'] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			-- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+			select = true,
+		}),
+		['<Tab>'] = function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item()
+			elseif luasnip.expand_or_jumpable() then
+				luasnip.expand_or_jump()
+			else
+				fallback()
+			end
+		end,
+		['<S-Tab>'] = function(fallback)
+			if cmp.visible() then
+				cmp.select_prev_item()
+			elseif luasnip.jumpable(-1) then
+				luasnip.jump(-1)
+			else
+				fallback()
+			end
+		end,
+	}),
+	sources = cmp.config.sources({
+		{ name = 'nvim_lsp' },
+		-- { name = 'vsnip' },
+		{ name = 'luasnip' },
+	}, {
+		{
+			name = 'buffer',
+			option = {
+				keyword_length = 4,
+				get_bufnrs = function()
+					local bufs = {}
+					for _, win in ipairs(vim.api.nvim_list_wins()) do
+						bufs[vim.api.nvim_win_get_buf(win)] = true
+					end
+					return vim.tbl_keys(bufs)
+				end
+			}
+		},
+	}),
+	formatting = {
+		format = lspkind.cmp_format({
+			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+			with_text = true,
+			menu = ({
+				buffer = "[buf]",
+				nvim_lsp = "[lsp]",
+				vsnip = "[snip]",
+			})
+		})
+	}
+})
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = 'buffer' }
+	}
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = cmp.config.sources({
+		{ name = 'path' }
+	}, {
+		{ name = 'cmdline' }
+	})
+})
+
+-- Neovim doesn't support snippets out of the box, so we need to mutate the
+-- capabilities we send to the language server to let them know we want snippets.
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+-- A callback that will get called when a buffer connects to the language server.
+-- Here we create any key maps that we want to have on that buffer.
+local on_attach = function(client, bufnr)
+	-- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+
+	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+	--Enable completion triggered by <c-x><c-o>
+	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+	-- Mappings.
+	-- See `:help vim.lsp.*` for documentation on any of the below functions
+	local wk = require('which-key')
+	wk.register({
+		['<leader>'] = {
+			w = {
+				name = 'workspace folders',
+				a = { '<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>', 'Add workspace folder' },
+				r = { '<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>', 'Remove workspace folder' },
+				l = { '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>', 'List workspace folders' },
+			},
+			D = { '<cmd>lua vim.lsp.buf.type_definition()<cr>', 'type definition' },
+			rn = { '<cmd>lua vim.lsp.buf.rename()<cr>', 'rename' },
+			ca = { '<cmd>lua vim.lsp.buf.code_action()<cr>', 'code actions' },
+			e = { '<cmd>lua vim.diagnostic.open_float()<cr>', 'open float' },
+			F = { '<cmd>lua vim.lsp.buf.format({ async = false })<cr>', 'format file' },
+		},
+		K = { '<cmd>lua vim.lsp.buf.hover()<cr>', 'hover' },
+		['<C-j>'] = { '<cmd>lua vim.lsp.buf.signature_help()<cr>', 'hover' },
+		g = {
+			name = 'go',
+			d = { '<cmd>lua vim.lsp.buf.definition()<cr>', 'go to definition' },
+			D = { '<cmd>lua vim.lsp.buf.declaration()<cr>', 'go to declaration' },
+			i = { '<cmd>lua vim.lsp.buf.implementation()<cr>', 'go to implementation' },
+			r = { '<cmd>Telescope lsp_references<cr>', 'references (popup)' },
+			R = { '<cmd>Trouble lsp_references<cr>', 'references (bottom pane)' },
+		},
+		['[d'] = { '<cmd>lua vim.diagnostic.goto_prev()<cr>', 'previous diagnostic' },
+		[']d'] = { '<cmd>lua vim.diagnostic.goto_next()<cr>', 'next diagnostic' },
+	})
+
+	-- local opts = { noremap = true, silent = true }
+	-- buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+	-- buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+	-- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+	-- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+	-- buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+	-- buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+	-- buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+	-- buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+	-- buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+	-- buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+	-- buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+	-- buf_set_keymap('n', '<F6>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+	-- instead of built in list, use Trouble
+	-- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+	-- buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<cr>", opts)
+	-- buf_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>", opts)
+	-- buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+	-- buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+	-- buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+	-- buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+	-- buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", opts)
+
+	-- format on save / autoformat
+	if client.server_capabilities.documentFormattingProvider then
+		vim.cmd [[augroup Format]]
+		vim.cmd [[autocmd! * <buffer>]]
+		vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = false }]]
+		vim.cmd [[augroup END]]
+	end
+	vim.cmd [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+end
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup_handlers {
+	-- The first entry (without a key) will be the default handler
+	-- and will be called for each installed server that doesn't have
+	-- a dedicated handler.
+	function(server_name) -- default handler (optional)
+		require("lspconfig")[server_name].setup {
+			on_attach = on_attach,
+			capabilities = capabilities,
+		}
+	end,
+	-- Next, you can provide targeted overrides for specific servers.
+	-- For example, a handler override for the `rust_analyzer`:
+	["rust_analyzer"] = function()
+		require("rust-tools").setup {
+			-- TODO find out how to set all the keymaps for rust tools
+			on_attach = on_attach,
+			capabilities = capabilities,
+		}
+	end,
+	["elixirls"] = function()
+		require("lspconfig")["elixirls"].setup {
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_dir = require("lspconfig/util").root_pattern("mix.lock", ".git"),
+			settings = {
+				elixirLS = {
+					dialyzerEnabled = true,
+					fetchDeps = true
+				}
+			}
+		}
+	end
+}
