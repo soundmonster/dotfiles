@@ -9,6 +9,13 @@ local ensure_packer = function()
     return false
 end
 
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
+
 local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
@@ -132,7 +139,12 @@ return require('packer').startup(function(use)
     -- devicons
     use 'kyazdani42/nvim-web-devicons'
     -- Filesystem sidebar
-    use { 'kyazdani42/nvim-tree.lua', config = function() require 'nvim-tree'.setup({}) end }
+    use { 'kyazdani42/nvim-tree.lua', config = function()
+        require('nvim-tree').setup({
+            update_focused_file = { enable = true }
+        })
+    end
+    }
 
     use 'ryanoasis/vim-devicons'
     -- telescope (fzf replacement)
@@ -152,37 +164,25 @@ return require('packer').startup(function(use)
     end }
     -- Themes
     -- use 'morhetz/gruvbox'
-    -- use { 'dracula/vim', as = 'dracula' }
-    use { 'EdenEast/nightfox.nvim', config = function()
-        require('nightfox').setup({
-            options = {
-                styles = {
-                    types = 'italic,bold',
-                    keywords = 'bold',
-                    comments = 'italic',
-                }
-            }
-        })
-    end }
+    use { 'dracula/vim', as = 'dracula' }
     use { 'nvim-lualine/lualine.nvim', config = function() require('lualine').setup({}) end }
     -- Darken inactive windows
-    use { 'levouh/tint.nvim', config = function()
-        require 'tint'.setup({
-            tint = -45, -- Darken colors, use a positive value to brighten
-            saturation = 0.6, -- Saturation to preserve
-            tint_background_colors = false, -- Tint background portions of highlight groups
-            highlight_ignore_patterns = { "WinSeparator", "Status.*", "Telescope*", "NvimTree*" },
-            window_ignore_function = function(winid)
-                local bufid = vim.api.nvim_win_get_buf(winid)
-                local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
-                local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
-                local filetype = vim.api.nvim_buf_get_option(bufid, "filetype")
-                -- vim.notify(vim.inspect({ bufid = bufid, buftype = buftype, floating = floating,
-                -- Do not tint `terminal` or floating windows, tint everything else
-                return buftype == "terminal" or filetype == "NvimTree" or floating
-            end
-        })
-    end }
+    use { 'levouh/tint.nvim',
+        config = function()
+            require 'tint'.setup({
+                tint = -45, -- Darken colors, use a positive value to brighten
+                saturation = 0.6, -- Saturation to preserve
+                tint_background_colors = false, -- Tint background portions of highlight groups
+                highlight_ignore_patterns = { "WinSeparator", "Status.*", "Telescope*" },
+                window_ignore_function = function(winid)
+                    local bufid = vim.api.nvim_win_get_buf(winid)
+                    local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
+                    local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
+                    -- Do not tint `terminal` or floating windows, tint everything else
+                    return buftype == "terminal" or floating
+                end
+            })
+        end }
 
     use 'rhysd/vim-gfm-syntax'
     use { 'norcalli/nvim-colorizer.lua', config = function() require('colorizer').setup() end }

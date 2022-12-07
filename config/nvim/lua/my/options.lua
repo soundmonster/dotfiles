@@ -2,6 +2,8 @@ vim.opt.termguicolors = true
 vim.opt.hlsearch = true
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.cursorline = true
+vim.opt.cursorcolumn = true
 -- When a file has been detected to have been changed outside of Vim and it has not
 -- been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
 vim.opt.autoread = true
@@ -16,7 +18,7 @@ vim.opt.signcolumn = 'yes'
 vim.opt.laststatus = 3
 
 vim.opt.background = 'dark'
-vim.cmd.colorscheme('nightfox')
+vim.cmd.colorscheme('dracula')
 -- CodeLens colors
 vim.api.nvim_set_hl(0, 'LspCodeLens', { link = 'DiagnosticVirtualTextHint' })
 vim.api.nvim_set_hl(0, 'LspCodeLensSeparator', { link = 'DiagnosticSignHint' })

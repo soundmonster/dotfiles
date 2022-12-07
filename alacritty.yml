@@ -187,90 +187,58 @@ draw_bold_text_with_bright_colors: true
 # Template
 # https://github.com/alacritty/alacritty/blob/master/alacritty.yml
 
-# colors:
-#   primary:
-#     background: '#282a36'
-#     foreground: '#f8f8f2'
-#     bright_foreground: '#ffffff'
-#   cursor:
-#     text: CellBackground
-#     cursor: CellForeground
-#   vi_mode_cursor:
-#     text: CellBackground
-#     cursor: CellForeground
-#   search:
-#     matches:
-#       foreground: '#44475a'
-#       background: '#50fa7b'
-#     focused_match:
-#       foreground: '#44475a'
-#       background: '#ffb86c'
-#   footer_bar:
-#     background: '#282a36'
-#     foreground: '#f8f8f2'
-#   hints:
-#     start:
-#       foreground: '#282a36'
-#       background: '#f1fa8c'
-#     end:
-#       foreground: '#f1fa8c'
-#       background: '#282a36'
-#   line_indicator:
-#     foreground: None
-#     background: None
-#   selection:
-#     text: CellForeground
-#     background: '#44475a'
-#   normal:
-#     black: '#21222c'
-#     red: '#ff5555'
-#     green: '#50fa7b'
-#     yellow: '#f1fa8c'
-#     blue: '#bd93f9'
-#     magenta: '#ff79c6'
-#     cyan: '#8be9fd'
-#     white: '#f8f8f2'
-#   bright:
-#     black: '#6272a4'
-#     red: '#ff6e6e'
-#     green: '#69ff94'
-#     yellow: '#ffffa5'
-#     blue: '#d6acff'
-#     magenta: '#ff92df'
-#     cyan: '#a4ffff'
-#     white: '#ffffff'
-
-# Nightfox Alacritty Colors
-# Style: nightfox
-# Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/nightfox/nightfox_alacritty.yml
 colors:
-  # Default colors
   primary:
-    background: '0x192330'
-    foreground: '0xcdcecf'
-  # Normal colors
+    background: '#282a36'
+    foreground: '#f8f8f2'
+    bright_foreground: '#ffffff'
+  cursor:
+    text: CellBackground
+    cursor: CellForeground
+  vi_mode_cursor:
+    text: CellBackground
+    cursor: CellForeground
+  search:
+    matches:
+      foreground: '#44475a'
+      background: '#50fa7b'
+    focused_match:
+      foreground: '#44475a'
+      background: '#ffb86c'
+  footer_bar:
+    background: '#282a36'
+    foreground: '#f8f8f2'
+  hints:
+    start:
+      foreground: '#282a36'
+      background: '#f1fa8c'
+    end:
+      foreground: '#f1fa8c'
+      background: '#282a36'
+  line_indicator:
+    foreground: None
+    background: None
+  selection:
+    text: CellForeground
+    background: '#44475a'
   normal:
-    black:   '0x393b44'
-    red:     '0xc94f6d'
-    green:   '0x81b29a'
-    yellow:  '0xdbc074'
-    blue:    '0x719cd6'
-    magenta: '0x9d79d6'
-    cyan:    '0x63cdcf'
-    white:   '0xdfdfe0'
-  # Bright colors
+    black: '#21222c'
+    red: '#ff5555'
+    green: '#50fa7b'
+    yellow: '#f1fa8c'
+    blue: '#bd93f9'
+    magenta: '#ff79c6'
+    cyan: '#8be9fd'
+    white: '#f8f8f2'
   bright:
-    black:   '0x575860'
-    red:     '0xd16983'
-    green:   '0x8ebaa4'
-    yellow:  '0xe0c989'
-    blue:    '0x86abdc'
-    magenta: '0xbaa1e2'
-    cyan:    '0x7ad5d6'
-    white:   '0xe4e4e5'
-  indexed_colors:
-    - { index: 16, color: '0xf4a261' }
-    - { index: 17, color: '0xd67ad2' }
+    black: '#6272a4'
+    red: '#ff6e6e'
+    green: '#69ff94'
+    yellow: '#ffffa5'
+    blue: '#d6acff'
+    magenta: '#ff92df'
+    cyan: '#a4ffff'
+    white: '#ffffff'
 
 # Colors (Gruvbox dark)
 # colors:
@@ -494,9 +462,9 @@ colors:
   # When set to `true`, selected text will be copied to the primary clipboard.
   #save_to_clipboard: false
 
-#cursor:
+# cursor:
   # Cursor style
-  #style:
+  # style:
     # Cursor shape
     #
     # Values for `shape`:
@@ -512,7 +480,7 @@ colors:
     #   - Off: Disable blinking by default
     #   - On: Enable blinking by default
     #   - Always: Force the cursor to always blink
-    #blinking: Off
+    # blinking: Never
 
   # Vi mode cursor style
   #
@@ -520,18 +488,18 @@ colors:
   # the style of the active value of the normal cursor.
   #
   # See `cursor.style` for available options.
-  #vi_mode_style: None
+  # vi_mode_style: None
 
   # Cursor blinking interval in milliseconds.
-  #blink_interval: 750
+  # blink_interval: 750
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
-  #unfocused_hollow: true
+  # unfocused_hollow: true
 
   # Thickness of the cursor relative to the cell width as floating point number
   # from `0.0` to `1.0`.
-  #thickness: 0.15
+  # thickness: 0.15
 
 # Live config reload (changes require restart)
 #live_config_reload: true
