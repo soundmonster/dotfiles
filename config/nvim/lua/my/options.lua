@@ -3,7 +3,7 @@ vim.opt.hlsearch = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
-vim.opt.cursorcolumn = true
+vim.opt.cursorcolumn = false
 -- When a file has been detected to have been changed outside of Vim and it has not
 -- been changed inside of Vim, automatically read it again. When the file has been deleted this is not done.
 vim.opt.autoread = true
