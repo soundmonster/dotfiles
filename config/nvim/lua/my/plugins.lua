@@ -37,30 +37,7 @@ return require('packer').startup(function(use)
     -- LSP status
     use 'simrat39/rust-tools.nvim'
     -- LS for all files with handy actions; e.g. git blame
-    use {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            local null_ls = require 'null-ls'
-            null_ls.setup({
-                sources = {
-                    -- null_ls.builtins.code_actions.gitsigns,
-                    null_ls.builtins.code_actions.shellcheck,
-                    null_ls.builtins.completion.luasnip,
-                    null_ls.builtins.diagnostics.codespell.with({
-                        extra_args = { "-L", "keypair,keypairs" },
-                    }),
-                    -- null_ls.builtins.diagnostics.vale,
-                    null_ls.builtins.diagnostics.credo.with { env = { MIX_ENV = 'test' } },
-                    null_ls.builtins.diagnostics.write_good,
-                    -- null_ls.builtins.diagnostics.yamllint,
-                    null_ls.builtins.diagnostics.zsh,
-                    -- null_ls.builtins.formatting.codespell,
-                    null_ls.builtins.formatting.rustfmt,
-                }
-            })
-        end,
-        requires = { "nvim-lua/plenary.nvim" },
-    }
+    use { "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim" } }
     -- Show a lightbulb in the gutter if actions available
     use { 'kosayoda/nvim-lightbulb',
         config = function()
@@ -107,7 +84,7 @@ return require('packer').startup(function(use)
             vim.o.winminwidth = 10
             vim.o.equalalways = false
             require('windows').setup({
-                -- autowidth = { enable = false }
+                autowidth = { enable = false }
             })
         end
     }
@@ -135,7 +112,15 @@ return require('packer').startup(function(use)
     use 'folke/neodev.nvim'
 
     -- Key discovery
-    use { 'folke/which-key.nvim', config = function() require('which-key').setup {} end }
+    use {
+        'folke/which-key.nvim',
+        config = function()
+            require('which-key').setup {
+                show_help = false,
+                show_keys = false,
+            }
+        end
+    }
     -- devicons
     use 'kyazdani42/nvim-web-devicons'
     -- Filesystem sidebar
