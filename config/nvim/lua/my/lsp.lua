@@ -66,7 +66,7 @@ cmp.setup({
     }),
     formatting = {
         format = lspkind.cmp_format({
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            maxwidth = 60, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             with_text = true,
             menu = ({
                 buffer = "[buf]",
@@ -99,6 +99,13 @@ cmp.setup.cmdline(':', {
 -- capabilities we send to the language server to let them know we want snippets.
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+local toggle_autoformat = function()
+    if vim.api.nvim_get_var('lsp_autoformat_enable') then
+        vim.api.nvim_set_var('lsp_autoformat_enable', false)
+    else
+        vim.api.nvim_set_var('lsp_autoformat_enable', false)
+    end
+end
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
@@ -145,6 +152,12 @@ local on_attach = function(client, bufnr)
         [']d'] = { '<cmd>lua vim.diagnostic.goto_next()<cr>', 'next diagnostic' },
     })
 
+    wk.register({
+        ['<leader>'] = {
+            F = { '<cmd>lua vim.lsp.buf.format({ async = false })<cr>', 'format file' },
+        },
+    }, { mode = 'v', })
+
     -- format on save / autoformat
     if client.server_capabilities.documentFormattingProvider then
         vim.cmd [[augroup Format]]
@@ -152,7 +165,9 @@ local on_attach = function(client, bufnr)
         vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = false }]]
         vim.cmd [[augroup END]]
     end
-    vim.cmd [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+    if client.server_capabilities.codeLensProvider then
+        vim.cmd [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+    end
 end
 
 require("mason").setup()

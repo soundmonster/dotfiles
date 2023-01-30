@@ -59,10 +59,19 @@ wk.register({
         f = { '<cmd>Trouble document_diagnostics<cr>', 'file diagnostics' },
         p = { '<cmd>Trouble workspace_diagnostics<cr>', 'project diagnostics' },
     },
+    -- ['<leader>t'] = {
+    --     name = 'tests',
+    --     t = { '<cmd>TestNearest<cr>', 'test under cursor' },
+    --     f = { '<cmd>TestFile<cr>', 'test current file' },
+    --     p = { '<cmd>TestSuite<cr>', 'test full project suite' },
+    -- },
     ['<leader>t'] = {
-        name = 'tests',
-        t = { '<cmd>TestNearest<cr>', 'test under cursor' },
-        f = { '<cmd>TestFile<cr>', 'test current file' },
-        p = { '<cmd>TestSuite<cr>', 'test full project suite' },
-    }
+        name = 'neotest',
+        t = { "<cmd>lua require('neotest').summary.toggle()<cr>", 'toggle tree' },
+        o = { "<cmd>lua require('neotest').output.toggle()<cr>", 'toggle output' },
+        p = { "<cmd>lua require('neotest').output_panel.toggle()<cr>", 'toggle output panel' },
+        f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", 'run file' },
+        l = { "<cmd>lua require('neotest').run.run()<cr>", 'run test' },
+        s = { "<cmd>lua require('neotest').run.run({suite=true})<cr>", 'run suite' },
+    },
 })

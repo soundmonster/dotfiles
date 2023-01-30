@@ -37,7 +37,7 @@ return require('packer').startup(function(use)
     -- LSP status
     use 'simrat39/rust-tools.nvim'
     -- LS for all files with handy actions; e.g. git blame
-    use { "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim" } }
+    use { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     -- Show a lightbulb in the gutter if actions available
     use { 'kosayoda/nvim-lightbulb',
         config = function()
@@ -50,44 +50,29 @@ return require('packer').startup(function(use)
     -- Fancy UI
     -- Plug 'rcarriga/nvim-notify'
     use({
-        "folke/noice.nvim",
+        'folke/noice.nvim',
+        disable = false, -- https://github.com/folke/noice.nvim/issues/298
         config = function()
-            require("noice").setup({
+            require('noice').setup({
                 lsp = {
                     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
                     override = {
-                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                        ["vim.lsp.util.stylize_markdown"] = true,
-                        ["cmp.entry.get_documentation"] = true,
+                        ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+                        ['vim.lsp.util.stylize_markdown'] = true,
+                        ['cmp.entry.get_documentation'] = true,
                     },
                 },
             })
         end,
         requires = {
-            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-            "MunifTanjim/nui.nvim",
+            -- if you lazy-load any plugin below, make sure to add proper `module='...'` entries
+            'MunifTanjim/nui.nvim',
             -- OPTIONAL:
             --   `nvim-notify` is only needed, if you want to use the notification view.
             --   If not available, we use `mini` as the fallback
-            "rcarriga/nvim-notify",
+            'rcarriga/nvim-notify',
         }
     })
-
-    -- Window zoom animations
-    use { "anuvyklack/windows.nvim",
-        requires = {
-            "anuvyklack/middleclass",
-            "anuvyklack/animation.nvim"
-        },
-        config = function()
-            vim.o.winwidth = 10
-            vim.o.winminwidth = 10
-            vim.o.equalalways = false
-            require('windows').setup({
-                autowidth = { enable = false }
-            })
-        end
-    }
 
     -- Completion
     use 'hrsh7th/cmp-nvim-lsp'
@@ -101,10 +86,10 @@ return require('packer').startup(function(use)
     use 'saadparwaiz1/cmp_luasnip'
     -- LSP stuff
     use {
-        "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
+        'folke/trouble.nvim',
+        requires = 'kyazdani42/nvim-web-devicons',
         config = function()
-            require("trouble").setup {
+            require('trouble').setup {
                 padding = false,
             }
         end
@@ -123,7 +108,6 @@ return require('packer').startup(function(use)
     }
     -- devicons
     use 'kyazdani42/nvim-web-devicons'
-    -- Filesystem sidebar
     use { 'kyazdani42/nvim-tree.lua', config = function()
         require('nvim-tree').setup({
             update_focused_file = { enable = true }
@@ -151,35 +135,69 @@ return require('packer').startup(function(use)
 		]]
     end }
     -- Themes
-    -- use 'morhetz/gruvbox'
-    use { 'dracula/vim', as = 'dracula' }
-    use { 'nvim-lualine/lualine.nvim', config = function() require('lualine').setup({}) end }
-    -- Darken inactive windows
-    use { 'levouh/tint.nvim',
-        config = function()
-            require 'tint'.setup({
-                tint = -45, -- Darken colors, use a positive value to brighten
-                saturation = 0.6, -- Saturation to preserve
-                tint_background_colors = false, -- Tint background portions of highlight groups
-                highlight_ignore_patterns = { "WinSeparator", "Status.*", "Telescope*" },
-                window_ignore_function = function(winid)
-                    local bufid = vim.api.nvim_win_get_buf(winid)
-                    local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
-                    local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
-                    -- Do not tint `terminal` or floating windows, tint everything else
-                    return buftype == "terminal" or floating
-                end
-            })
-        end }
+    use { "catppuccin/nvim", as = "catppuccin", config = function()
+        require('catppuccin').setup({
+            dim_inactive = {
+                enabled = false,
+                shade = "dark",
+                percentage = 0.15,
+            },
+            integrations = {
+                aerial = true,
+                cmp = true,
+                gitsigns = true,
+                hop = true,
+                lsp_trouble = true,
+                mason = true,
+                neotest = true,
+                noice = true,
+                notify = true,
+                nvimtree = true,
+                semantic_tokens = true,
+                telescope = true,
+                treesitter = true,
+                which_key = true,
+                native_lsp = {
+                    enabled = true,
+                    virtual_text = {
+                        errors = { "italic" },
+                        hints = { "italic" },
+                        warnings = { "italic" },
+                        information = { "italic" },
+                    },
+                    underlines = {
+                        errors = { "undercurl" },
+                        hints = { "undercurl" },
+                        warnings = { "undercurl" },
+                        information = { "undercurl" },
+                    },
+                },
+            }
+        })
+    end }
+    use { 'f-person/auto-dark-mode.nvim', config = function()
+        local auto_dark_mode = require('auto-dark-mode')
 
-    use 'rhysd/vim-gfm-syntax'
+        auto_dark_mode.setup({
+            -- update_interval = 1000,
+            set_dark_mode = function()
+                vim.api.nvim_set_option('background', 'dark')
+                vim.cmd('colorscheme catppuccin-mocha')
+            end,
+            set_light_mode = function()
+                vim.api.nvim_set_option('background', 'light')
+                vim.cmd('colorscheme catppuccin-latte')
+            end,
+        })
+        auto_dark_mode.init()
+    end }
+    use { 'nvim-lualine/lualine.nvim', config = function() require('lualine').setup({ theme = 'catppuccin' }) end }
     use { 'norcalli/nvim-colorizer.lua', config = function() require('colorizer').setup() end }
-
     use { 'numToStr/Comment.nvim', config = function() require('Comment').setup() end }
 
     use 'tpope/vim-fugitive'
     -- Sensible set of defaults
-    use 'tpope/vim-sensible'
+    -- use 'tpope/vim-sensible'
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
     -- Automatically adjust whitespace formatting
@@ -189,24 +207,30 @@ return require('packer').startup(function(use)
     -- Easymotion replacement
     use { 'phaazon/hop.nvim', config = function() require('hop').setup() end }
 
-    -- Testing in tmux
-    use { 'janko/vim-test', requires = { 'benmills/vimux' }, config = function()
-        vim.cmd [[
-		  let test#strategy = 'vimux'
-
-		  function! SBSElixirTransform(cmd) abort
-		    " let command = substitute(a:cmd, "apps/[a-z_]*/", "", "")
-		    "" devspace
-		    " let command = substitute(a:cmd, "mix test ", "make test file=", "")
-		    "" dockerless
-		    let command = substitute(a:cmd, "mix test ", "make test dockerless=true file=", "")
-		    return "DONT_RESET_ECTO=true ".command
-		  endfunction
-
-		  let g:test#custom_transformations = {'sbs_elixir': function('SBSElixirTransform')}
-		  let g:test#transformation = 'sbs_elixir'
-		]]
-    end }
+    use {
+        "nvim-neotest/neotest",
+        requires = {
+            "~/Playground/elixir/neotest-elixir",
+        },
+        config = function()
+            require("neotest").setup({
+                adapters = {
+                    require("neotest-elixir") {
+                        post_process_command = function()
+                            return function(cmd)
+                                if string.find(vim.fn.getcwd(), 'Projects/sbs-') then
+                                    return { 'make', 'dockerless', 'dockerless=true',
+                                        'cmd=MIX_ENV=test DONT_RESET_ECTO=true ' .. table.concat(cmd, ' ') }
+                                else
+                                    return cmd
+                                end
+                            end
+                        end
+                    },
+                }
+            })
+        end
+    }
 
     use 'AndrewRadev/sideways.vim'
 
