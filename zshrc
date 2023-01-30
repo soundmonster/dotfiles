@@ -54,7 +54,6 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git history-substring-search brew brew-cask bundler rake-fast rails colored-man-pages docker docker-compose osx pip rbenv)
 plugins=(
-		tmux
 		history-substring-search
 		kube-ps1
 		zsh-syntax-highlighting
@@ -62,7 +61,7 @@ plugins=(
 
 # User configuration
 
-export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
+export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
 export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
 export GNUARMEMB_TOOLCHAIN_PATH=/Applications/ARM
 
@@ -79,7 +78,6 @@ unalias ll
 alias ll='exa --long --header --git --group'
 alias lsa='exa --long --header --git --group --all'
 alias gbr="git branch | fzf | xargs git checkout"
-source <(stern --completion=zsh)
 # source "`brew --prefix`/etc/grc.bashrc"
 
 # Preferred editor for local and remote sessions
@@ -110,18 +108,15 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=magenta,fg=white,bold'
 
 # source /usr/local/opt/kube-ps1/share/kube-ps1.sh
-export KUBE_PS1_ENABLED=false
+export KUBE_PS1_ENABLED=off
+export KUBE_PS1_SYMBOL_PADDING=true
+export KUBE_PS1_SUFFIX=" %{%K{green}%F{blue}%}\ue0b0%{%f%}"
+export KUBE_PS1_PREFIX="%{%K{blue}%F{black}%} "
+export KUBE_PS1_SYMBOL_COLOR="black"
+export KUBE_PS1_CTX_COLOR="black"
+export KUBE_PS1_NS_COLOR="black"
 PROMPT='$(kube_ps1)'$PROMPT
 export HELM_EXPERIMENTAL_OCI=1
-
-# Use the fuck, an awesome command post-correction tool
-eval $(thefuck --alias)
-
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
-}
 
 # fh - repeat history
 unalias fh 2> /dev/null
@@ -151,11 +146,6 @@ export LESS_TERMCAP_ZV=$(tput rsubm)
 export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
-eval "$(direnv hook zsh)"
-eval "$(zoxide init zsh --no-aliases)"
-
-alias z=__zoxide_zi
-
 python --version &> /dev/null
 if [ $? -eq 0 ]; then
   PYTHON_USER_PATH="$(python -m site --user-base)/bin"
@@ -177,6 +167,32 @@ brew --prefix asdf &> /dev/null
 if [ $? -eq 0 ] ; then
   ASDF_DIR="$(brew --prefix asdf)/libexec"
   . "$ASDF_DIR/asdf.sh"
+fi
+
+which stern &> /dev/null
+if [ $? -eq 0 ] ; then
+  source <(stern --completion=zsh)
+fi
+
+which thefuck &> /dev/null
+if [ $? -eq 0 ] ; then
+  # Use the fuck, an awesome command post-correction tool
+  eval $(thefuck --alias)
+fi
+
+which direnv &> /dev/null
+if [ $? -eq 0 ] ; then
+  eval "$(direnv hook zsh)"
+fi
+which zoxide &> /dev/null
+if [ $? -eq 0 ] ; then
+  eval "$(zoxide init zsh --no-aliases)"
+  unalias z 2> /dev/null
+  alias z=__zoxide_zi
+  z() {
+    [ $# -gt 0 ] && _z "$*" && return
+    cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+  }
 fi
 
 export GPG_TTY=$(tty)
