@@ -216,14 +216,12 @@ return require('packer').startup(function(use)
             require("neotest").setup({
                 adapters = {
                     require("neotest-elixir") {
-                        post_process_command = function()
-                            return function(cmd)
-                                if string.find(vim.fn.getcwd(), 'Projects/sbs-') then
-                                    return { 'make', 'dockerless', 'dockerless=true',
-                                        'cmd=MIX_ENV=test DONT_RESET_ECTO=true ' .. table.concat(cmd, ' ') }
-                                else
-                                    return cmd
-                                end
+                        post_process_command = function(cmd)
+                            if string.find(vim.fn.getcwd(), 'Projects/sbs-') then
+                                return { 'make', 'dockerless', 'dockerless=true',
+                                    'cmd=MIX_ENV=test DONT_RESET_ECTO=true ' .. table.concat(cmd, ' ') }
+                            else
+                                return vim.tbl_flatten({ { 'env', 'FOO=bar' }, cmd })
                             end
                         end
                     },
