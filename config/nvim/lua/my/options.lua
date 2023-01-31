@@ -9,26 +9,25 @@ vim.opt.cursorcolumn = false
 vim.opt.autoread = true
 -- Don't show mode in command line since we have it lualine
 vim.opt.showmode = false
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 -- always show signcolumns
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 -- TODO find out how to escape this properly
-vim.opt.listchars = { tab = '→ ', trail = '·', lead = '·' }
+vim.opt.listchars = { tab = "→ ", trail = "·", lead = "·" }
 -- show just one status line instead of many
 vim.opt.laststatus = 3
 
 -- vim.opt.background = 'dark'
-vim.cmd.colorscheme('catppuccin-mocha')
+vim.cmd.colorscheme("catppuccin-mocha")
 -- CodeLens colors
-vim.api.nvim_set_hl(0, 'LspCodeLens', { link = 'DiagnosticVirtualTextHint' })
-vim.api.nvim_set_hl(0, 'LspCodeLensSeparator', { link = 'DiagnosticSignHint' })
+vim.api.nvim_set_hl(0, "LspCodeLens", { link = "DiagnosticVirtualTextHint" })
+vim.api.nvim_set_hl(0, "LspCodeLensSeparator", { link = "DiagnosticSignHint" })
 
-
-vim.cmd [[filetype plugin indent on]]
+vim.cmd([[filetype plugin indent on]])
 
 vim.opt.wrap = false
 vim.opt.textwidth = 120
-vim.opt.encoding = 'utf8'
+vim.opt.encoding = "utf8"
 
 -- Avoid applying EditorConfig to Fugitive buffers
-vim.cmd [[ let g:EditorConfig_exclude_patterns = ['fugitive://.*'] ]]
+vim.cmd([[ let g:EditorConfig_exclude_patterns = ['fugitive://.*'] ]])
