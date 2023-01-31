@@ -1,7 +1,0 @@
-{
-  "elixir.pathToElixirLS": "~/dotfiles/elixir-ls/release/language_server.sh",
-  "coc.preferences.formatOnSaveFiletypes": [
-    "elixir",
-    "json"
-  ]
-}
