@@ -238,7 +238,7 @@ null_ls.setup({
 		}),
 		-- null_ls.builtins.diagnostics.vale,
 		null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),
-		null_ls.builtins.diagnostics.write_good,
+		-- null_ls.builtins.diagnostics.write_good,
 		-- null_ls.builtins.diagnostics.yamllint,
 		null_ls.builtins.diagnostics.jsonlint,
 		null_ls.builtins.diagnostics.zsh,
