@@ -251,7 +251,7 @@ return require("packer").startup(function(use)
 	use({
 		"nvim-neotest/neotest",
 		requires = {
-			"~/Playground/elixir/neotest-elixir",
+			"jfpedroza/neotest-elixir",
 		},
 		config = function()
 			require("neotest").setup({
@@ -265,8 +265,6 @@ return require("packer").startup(function(use)
 									"dockerless=true",
 									"cmd=MIX_ENV=test DONT_RESET_ECTO=true " .. table.concat(cmd, " "),
 								}
-							else
-								return vim.tbl_flatten({ { "env", "FOO=bar" }, cmd })
 							end
 						end,
 					}),

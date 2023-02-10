@@ -19,7 +19,8 @@ end
 local font = 'JetBrains Mono'
 local font_size = 12.6
 return {
-  default_prog = { '/opt/homebrew/bin/zsh' },
+  -- default_prog = { '/opt/homebrew/bin/zsh' },
+  -- default_prog = { '/usr/local/bin/zsh' },
   font = wezterm.font { family = font, weight = 'Medium' },
   font_rules = {
     { intensity = 'Bold', italic = false, font = wezterm.font { family = font, weight = 'ExtraBold' }, },
