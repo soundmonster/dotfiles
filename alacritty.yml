@@ -514,11 +514,11 @@ colors:
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-shell:
+# shell:
  # program: /usr/local/bin/zsh
- program: /opt/homebrew/bin/zsh
- args:
-   - --login
+ # program: /opt/homebrew/bin/zsh
+ # args:
+   # - --login
 
 # Startup directory
 #
