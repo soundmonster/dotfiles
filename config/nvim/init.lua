@@ -1,5 +1,7 @@
-require("my.plugins")
 require("my.options")
+require("my.autoformat")
+require("my.plugins")
+require("my.postplugin_options")
 require("my.lsp")
 require("my.treesitter")
 require("my.ui")

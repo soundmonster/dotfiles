@@ -17,7 +17,9 @@ local function scheme_for_appearance(appearance)
 end
 
 local font = "JetBrains Mono"
-local font_size = 12.6
+local font_size = 12.5
+-- local font = "Iosevka"
+-- local font_size = 13.5
 return {
 	-- default_prog = { '/opt/homebrew/bin/zsh' },
 	-- default_prog = { '/usr/local/bin/zsh' },
@@ -76,6 +78,8 @@ return {
 		{ key = "7", mods = "LEADER", action = act.ActivateTab(6) },
 		{ key = "8", mods = "LEADER", action = act.ActivateTab(7) },
 		{ key = "9", mods = "LEADER", action = act.ActivateTab(8) },
+		{ key = "[", mods = "LEADER", action = act.MoveTabRelative(-1) },
+		{ key = "]", mods = "LEADER", action = act.MoveTabRelative(1) },
 		-- splits
 		{ key = "%", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 		{ key = '"', mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
@@ -83,7 +87,8 @@ return {
 		{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
 		{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
 		{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
-		{ key = "}", mods = "LEADER", action = act.RotatePanes("Clockwise") },
+		{ key = "{", mods = "LEADER|SHIFT", action = act.RotatePanes("CounterClockwise") },
+		{ key = "}", mods = "LEADER|SHIFT", action = act.RotatePanes("Clockwise") },
 		{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
 		-- when resizing, resize on the first keypress then activate layer
 		{

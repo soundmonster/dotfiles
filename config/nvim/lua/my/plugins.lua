@@ -24,8 +24,6 @@ return require("packer").startup(function(use)
 	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 	use("nvim-treesitter/nvim-treesitter-textobjects")
 	use("stevearc/aerial.nvim")
-	-- TODO remove
-	-- use 'Chiel92/vim-autoformat'
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -38,6 +36,39 @@ return require("packer").startup(function(use)
 	use("williamboman/mason.nvim")
 	use("williamboman/mason-lspconfig.nvim")
 	use("neovim/nvim-lspconfig")
+	use({
+		"utilyre/barbecue.nvim",
+		tag = "*",
+		requires = {
+			"SmiteshP/nvim-navic",
+			"nvim-tree/nvim-web-devicons", -- optional dependency
+		},
+		after = "nvim-web-devicons", -- keep this if you're using NvChad
+		config = function()
+			require("barbecue").setup({ theme = "catpuccin" })
+		end,
+	})
+	use({
+		"SmiteshP/nvim-navic",
+		requires = "neovim/nvim-lspconfig",
+	})
+	use({
+		"simrat39/inlay-hints.nvim",
+		config = function()
+			require("inlay-hints").setup()
+		end,
+	})
+	use({
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			require("indent_blankline").setup({
+				char = "▏",
+				space_char_blankline = " ",
+				show_current_context = true,
+				show_current_context_start = true,
+			})
+		end,
+	})
 
 	-- LSP status
 	use("simrat39/rust-tools.nvim")
@@ -53,8 +84,6 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- Fancy UI
-	-- Plug 'rcarriga/nvim-notify'
 	use({
 		"folke/noice.nvim",
 		disable = false, -- https://github.com/folke/noice.nvim/issues/298
@@ -80,7 +109,7 @@ return require("packer").startup(function(use)
 		},
 	})
 
-	-- Completion
+	-- eompletion
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")
@@ -215,7 +244,22 @@ return require("packer").startup(function(use)
 	use({
 		"nvim-lualine/lualine.nvim",
 		config = function()
-			require("lualine").setup({ theme = "catppuccin" })
+			-- local navic = require("nvim-navic")
+			require("lualine").setup({
+				theme = "catppuccin",
+				sections = {
+					lualine_c = {
+						"filename",
+						-- { navic.get_location, cond = navic.is_available },
+					},
+					lualine_x = {
+						"encoding",
+						"fileformat",
+						"filetype",
+						{ "g:lsp_autoformat", on_click = require("my/autoformat").toggle_autoformat },
+					},
+				},
+			})
 		end,
 	})
 	use({

@@ -1,3 +1,5 @@
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+zmodload zsh/complist
 autoload -Uz compinit
 compinit
 
@@ -6,23 +8,11 @@ export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threa
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# Less Colors for Man Pages
-export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
-export LESS_TERMCAP_md=$(tput bold; tput setaf 4) # blue
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 7; tput setab 4) # white on blue
-export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
-export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
+export EDITOR=nvim
 
 source ~/.zsh_aliases
 unalias ll 2> /dev/null
+alias ls='exa'
 alias ll='exa --long --header --git --group'
 alias lsa='exa --long --header --git --group --all'
 alias gbr="git branch | fzf | xargs git checkout"
@@ -36,17 +26,18 @@ fh() {
 # PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
 PYTHON3_USER_PATH="/Users/leonid/Library/Python/3.9/bin"
 # OPENJDK_PATH="$(brew --prefix openjdk)/bin"
-OPENJDK_PATH="/usr/local/opt/openjdk/bin"
+OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
 export PATH="${PYTHON3_USER_PATH}:${OPENJDK_PATH}:${PATH}"
 
 # ASDF_DIR="$(brew --prefix asdf)/libexec"
 # source "$ASDF_DIR/asdf.sh"
-source /usr/local/opt/asdf/libexec/asdf.sh
+asdf_dir="/opt/homebrew/opt/asdf/libexec"
+source /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # Use the fuck, an awesome command post-correction tool
 eval $(thefuck --alias)
 eval "$(direnv hook zsh)"
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
 
 
 eval "$(zoxide init zsh --no-aliases)"
@@ -59,6 +50,37 @@ function z() {
 
 export GPG_TTY=$(tty)
 
+## History file configuration
+[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
+[ "$HISTSIZE" -lt 50000 ] && HISTSIZE=50000
+[ "$SAVEHIST" -lt 10000 ] && SAVEHIST=10000
+
+## History command configuration
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
+
+setopt autocd                 # cd into folders without cd
+
+## completion
+# zstyle ':completion:*' completer _extensions _complete _approximate
+zstyle ':completion:*' menu select
+
+zstyle ':completion:*:*:*:*:descriptions' format '%F{green}-- %d --%f'
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+# fuzzy completion on any part of the word
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+# prefer options over folders
+zstyle ':completion:*' complete-options true
+
+# configure xterm title
+ZSH_TAB_TITLE_CONCAT_FOLDER_PROCESS=true
+ZSH_TAB_TITLE_ONLY_FOLDER=true
 eval "$(sheldon source)"
 
 bindkey '^[[A' history-substring-search-up

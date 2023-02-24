@@ -99,24 +99,16 @@ cmp.setup.cmdline(":", {
 -- capabilities we send to the language server to let them know we want snippets.
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-local toggle_autoformat = function()
-	if vim.api.nvim_get_var("lsp_autoformat_enable") then
-		vim.api.nvim_set_var("lsp_autoformat_enable", false)
-	else
-		vim.api.nvim_set_var("lsp_autoformat_enable", false)
-	end
-end
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
-	-- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
+	require("inlay-hints").on_attach(client, bufnr)
+	if client.server_capabilities.documentSymbolProvider then
+		require("nvim-navic").attach(client, bufnr)
 	end
 
 	--Enable completion triggered by <c-x><c-o>
-	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -164,12 +156,13 @@ local on_attach = function(client, bufnr)
 	}, { mode = "v" })
 
 	-- format on save / autoformat
-	if client.server_capabilities.documentFormattingProvider then
-		vim.cmd([[augroup Format]])
-		vim.cmd([[autocmd! * <buffer>]])
-		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = false }]])
-		vim.cmd([[augroup END]])
-	end
+    require('my/autoformat').on_attach(client, bufnr)
+	-- if client.server_capabilities.documentFormattingProvider then
+	-- 	vim.cmd([[augroup Format]])
+	-- 	vim.cmd([[autocmd! * <buffer>]])
+	-- 	vim.cmd([[autocmd BufWritePre <buffer> lua vim.g.lsp_autoformat and vim.lsp.buf.format({ async = false })]])
+	-- 	vim.cmd([[augroup END]])
+	-- end
 	if client.server_capabilities.codeLensProvider then
 		vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
 	end
@@ -196,15 +189,15 @@ require("mason-lspconfig").setup_handlers({
 			capabilities = capabilities,
 		})
 	end,
-	["sumneko_lua"] = function()
-		require("lspconfig")["sumneko_lua"].setup({
+	["lua_ls"] = function()
+		require("lspconfig")["lua_ls"].setup({
 			on_attach = on_attach,
 			capabilities = capabilities,
 			settings = {
 				Lua = {
-					format = {
-						enable = false,
-					},
+					hint = { enable = true },
+					codelens = { enable = true },
+					format = { enable = false },
 				},
 			},
 		})
@@ -231,7 +224,8 @@ null_ls.setup({
 	on_attach = on_attach,
 	sources = {
 		-- null_ls.builtins.code_actions.gitsigns,
-		-- null_ls.builtins.code_actions.shellcheck,
+		null_ls.builtins.code_actions.shellcheck,
+		null_ls.builtins.diagnostics.shellcheck,
 		null_ls.builtins.completion.luasnip,
 		null_ls.builtins.diagnostics.codespell.with({
 			extra_args = { "-L", "keypair,keypairs" },

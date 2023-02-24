@@ -1,0 +1,7 @@
+SPACESHIP_TIME_SHOW=true
+
+SPACESHIP_KUBECTL_SYMBOL="ﴱ "
+SPACESHIP_KUBECTL_CONTEXT_COLOR_GROUPS=(
+  red  'production'
+  cyan 'staging' 
+)

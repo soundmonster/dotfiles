@@ -17,12 +17,13 @@
 
 # define command which will be used when "nvim" is set as a merge tool
 [mergetool "nvim"]
-  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
-# set "nvim" as tool for merging
+  cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""
 [merge]
+  # set "nvim" as tool for merging
   tool = nvim
-# automatically launch merge tool without displaying a prompt
 [mergetool]
+  # automatically launch merge tool without displaying a prompt
+  keepBackup = false
   prompt = false
 
 [color]

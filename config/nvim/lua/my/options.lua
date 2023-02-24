@@ -17,12 +17,6 @@ vim.opt.listchars = { tab = "→ ", trail = "·", lead = "·" }
 -- show just one status line instead of many
 vim.opt.laststatus = 3
 
--- vim.opt.background = 'dark'
-vim.cmd.colorscheme("catppuccin-mocha")
--- CodeLens colors
-vim.api.nvim_set_hl(0, "LspCodeLens", { link = "DiagnosticVirtualTextHint" })
-vim.api.nvim_set_hl(0, "LspCodeLensSeparator", { link = "DiagnosticSignHint" })
-
 vim.cmd([[filetype plugin indent on]])
 
 vim.opt.wrap = false

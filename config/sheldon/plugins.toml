@@ -17,8 +17,8 @@ shell = "zsh"
 [plugins.thefuck]
 github = 'laggardkernel/zsh-thefuck'
 
-[plugins.asdf]
-github = 'kiurchv/asdf.plugin.zsh'
+# [plugins.asdf]
+# github = 'kiurchv/asdf.plugin.zsh'
 
 [plugins.fast-syntax-highlighting]
 github = 'zdharma-continuum/fast-syntax-highlighting'
@@ -32,8 +32,18 @@ github = 'zsh-users/zsh-autosuggestions'
 [plugins.zsh-history-search]
 github = 'zsh-users/zsh-history-substring-search'
 
-# [plugins.spaceship]
-# github = 'spaceship-prompt/spaceship-prompt'
+[plugins.spaceship]
+github = 'spaceship-prompt/spaceship-prompt'
+
+[plugins.directories]
+remote = 'https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/directories.zsh'
+
+[plugins.colored-man-pages]
+github = 'ael-code/zsh-colored-man-pages'
+
+[plugins.terminal-title]
+# github = 'amyreese/zsh-titles'
+github = 'trystan2k/zsh-tab-title'
 
 # For example:
 #
