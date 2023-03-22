@@ -10,9 +10,11 @@ local activate_resize_keytable = act.ActivateKeyTable({
 
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		return "Catppuccin Mocha"
+		-- return "Catppuccin Mocha"
+		return "tokyonight-storm"
 	else
-		return "Catppuccin Latte"
+		-- return "Catppuccin Latte"
+		return "tokyonight-day"
 	end
 end
 
@@ -20,6 +22,10 @@ local font = "JetBrains Mono"
 local font_size = 12.5
 -- local font = "Iosevka"
 -- local font_size = 13.5
+--
+local color_scheme_name = scheme_for_appearance(wezterm.gui.get_appearance())
+local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
+
 return {
 	-- default_prog = { '/opt/homebrew/bin/zsh' },
 	-- default_prog = { '/usr/local/bin/zsh' },
@@ -37,20 +43,44 @@ return {
 	cell_width = 1.0,
 	line_height = 1.0,
 
+	-- https://wezfurlong.org/wezterm/config/lua/config/term.html
+	-- tempfile=$(mktemp) \
+	-- && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
+	-- && tic -x -o ~/.terminfo $tempfile \
+	-- && rm $tempfile
+	--
+	term = "wezterm",
+
 	audible_bell = "Disabled",
 	visual_bell = {
 		fade_in_duration_ms = 75,
 		fade_out_duration_ms = 75,
 		target = "CursorColor",
 	},
-	-- color_scheme = 'Dracula',
-	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
+	color_scheme = color_scheme_name,
+	colors = {
+		tab_bar = {
+			background = color_scheme.background,
+			active_tab = {
+				bg_color = color_scheme.ansi[5],
+				fg_color = color_scheme.background,
+			},
+			inactive_tab = {
+				bg_color = color_scheme.background,
+				fg_color = color_scheme.ansi[8],
+			},
+			new_tab = {
+				bg_color = color_scheme.ansi[8],
+				fg_color = color_scheme.background,
+			},
+		},
+	},
 	tab_bar_at_bottom = true,
 	tab_max_width = 64,
 	use_fancy_tab_bar = false,
 	disable_default_key_bindings = true,
 	-- timeout_milliseconds defaults to 1000 and can be omitted
-	leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 },
+	leader = { key = "a", mods = "CTRL", timeout_milliseconds = 5000 },
 	debug_key_events = true,
 	keys = {
 		-- normal keys
@@ -82,7 +112,7 @@ return {
 		{ key = "]", mods = "LEADER", action = act.MoveTabRelative(1) },
 		-- splits
 		{ key = "%", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-		{ key = '"', mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+		{ key = '"', mods = "LEADER|SHIFT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 		{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
 		{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
 		{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
@@ -125,6 +155,16 @@ return {
 					wezterm.log_info("opening: " .. url)
 					wezterm.open_with(url)
 				end),
+			}),
+		},
+		{
+			key = "U",
+			mods = "LEADER|SHIFT",
+			action = wezterm.action.QuickSelectArgs({
+				label = "select url",
+				patterns = {
+					"https?://\\S+",
+				},
 			}),
 		},
 		{ key = "d", mods = "LEADER", action = act.DetachDomain("CurrentPaneDomain") },

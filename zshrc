@@ -79,6 +79,7 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 zstyle ':completion:*' complete-options true
 
 # configure xterm title
+ZSH_TAB_TITLE_ADDITIONAL_TERMS=wezterm
 ZSH_TAB_TITLE_CONCAT_FOLDER_PROCESS=true
 ZSH_TAB_TITLE_ONLY_FOLDER=true
 eval "$(sheldon source)"

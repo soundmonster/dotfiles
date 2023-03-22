@@ -107,6 +107,10 @@ local on_attach = function(client, bufnr)
 		require("nvim-navic").attach(client, bufnr)
 	end
 
+	if client.name == "elixirls" then
+		require("elixir.language_server").on_attach(client, bufnr)
+	end
+
 	--Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -156,7 +160,7 @@ local on_attach = function(client, bufnr)
 	}, { mode = "v" })
 
 	-- format on save / autoformat
-    require('my/autoformat').on_attach(client, bufnr)
+	require("my/autoformat").on_attach(client, bufnr)
 	-- if client.server_capabilities.documentFormattingProvider then
 	-- 	vim.cmd([[augroup Format]])
 	-- 	vim.cmd([[autocmd! * <buffer>]])

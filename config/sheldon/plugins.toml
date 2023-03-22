@@ -43,7 +43,8 @@ github = 'ael-code/zsh-colored-man-pages'
 
 [plugins.terminal-title]
 # github = 'amyreese/zsh-titles'
-github = 'trystan2k/zsh-tab-title'
+# github = 'trystan2k/zsh-tab-title'
+local = '~/Playground/zsh/zsh-tab-title'
 
 # For example:
 #

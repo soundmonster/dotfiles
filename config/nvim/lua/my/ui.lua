@@ -55,7 +55,7 @@ local telescopeBorderless = function(flavor)
 		NoiceCmdlinePopup = { fg = cp.flamingo, bg = cp.crust },
 		NoiceCmdlinePopupBorder = { fg = cp.crust, bg = cp.crust },
 		NoiceCmdlinePopupBorderSearch = { fg = cp.crust, bg = cp.crust },
-		NoiceCmdlinePrompt = { fg = cp.red, bg = cp.green },
+		NoiceCmdlinePrompt = { fg = cp.flamingo, bg = cp.crust },
 	}
 end
 
