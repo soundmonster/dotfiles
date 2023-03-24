@@ -41,10 +41,12 @@ remote = 'https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/di
 [plugins.colored-man-pages]
 github = 'ael-code/zsh-colored-man-pages'
 
-[plugins.terminal-title]
-# github = 'amyreese/zsh-titles'
-# github = 'trystan2k/zsh-tab-title'
-local = '~/Playground/zsh/zsh-tab-title'
+[plugins.osc_shell_integration]
+remote = 'https://github.com/wez/wezterm/raw/main/assets/shell-integration/wezterm.sh'
+
+[plugins.zsh-tab-title]
+github = 'soundmonster/zsh-tab-title'
+branch = 'handle_home_dir'
 
 # For example:
 #

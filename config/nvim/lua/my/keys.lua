@@ -80,7 +80,7 @@ wk.register({
     },
     ["<leader>n"] = {
         name = "notifications",
-        l = { "<cmd>NoiceLog", "list" },
-        c = { "<cmd>lua require('notify').dismiss()", "clear" },
+        l = { "<cmd>NoiceLog<cr>", "list" },
+        c = { "<cmd>lua require('notify').dismiss()<cr>", "clear" },
     },
 })
