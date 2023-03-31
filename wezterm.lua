@@ -38,6 +38,8 @@ return {
 			font = wezterm.font({ family = font, weight = "ExtraBold", italic = true }),
 		},
 	},
+	underline_thickness = "200%",
+	-- underline_position = "-2px",
 	-- freetype_load_target = 'HorizontalLcd',
 	font_size = font_size,
 	cell_width = 1.0,
@@ -63,15 +65,15 @@ return {
 			background = color_scheme.background,
 			active_tab = {
 				bg_color = color_scheme.ansi[5],
-				fg_color = color_scheme.background,
+				fg_color = color_scheme.ansi[1],
 			},
 			inactive_tab = {
 				bg_color = color_scheme.background,
 				fg_color = color_scheme.ansi[8],
 			},
 			new_tab = {
-				bg_color = color_scheme.ansi[8],
-				fg_color = color_scheme.background,
+				bg_color = color_scheme.ansi[4],
+				fg_color = color_scheme.ansi[1],
 			},
 		},
 	},
