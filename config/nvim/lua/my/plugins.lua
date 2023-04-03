@@ -350,7 +350,7 @@ return require("packer").startup(function(use)
         "nvim-neotest/neotest",
         requires = {
             -- "jfpedroza/neotest-elixir",
-            "/Users/leonid.batyuk/Playground/nvim/neotest-elixir",
+            { "soundmonster/neotest-elixir", branch = "extra_block_identifiers" },
         },
         config = function()
             require("neotest").setup({
