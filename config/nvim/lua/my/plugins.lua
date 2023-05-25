@@ -27,7 +27,9 @@ return require("packer").startup(function(use)
     use({
         "lewis6991/gitsigns.nvim",
         config = function()
-            require("gitsigns").setup()
+            require("gitsigns").setup({
+                current_line_blame = true,
+            })
         end,
     })
 
@@ -38,6 +40,7 @@ return require("packer").startup(function(use)
     use("neovim/nvim-lspconfig")
     use({
         "utilyre/barbecue.nvim",
+        disable = true,
         tag = "*",
         requires = {
             "SmiteshP/nvim-navic",
@@ -50,12 +53,10 @@ return require("packer").startup(function(use)
     })
     use({
         "SmiteshP/nvim-navic",
+        disable = true,
         requires = "neovim/nvim-lspconfig",
     })
-    use({
-        "mhanberg/elixir.nvim",
-        requires = { "neovim/nvim-lspconfig", "nvim-lua/plenary.nvim" },
-    })
+    use({ "elixir-tools/elixir-tools.nvim", requires = { "nvim-lua/plenary.nvim" } })
     use({
         "simrat39/inlay-hints.nvim",
         config = function()
@@ -133,7 +134,13 @@ return require("packer").startup(function(use)
             })
         end,
     })
-    use("folke/neodev.nvim")
+
+    use({
+        "folke/neodev.nvim",
+        config = function()
+            require("neodev").setup()
+        end,
+    })
 
     -- Key discovery
     use({
@@ -362,16 +369,22 @@ return require("packer").startup(function(use)
                         -- args = { "--no-watch" },
                         post_process_command = function(cmd)
                             if string.find(vim.fn.getcwd(), "Projects/sbs-") then
-                                local wrapped_cmd = {}
-                                for index, value in ipairs(cmd) do
-                                    wrapped_cmd[index] = "'" .. value .. "'"
+                                if vim.loop.fs_stat(vim.fn.getcwd() .. "/.env.local") == nil then
+                                    local wrapped_cmd = {}
+                                    for index, value in ipairs(cmd) do
+                                        wrapped_cmd[index] = "'" .. value .. "'"
+                                    end
+                                    return {
+                                        "make",
+                                        "dockerless",
+                                        "dockerless=true",
+                                        "cmd=MIX_ENV=test DONT_RESET_ECTO=true " .. table.concat(wrapped_cmd, " "),
+                                    }
+                                else
+                                    return vim.tbl_flatten({ { "env", "DONT_RESET_ECTO=true", "MIX_ENV=test" }, cmd })
                                 end
-                                return {
-                                    "make",
-                                    "dockerless",
-                                    "dockerless=true",
-                                    "cmd=MIX_ENV=test DONT_RESET_ECTO=true " .. table.concat(wrapped_cmd, " "),
-                                }
+                            else
+                                return cmd
                             end
                         end,
                     }),
