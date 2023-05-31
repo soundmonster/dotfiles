@@ -135,12 +135,7 @@ return require("packer").startup(function(use)
         end,
     })
 
-    use({
-        "folke/neodev.nvim",
-        config = function()
-            require("neodev").setup()
-        end,
-    })
+    use("folke/neodev.nvim")
 
     -- Key discovery
     use({
