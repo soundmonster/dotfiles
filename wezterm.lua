@@ -11,7 +11,7 @@ local activate_resize_keytable = act.ActivateKeyTable({
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
 		-- return "Catppuccin Mocha"
-		return "tokyonight-storm"
+		return "tokyonight_moon"
 	else
 		-- return "Catppuccin Latte"
 		return "tokyonight-day"

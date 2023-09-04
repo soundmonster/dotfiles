@@ -34,8 +34,9 @@
 	gpgsign = false
 [pull]
 	ff = only
-[alias]
-	recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
+# [alias]
+	# recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
+	# recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\" | fzf --header "Select a branch" | awk -F '\t'  '{print $2}'
 
 [includeIf "gitdir:~/Projects/*/"]
   path = ~/.gitconfig-work

@@ -33,6 +33,11 @@ return require("packer").startup(function(use)
         end,
     })
 
+    -- Close unused buffers
+    use({
+        "axkirillov/hbac.nvim",
+        requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
+    })
     -- LSP
     -- Plug 'williamboman/nvim-lsp-installer'
     use("williamboman/mason.nvim")
@@ -205,7 +210,7 @@ return require("packer").startup(function(use)
                     local prompt = "#2d3149"
                     hl.TelescopeNormal = {
                         bg = c.bg_dark,
-                        fg = c.fg_dark,
+                        fg = c.fg,
                     }
                     hl.TelescopeBorder = {
                         bg = c.bg_dark,
@@ -234,50 +239,51 @@ return require("packer").startup(function(use)
             })
         end,
     })
-    use({
-        "catppuccin/nvim",
-        as = "catppuccin",
-        config = function()
-            require("catppuccin").setup({
-                dim_inactive = {
-                    enabled = false,
-                    shade = "dark",
-                    percentage = 0.15,
-                },
-                integrations = {
-                    aerial = true,
-                    cmp = true,
-                    gitsigns = true,
-                    hop = true,
-                    lsp_trouble = true,
-                    mason = true,
-                    neotest = true,
-                    noice = true,
-                    notify = true,
-                    nvimtree = true,
-                    semantic_tokens = true,
-                    telescope = true,
-                    treesitter = true,
-                    which_key = true,
-                    native_lsp = {
-                        enabled = true,
-                        virtual_text = {
-                            errors = { "italic" },
-                            hints = { "italic" },
-                            warnings = { "italic" },
-                            information = { "italic" },
-                        },
-                        underlines = {
-                            errors = { "undercurl" },
-                            hints = { "undercurl" },
-                            warnings = { "undercurl" },
-                            information = { "undercurl" },
-                        },
-                    },
-                },
-            })
-        end,
-    })
+    -- use({
+    --     "catppuccin/nvim",
+    --     as = "catppuccin",
+    --     config = function()
+    --         require("catppuccin").setup({
+    --             dim_inactive = {
+    --                 enabled = false,
+    --                 shade = "dark",
+    --                 percentage = 0.15,
+    --             },
+    --             integrations = {
+    --                 aerial = true,
+    --                 cmp = true,
+    --                 gitsigns = true,
+    --                 hop = true,
+    --                 leap = true,
+    --                 lsp_trouble = true,
+    --                 mason = true,
+    --                 neotest = true,
+    --                 noice = true,
+    --                 notify = true,
+    --                 nvimtree = true,
+    --                 semantic_tokens = true,
+    --                 telescope = true,
+    --                 treesitter = true,
+    --                 which_key = true,
+    --                 native_lsp = {
+    --                     enabled = true,
+    --                     virtual_text = {
+    --                         errors = { "italic" },
+    --                         hints = { "italic" },
+    --                         warnings = { "italic" },
+    --                         information = { "italic" },
+    --                     },
+    --                     underlines = {
+    --                         errors = { "undercurl" },
+    --                         hints = { "undercurl" },
+    --                         warnings = { "undercurl" },
+    --                         information = { "undercurl" },
+    --                     },
+    --                 },
+    --             },
+    --         })
+    --     end,
+    -- })
     use({
         "f-person/auto-dark-mode.nvim",
         config = function()
@@ -287,7 +293,7 @@ return require("packer").startup(function(use)
                 -- update_interval = 1000,
                 set_dark_mode = function()
                     vim.api.nvim_set_option("background", "dark")
-                    vim.cmd("colorscheme tokyonight-storm")
+                    vim.cmd("colorscheme tokyonight-moon")
                 end,
                 set_light_mode = function()
                     vim.api.nvim_set_option("background", "light")
@@ -342,11 +348,17 @@ return require("packer").startup(function(use)
 
     -- Easymotion replacement
     use({
-        "phaazon/hop.nvim",
+        "ggandor/leap.nvim",
         config = function()
-            require("hop").setup()
+            require("leap").add_default_mappings()
         end,
     })
+    -- use({
+    --     "phaazon/hop.nvim",
+    --     config = function()
+    --         require("hop").setup()
+    --     end,
+    -- })
 
     use({
         "nvim-neotest/neotest",
