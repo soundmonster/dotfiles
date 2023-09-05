@@ -1,0 +1,9 @@
+#!/bin/sh
+
+branch=$(git branch -a --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)" \
+	| fzf --header "Select a branch" -d '\t' --nth '2' \
+	| awk -F "\t" '{print $2}')
+
+if [ "$branch" != "" ] ; then
+	git checkout "$branch"
+fi
