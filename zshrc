@@ -4,9 +4,12 @@ autoload -Uz compinit
 compinit
 
 export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
+export KERL_BUILD_DOCS="yes"
+export KERL_DOC_TARGETS="chunks"
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-wx --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
+export ASDF_HASHICORP_OVERWRITE_ARCH=amd64
 
 export EDITOR=nvim
 
@@ -31,11 +34,12 @@ export PATH="${PYTHON3_USER_PATH}:${OPENJDK_PATH}:${PATH}"
 
 # ASDF_DIR="$(brew --prefix asdf)/libexec"
 # source "$ASDF_DIR/asdf.sh"
-asdf_dir="/opt/homebrew/opt/asdf/libexec"
-source /opt/homebrew/opt/asdf/libexec/asdf.sh
+# asdf_dir="/opt/homebrew/opt/asdf/libexec"
+# source /opt/homebrew/opt/asdf/libexec/asdf.sh
+eval "$(rtx activate zsh)"
 
 # Use the fuck, an awesome command post-correction tool
-eval $(thefuck --alias)
+eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 # eval "$(starship init zsh)"
 
