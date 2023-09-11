@@ -45,7 +45,6 @@ return require("packer").startup(function(use)
     use("neovim/nvim-lspconfig")
     use({
         "utilyre/barbecue.nvim",
-        disable = true,
         tag = "*",
         requires = {
             "SmiteshP/nvim-navic",
@@ -58,7 +57,6 @@ return require("packer").startup(function(use)
     })
     use({
         "SmiteshP/nvim-navic",
-        disable = true,
         requires = "neovim/nvim-lspconfig",
     })
     use({ "elixir-tools/elixir-tools.nvim", requires = { "nvim-lua/plenary.nvim" } })
