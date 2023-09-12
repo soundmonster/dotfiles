@@ -1,72 +1,47 @@
-local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-        vim.cmd([[packadd packer.nvim]])
-        return true
-    end
-    return false
-end
+local plugins = {
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
-
-local packer_bootstrap = ensure_packer()
-
-return require("packer").startup(function(use)
-    use("wbthomason/packer.nvim")
-
-    use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
-    use("nvim-treesitter/nvim-treesitter-textobjects")
-    use("stevearc/aerial.nvim")
-    use({
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    "stevearc/aerial.nvim",
+    {
         "lewis6991/gitsigns.nvim",
         config = function()
             require("gitsigns").setup({
                 current_line_blame = true,
             })
         end,
-    })
+    },
 
     -- Close unused buffers
-    use({
+    {
         "axkirillov/hbac.nvim",
-        requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
-    })
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
+    },
     -- LSP
     -- Plug 'williamboman/nvim-lsp-installer'
-    use("williamboman/mason.nvim")
-    use("williamboman/mason-lspconfig.nvim")
-    use("neovim/nvim-lspconfig")
-    use({
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    {
         "utilyre/barbecue.nvim",
-        tag = "*",
-        requires = {
+        version = "*",
+        dependencies = {
             "SmiteshP/nvim-navic",
             "nvim-tree/nvim-web-devicons", -- optional dependency
         },
-        after = "nvim-web-devicons", -- keep this if you're using NvChad
         config = function()
             require("barbecue").setup({ theme = "tokyonight" })
         end,
-    })
-    use({
-        "SmiteshP/nvim-navic",
-        requires = "neovim/nvim-lspconfig",
-    })
-    use({ "elixir-tools/elixir-tools.nvim", requires = { "nvim-lua/plenary.nvim" } })
-    use({
+    },
+    { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
+    { "elixir-tools/elixir-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    {
         "simrat39/inlay-hints.nvim",
         config = function()
             require("inlay-hints").setup()
         end,
-    })
-    use({
+    },
+    {
         "lukas-reineke/indent-blankline.nvim",
         config = function()
             require("indent_blankline").setup({
@@ -76,25 +51,24 @@ return require("packer").startup(function(use)
                 show_current_context_start = true,
             })
         end,
-    })
+    },
 
     -- LSP status
-    use("simrat39/rust-tools.nvim")
+    "simrat39/rust-tools.nvim",
     -- LS for all files with handy actions; e.g. git blame
-    use({ "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim" } })
+    { "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     -- Show a lightbulb in the gutter if actions available
-    use({
+    {
         "kosayoda/nvim-lightbulb",
         config = function()
             require("nvim-lightbulb").setup({
                 autocmd = { enabled = true },
             })
         end,
-    })
+    },
 
-    use({
+    {
         "folke/noice.nvim",
-        disable = false, -- https://github.com/folke/noice.nvim/issues/298
         config = function()
             require("noice").setup({
                 lsp = {
@@ -107,7 +81,7 @@ return require("packer").startup(function(use)
                 },
             })
         end,
-        requires = {
+        dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module='...'` entries
             "MunifTanjim/nui.nvim",
             -- OPTIONAL:
@@ -115,33 +89,33 @@ return require("packer").startup(function(use)
             --   If not available, we use `mini` as the fallback
             "rcarriga/nvim-notify",
         },
-    })
+    },
 
     -- eompletion
-    use("hrsh7th/cmp-nvim-lsp")
-    use("hrsh7th/cmp-buffer")
-    use("hrsh7th/cmp-path")
-    use("hrsh7th/cmp-cmdline")
-    use("hrsh7th/nvim-cmp")
-    use("onsails/lspkind-nvim")
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
+    "hrsh7th/cmp-cmdline",
+    "hrsh7th/nvim-cmp",
+    "onsails/lspkind-nvim",
     -- Snippets
-    use("L3MON4D3/LuaSnip")
-    use("saadparwaiz1/cmp_luasnip")
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
     -- LSP stuff
-    use({
+    {
         "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             require("trouble").setup({
                 padding = false,
             })
         end,
-    })
+    },
 
-    use("folke/neodev.nvim")
+    "folke/neodev.nvim",
 
     -- Key discovery
-    use({
+    {
         "folke/which-key.nvim",
         config = function()
             require("which-key").setup({
@@ -149,34 +123,35 @@ return require("packer").startup(function(use)
                 show_keys = false,
             })
         end,
-    })
+    },
     -- devicons
-    use("kyazdani42/nvim-web-devicons")
-    use({
-        "kyazdani42/nvim-tree.lua",
+    { "nvim-tree/nvim-web-devicons", lazy = true },
+
+    {
+        "nvim-tree/nvim-tree.lua",
         config = function()
             require("nvim-tree").setup({
                 update_focused_file = { enable = true },
             })
         end,
-    })
+    },
 
-    use("ryanoasis/vim-devicons")
+    "ryanoasis/vim-devicons",
     -- telescope (fzf replacement)
-    use("nvim-lua/popup.nvim")
-    use("nvim-lua/plenary.nvim")
-    use({
+    "nvim-lua/popup.nvim",
+    "nvim-lua/plenary.nvim",
+    {
         "nvim-telescope/telescope.nvim",
-        requires = {
+        dependencies = {
             "nvim-lua/plenary.nvim",
             "debugloop/telescope-undo.nvim",
         },
-    })
-    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-    use("nvim-telescope/telescope-ui-select.nvim")
+    },
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-telescope/telescope-ui-select.nvim",
 
     -- Search
-    use({
+    {
         "mileszs/ack.vim",
         config = function()
             vim.cmd([[ 
@@ -185,9 +160,9 @@ return require("packer").startup(function(use)
 		endif
 		]])
         end,
-    })
+    },
     -- Themes
-    use({
+    {
         "folke/tokyonight.nvim",
         config = function()
             require("tokyonight").setup({
@@ -236,53 +211,8 @@ return require("packer").startup(function(use)
                 end,
             })
         end,
-    })
-    -- use({
-    --     "catppuccin/nvim",
-    --     as = "catppuccin",
-    --     config = function()
-    --         require("catppuccin").setup({
-    --             dim_inactive = {
-    --                 enabled = false,
-    --                 shade = "dark",
-    --                 percentage = 0.15,
-    --             },
-    --             integrations = {
-    --                 aerial = true,
-    --                 cmp = true,
-    --                 gitsigns = true,
-    --                 hop = true,
-    --                 leap = true,
-    --                 lsp_trouble = true,
-    --                 mason = true,
-    --                 neotest = true,
-    --                 noice = true,
-    --                 notify = true,
-    --                 nvimtree = true,
-    --                 semantic_tokens = true,
-    --                 telescope = true,
-    --                 treesitter = true,
-    --                 which_key = true,
-    --                 native_lsp = {
-    --                     enabled = true,
-    --                     virtual_text = {
-    --                         errors = { "italic" },
-    --                         hints = { "italic" },
-    --                         warnings = { "italic" },
-    --                         information = { "italic" },
-    --                     },
-    --                     underlines = {
-    --                         errors = { "undercurl" },
-    --                         hints = { "undercurl" },
-    --                         warnings = { "undercurl" },
-    --                         information = { "undercurl" },
-    --                     },
-    --                 },
-    --             },
-    --         })
-    --     end,
-    -- })
-    use({
+    },
+    {
         "f-person/auto-dark-mode.nvim",
         config = function()
             local auto_dark_mode = require("auto-dark-mode")
@@ -300,8 +230,8 @@ return require("packer").startup(function(use)
             })
             auto_dark_mode.init()
         end,
-    })
-    use({
+    },
+    {
         "nvim-lualine/lualine.nvim",
         config = function()
             -- local navic = require("nvim-navic")
@@ -321,46 +251,44 @@ return require("packer").startup(function(use)
                 },
             })
         end,
-    })
-    use({
+    },
+    {
         "norcalli/nvim-colorizer.lua",
         config = function()
             require("colorizer").setup()
         end,
-    })
-    use({
+    },
+    {
         "numToStr/Comment.nvim",
         config = function()
             require("Comment").setup()
         end,
-    })
+    },
 
-    use("tpope/vim-fugitive")
-    -- Sensible set of defaults
-    -- use 'tpope/vim-sensible'
-    use("tpope/vim-surround")
-    use("tpope/vim-repeat")
+    "tpope/vim-fugitive",
+    "tpope/vim-surround",
+    "tpope/vim-repeat",
     -- Automatically adjust whitespace formatting
-    use("tpope/vim-sleuth")
-    use("tpope/vim-abolish")
+    "tpope/vim-sleuth",
+    "tpope/vim-abolish",
 
     -- Easymotion replacement
-    use({
+    {
         "ggandor/leap.nvim",
         config = function()
             require("leap").add_default_mappings()
         end,
-    })
-    -- use({
+    },
+    -- {
     --     "phaazon/hop.nvim",
     --     config = function()
     --         require("hop").setup()
     --     end,
-    -- })
+    -- },
 
-    use({
+    {
         "nvim-neotest/neotest",
-        requires = {
+        dependencies = {
             -- "jfpedroza/neotest-elixir",
             { "soundmonster/neotest-elixir", branch = "extra_block_identifiers" },
         },
@@ -396,13 +324,23 @@ return require("packer").startup(function(use)
                 },
             })
         end,
+    },
+
+    "AndrewRadev/sideways.vim",
+}
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
     })
+end
+vim.opt.rtp:prepend(lazypath)
 
-    use("AndrewRadev/sideways.vim")
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-        require("packer").sync()
-    end
-end)
+local opts = {}
+require("lazy").setup(plugins, opts)
