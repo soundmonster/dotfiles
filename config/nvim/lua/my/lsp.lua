@@ -111,8 +111,9 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
     require("inlay-hints").on_attach(client, bufnr)
+    require("notify").notify("Started LSP client for " .. client.name)
     if client.server_capabilities.documentSymbolProvider then
-        -- require("nvim-navic").attach(client, bufnr)
+        require("nvim-navic").attach(client, bufnr)
     end
 
     if client.name == "elixirls" then
@@ -251,7 +252,7 @@ null_ls.setup({
             extra_args = { "-L", "keypair,keypairs,crate" },
         }),
         -- null_ls.builtins.diagnostics.vale,
-        null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),
+        -- null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),
         -- null_ls.builtins.diagnostics.write_good,
         -- null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.diagnostics.jsonlint,

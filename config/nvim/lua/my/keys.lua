@@ -18,19 +18,23 @@ local hops = {
     ["<leader><leader>"] = {
         name = "Hops",
         w = {
-            "<cmd>lua require'leap'.leap({})<cr>",
+            "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
+            -- "<cmd>lua require'leap'.leap({})<cr>",
             "words after cursor",
         },
         b = {
-            "<cmd>lua require'leap'.leap({backward=true})<cr>",
+            "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>",
+            -- "<cmd>lua require'leap'.leap({backward=true})<cr>",
             "words before cursor",
         },
         j = {
-            "<cmd>lua require'my.hops'.leap_to_line(require'my.hops'.HintDirection.AFTER_CURSOR)<cr>",
+            "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
+            -- "<cmd>lua require'my.hops'.leap_to_line(require'my.hops'.HintDirection.AFTER_CURSOR)<cr>",
             "lines down",
         },
         k = {
-            "<cmd>lua require'my.hops'.leap_to_line(require'my.hops'.HintDirection.BEFORE_CURSOR)<cr>",
+            "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>",
+            -- "<cmd>lua require'my.hops'.leap_to_line(require'my.hops'.HintDirection.BEFORE_CURSOR)<cr>",
             "lines up",
         },
     },

@@ -34,7 +34,34 @@ local plugins = {
         end,
     },
     { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
-    { "elixir-tools/elixir-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    -- { "elixir-tools/elixir-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    {
+        "elixir-tools/elixir-tools.nvim",
+        version = "*",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local elixir = require("elixir")
+            local elixirls = require("elixir.elixirls")
+
+            elixir.setup({
+                nextls = { enable = true },
+                credo = { enable = false },
+                elixirls = {
+                    enable = false,
+                    settings = elixirls.settings({
+                        dialyzerEnabled = false,
+                        enableTestLenses = false,
+                    }),
+                    on_attach = function(client, bufnr)
+                        -- add custom funk here
+                    end,
+                },
+            })
+        end,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
     {
         "simrat39/inlay-hints.nvim",
         config = function()
@@ -91,7 +118,7 @@ local plugins = {
         },
     },
 
-    -- eompletion
+    -- Completion
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
@@ -264,7 +291,7 @@ local plugins = {
             require("Comment").setup()
         end,
     },
-
+    "HiPhish/rainbow-delimiters.nvim",
     "tpope/vim-fugitive",
     "tpope/vim-surround",
     "tpope/vim-repeat",
@@ -273,19 +300,23 @@ local plugins = {
     "tpope/vim-abolish",
 
     -- Easymotion replacement
-    {
-        "ggandor/leap.nvim",
-        config = function()
-            require("leap").add_default_mappings()
-        end,
-    },
+    -- {
+    --     "ggandor/leap.nvim",
+    --     config = function()
+    --         require("leap").add_default_mappings()
+    --     end,
+    -- },
     -- {
     --     "phaazon/hop.nvim",
     --     config = function()
     --         require("hop").setup()
     --     end,
     -- },
-
+    {
+        "smoka7/hop.nvim",
+        version = "*",
+        opts = {},
+    },
     {
         "nvim-neotest/neotest",
         dependencies = {
