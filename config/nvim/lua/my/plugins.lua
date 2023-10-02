@@ -34,34 +34,7 @@ local plugins = {
         end,
     },
     { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
-    -- { "elixir-tools/elixir-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-    {
-        "elixir-tools/elixir-tools.nvim",
-        version = "*",
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            local elixir = require("elixir")
-            local elixirls = require("elixir.elixirls")
-
-            elixir.setup({
-                nextls = { enable = true },
-                credo = { enable = false },
-                elixirls = {
-                    enable = false,
-                    settings = elixirls.settings({
-                        dialyzerEnabled = false,
-                        enableTestLenses = false,
-                    }),
-                    on_attach = function(client, bufnr)
-                        -- add custom funk here
-                    end,
-                },
-            })
-        end,
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-    },
+    { "elixir-tools/elixir-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     {
         "simrat39/inlay-hints.nvim",
         config = function()
@@ -70,13 +43,9 @@ local plugins = {
     },
     {
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         config = function()
-            require("indent_blankline").setup({
-                char = "▏",
-                space_char_blankline = " ",
-                show_current_context = true,
-                show_current_context_start = true,
-            })
+            require("ibl").setup({ indent = { char = "▏" } })
         end,
     },
 
@@ -325,6 +294,10 @@ local plugins = {
         },
         config = function()
             require("neotest").setup({
+                icons = {
+                    passed = "",
+                    running_animated = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+                },
                 adapters = {
                     require("neotest-elixir")({
                         extra_block_identifiers = { "test_with_mock", "test_with_tracking" },
