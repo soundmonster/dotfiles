@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+pushd ~/Playground/elixir/lexical || exit
+git checkout main
+git pull upstream main
+git push origin main
+mix deps.get
+INDEXING_ENABLED=true mix package
+popd || exit

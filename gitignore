@@ -1,6 +1,8 @@
 .rake_tasks
 .envrc
 .elixir_ls
+.elixir-tools
+.lexical
 .idea
 *.iml
 .*.swp

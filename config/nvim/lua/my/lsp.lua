@@ -1,4 +1,4 @@
-require("neodev").setup({})
+-- require("neodev").setup({})
 
 -- Enable logs for LSP
 -- vim.lsp.set_log_level("debug")
@@ -110,7 +110,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
-    require("inlay-hints").on_attach(client, bufnr)
+    -- require("inlay-hints").on_attach(client, bufnr)
     require("notify").notify("Started LSP client for " .. client.name)
     if client.server_capabilities.documentSymbolProvider then
         require("nvim-navic").attach(client, bufnr)
@@ -181,6 +181,7 @@ local on_attach = function(client, bufnr)
     end
 end
 
+local lspconfig = require("lspconfig")
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-lspconfig").setup_handlers({
@@ -188,7 +189,7 @@ require("mason-lspconfig").setup_handlers({
     -- and will be called for each installed server that doesn't have
     -- a dedicated handler.
     function(server_name) -- default handler (optional)
-        require("lspconfig")[server_name].setup({
+        lspconfig[server_name].setup({
             on_attach = on_attach,
             capabilities = capabilities,
         })
@@ -211,11 +212,12 @@ require("mason-lspconfig").setup_handlers({
         })
     end,
     ["lua_ls"] = function()
-        require("lspconfig")["lua_ls"].setup({
+        lspconfig["lua_ls"].setup({
             on_attach = on_attach,
             capabilities = capabilities,
             settings = {
                 Lua = {
+                    workspace = { library = { "${3rd}/luv/library", "${3rd}/luassert/library" } },
                     hint = { enable = true },
                     codelens = { enable = true },
                     format = { enable = false },
@@ -224,10 +226,10 @@ require("mason-lspconfig").setup_handlers({
         })
     end,
     ["elixirls"] = function()
-        require("lspconfig")["elixirls"].setup({
+        lspconfig["elixirls"].setup({
             on_attach = on_attach,
             capabilities = capabilities,
-            root_dir = require("lspconfig/util").root_pattern("mix.lock", ".git"),
+            root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
             settings = {
                 elixirLS = {
                     suggestSpecs = true,
@@ -238,6 +240,36 @@ require("mason-lspconfig").setup_handlers({
             },
         })
     end,
+})
+
+-- Manual set up for Lexical, an Elixir language server
+local configs = require("lspconfig.configs")
+
+local lexical_config = {
+    filetypes = { "elixir", "eelixir", "heex" },
+    cmd = { "/Users/leonid.batyuk/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
+    settings = {},
+}
+
+if not configs.lexical then
+    configs.lexical = {
+        default_config = {
+            filetypes = lexical_config.filetypes,
+            cmd = lexical_config.cmd,
+            root_dir = function(fname)
+                return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
+            end,
+            -- optional settings
+            settings = lexical_config.settings,
+        },
+    }
+end
+
+lspconfig["lexical"].setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
+    settings = {},
 })
 
 local null_ls = require("null-ls")

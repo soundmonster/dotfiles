@@ -1,0 +1,25 @@
+#!/bin/bash
+
+_esc_seq="\x1b["
+_esc_end="${_esc_seq}0m"
+
+# $1: escape code
+# $2: message
+print_test_style() {
+    echo -e "\t${_esc_seq}${1}m${2}${_esc_end}\n"
+}
+
+declare -a _style_codes=(
+    ["1"]="bold"
+    ["2"]="dim"
+    ["3"]="italic"
+    ["4"]="underline"
+    ["9"]="strikethrough"
+)
+
+echo -e "Testing styles...\n"
+
+for key in "${!_style_codes[@]}"; do
+    print_test_style "${key}" "${_style_codes[$key]}"
+done
+

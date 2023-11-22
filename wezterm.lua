@@ -19,8 +19,10 @@ local function scheme_for_appearance(appearance)
 end
 
 local font = "JetBrains Mono"
+local italic_font = font
 local font_size = 12.5
--- local font = "Iosevka"
+-- local font = "Monaspace Neon"
+-- local italic_font = "Monaspace Radon"
 -- local font_size = 13.5
 --
 local color_scheme_name = scheme_for_appearance(wezterm.gui.get_appearance())
@@ -29,13 +31,17 @@ local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
 return {
 	-- default_prog = { '/opt/homebrew/bin/zsh' },
 	-- default_prog = { '/usr/local/bin/zsh' },
-	font = wezterm.font({ family = font, weight = "Medium" }),
+	font = wezterm.font({ family = font, weight = "Regular" }),
 	font_rules = {
-		{ intensity = "Bold", italic = false, font = wezterm.font({ family = font, weight = "ExtraBold" }) },
+		{ intensity = "Bold", italic = false, font = wezterm.font({ family = font, weight = "Bold" }) },
 		{
 			intensity = "Bold",
 			italic = true,
-			font = wezterm.font({ family = font, weight = "ExtraBold", italic = true }),
+			font = wezterm.font({ family = italic_font, weight = "Bold", italic = true }),
+		},
+		{
+			italic = true,
+			font = wezterm.font({ family = italic_font, weight = "Regular", italic = true }),
 		},
 	},
 	underline_thickness = "200%",

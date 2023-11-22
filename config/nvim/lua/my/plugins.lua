@@ -34,7 +34,34 @@ local plugins = {
         end,
     },
     { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
-    { "elixir-tools/elixir-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    {
+        "elixir-tools/elixir-tools.nvim",
+        -- version = "*",
+        -- event = { "BufReadPre", "BufNewFile" },
+        -- config = function()
+        --     local elixir = require("elixir")
+        --     -- local elixirls = require("elixir.elixirls")
+        --
+        --     elixir.setup({
+        --         nextls = {
+        --             enable = false,
+        --             cmd = "/Users/leonid.batyuk/Playground/elixir/next-ls/burrito_out/next_ls_darwin_arm64",
+        --             init_options = {
+        --                 experimental = {
+        --                     completions = {
+        --                         enabled = true,
+        --                     },
+        --                 },
+        --             },
+        --         },
+        --         credo = { enable = false },
+        --         elixirls = { enable = false },
+        --     })
+        -- end,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
     {
         "simrat39/inlay-hints.nvim",
         config = function()
@@ -52,7 +79,8 @@ local plugins = {
     -- LSP status
     "simrat39/rust-tools.nvim",
     -- LS for all files with handy actions; e.g. git blame
-    { "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    -- { "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    { "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     -- Show a lightbulb in the gutter if actions available
     {
         "kosayoda/nvim-lightbulb",
@@ -74,6 +102,14 @@ local plugins = {
                         ["vim.lsp.util.stylize_markdown"] = true,
                         ["cmp.entry.get_documentation"] = true,
                     },
+                },
+                -- you can enable a preset for easier configuration
+                presets = {
+                    bottom_search = false, -- use a classic bottom cmdline for search
+                    command_palette = false, -- position the cmdline and popupmenu together
+                    long_message_to_split = true, -- long messages will be sent to a split
+                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                    lsp_doc_border = false, -- add a border to hover docs and signature help
                 },
             })
         end,
@@ -108,7 +144,19 @@ local plugins = {
         end,
     },
 
-    "folke/neodev.nvim",
+    {
+        "folke/neodev.nvim",
+        config = function()
+            require("neodev").setup({
+                override = function(root_dir, library)
+                    if root_dir:find("/dotfiles/config/nvim", 1, true) then
+                        library.enabled = true
+                        library.plugins = true
+                    end
+                end,
+            })
+        end,
+    },
 
     -- Key discovery
     {
@@ -261,7 +309,22 @@ local plugins = {
         end,
     },
     "HiPhish/rainbow-delimiters.nvim",
+    -- Git
     "tpope/vim-fugitive",
+    "tpope/vim-rhubarb",
+    {
+        "pwntester/octo.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("octo").setup()
+        end,
+    },
+
+    "FabijanZulj/blame.nvim",
     "tpope/vim-surround",
     "tpope/vim-repeat",
     -- Automatically adjust whitespace formatting
@@ -269,18 +332,6 @@ local plugins = {
     "tpope/vim-abolish",
 
     -- Easymotion replacement
-    -- {
-    --     "ggandor/leap.nvim",
-    --     config = function()
-    --         require("leap").add_default_mappings()
-    --     end,
-    -- },
-    -- {
-    --     "phaazon/hop.nvim",
-    --     config = function()
-    --         require("hop").setup()
-    --     end,
-    -- },
     {
         "smoka7/hop.nvim",
         version = "*",
