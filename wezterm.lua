@@ -21,9 +21,12 @@ end
 local font = "JetBrains Mono"
 local italic_font = font
 local font_size = 12.5
--- local font = "Monaspace Neon"
+-- local font = "Monaspace Neon" -- Neon Argon Xenon Radon Krypton
 -- local italic_font = "Monaspace Radon"
--- local font_size = 13.5
+-- local font_size = 13.0
+-- local font = "Iosevka Nerd Font"
+-- local italic_font = font
+-- local font_size = 14.0
 --
 local color_scheme_name = scheme_for_appearance(wezterm.gui.get_appearance())
 local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
