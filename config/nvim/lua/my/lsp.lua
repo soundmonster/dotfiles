@@ -54,9 +54,12 @@ cmp.setup({
         end,
     }),
     sources = cmp.config.sources({
-        { name = "nvim_lsp" },
+        { name = "nvim_lsp", max_item_count = 5 },
+        { name = "nvim_lua", max_item_count = 5 },
         -- { name = 'vsnip' },
-        { name = "luasnip" },
+        { name = "luasnip", max_item_count = 5 },
+        { name = "copilot" },
+        { name = "git" },
     }, {
         {
             name = "buffer",
@@ -74,12 +77,16 @@ cmp.setup({
     }),
     formatting = {
         format = lspkind.cmp_format({
-            maxwidth = 60, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-            with_text = true,
+            mode = "symbol_text",
+            symbol_map = { Copilot = "" },
+            maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             menu = {
-                buffer = "[buf]",
-                nvim_lsp = "[lsp]",
-                vsnip = "[snip]",
+                git = "[Git]",
+                buffer = "[Buffer]",
+                nvim_lsp = "[LSP]",
+                luasnip = "[LuaSnip]",
+                nvim_lua = "[Lua]",
+                copilot = "[Copilot]",
             },
         }),
     },

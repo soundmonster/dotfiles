@@ -129,7 +129,31 @@ local plugins = {
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-cmdline",
     "hrsh7th/nvim-cmp",
+    {
+        "petertriho/cmp-git",
+        config = function()
+            require("cmp_git").setup()
+        end,
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
     "onsails/lspkind-nvim",
+    {
+        "zbirenbaum/copilot.lua",
+        config = function()
+            require("copilot").setup({
+                -- disable panel and suggestions, this is handled by copilot-cmp
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+            })
+        end,
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+            require("copilot_cmp").setup()
+        end,
+    },
+    -- "github/copilot.vim",
     -- Snippets
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
