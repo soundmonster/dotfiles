@@ -26,11 +26,12 @@ fh() {
   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
 }
 
+PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"
 PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
 # PYTHON3_USER_PATH="/Users/leonid.batyuk/Library/Python/3.9/bin"
-# OPENJDK_PATH="$(brew --prefix openjdk)/bin"
-OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
-export PATH="${PYTHON3_USER_PATH}:${OPENJDK_PATH}:${PATH}"
+OPENJDK_PATH="$(brew --prefix openjdk)/bin"
+# OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
+export PATH="${PYTHON3_USER_PATH}:${PYTHON3_UNVERSIONED_BIN_PATH}:${OPENJDK_PATH}:${PATH}"
 
 # ASDF_DIR="$(brew --prefix asdf)/libexec"
 # source "$ASDF_DIR/asdf.sh"
