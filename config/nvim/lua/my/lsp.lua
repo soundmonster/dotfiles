@@ -54,12 +54,12 @@ cmp.setup({
         end,
     }),
     sources = cmp.config.sources({
-        { name = "nvim_lsp", max_item_count = 5 },
-        { name = "nvim_lua", max_item_count = 5 },
+        { name = "nvim_lsp", priority = 4 },
+        { name = "nvim_lua" },
         -- { name = 'vsnip' },
-        { name = "luasnip", max_item_count = 5 },
-        { name = "copilot" },
+        { name = "luasnip", priority = 2 },
         { name = "git" },
+        { name = "copilot" },
     }, {
         {
             name = "buffer",
@@ -118,14 +118,16 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
     -- require("inlay-hints").on_attach(client, bufnr)
-    require("notify").notify("Started LSP client for " .. client.name)
+    -- require("notify").notify("Started LSP client for " .. client.name)
+    print("Started LSP client for " .. client.name)
     if client.server_capabilities.documentSymbolProvider then
         require("nvim-navic").attach(client, bufnr)
     end
 
-    if client.name == "elixirls" then
-        require("elixir.elixirls").on_attach(client, bufnr)
-    end
+    -- TODO remove this
+    -- if client.name == "elixirls" then
+    --     require("elixir.elixirls").on_attach(client, bufnr)
+    -- end
 
     --Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -188,6 +190,7 @@ local on_attach = function(client, bufnr)
     end
 end
 
+local elixir_lsp = "lexical" -- 'nextls', 'elixirls' or 'lexical'
 local lspconfig = require("lspconfig")
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -233,51 +236,87 @@ require("mason-lspconfig").setup_handlers({
         })
     end,
     ["elixirls"] = function()
-        lspconfig["elixirls"].setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
-            settings = {
-                elixirLS = {
-                    suggestSpecs = true,
-                    testLenses = true,
-                    dialyzerEnabled = true,
-                    fetchDeps = true,
+        if elixir_lsp == "elixirls" then
+            lspconfig["elixirls"].setup({
+                on_attach = on_attach,
+                capabilities = capabilities,
+                root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
+                settings = {
+                    elixirLS = {
+                        suggestSpecs = true,
+                        testLenses = true,
+                        dialyzerEnabled = true,
+                        fetchDeps = true,
+                    },
                 },
-            },
-        })
+            })
+        end
     end,
 })
 
--- Manual set up for Lexical, an Elixir language server
+-- Manual set up for language servers
 local configs = require("lspconfig.configs")
-
-local lexical_config = {
-    filetypes = { "elixir", "eelixir", "heex" },
-    cmd = { "/Users/leonid.batyuk/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
-    settings = {},
-}
 
 if not configs.lexical then
     configs.lexical = {
         default_config = {
-            filetypes = lexical_config.filetypes,
-            cmd = lexical_config.cmd,
-            root_dir = function(fname)
-                return lspconfig.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
-            end,
-            -- optional settings
-            settings = lexical_config.settings,
+            filetypes = { "elixir", "eelixir", "heex" },
+            cmd = { "/Users/leonid.batyuk/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
+            root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
+            settings = { dialyzerEnabled = true },
         },
     }
 end
 
-lspconfig["lexical"].setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
-    settings = {},
-})
+local mason_registry = require("mason-registry")
+
+if mason_registry.is_installed("nextls") and not configs.nextls then
+    local nextls = mason_registry.get_package("nextls")
+    -- this will only ever run on a Mac
+    local binary = ""
+    if vim.loop.os_uname().machine == "arm64" then
+        binary = "next_ls_darwin_arm64"
+    else
+        binary = "next_ls_darwin_amd64"
+    end
+    local path_to_binary = nextls:get_install_path() .. "/" .. binary
+    print(path_to_binary)
+    configs.nextls = {
+        default_config = {
+            filetypes = { "elixir", "eelixir", "heex" },
+            -- cmd = mason_registry.get_install_path("nextls"),
+            cmd = { path_to_binary, "--stdio" },
+            root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
+            settings = {
+                extensions = {
+                    credo = {
+                        enabled = true,
+                    },
+                },
+                experimental = {
+                    completions = {
+                        enabled = true,
+                    },
+                },
+            },
+        },
+    }
+
+    if elixir_lsp == "nextls" then
+        lspconfig["nextls"].setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+        })
+    end
+end
+
+if elixir_lsp == "lexical" then
+    -- Manual setup for lexical, an LSP for Elixir
+    lspconfig["lexical"].setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+    })
+end
 
 local null_ls = require("null-ls")
 null_ls.setup({
@@ -292,6 +331,7 @@ null_ls.setup({
         }),
         -- null_ls.builtins.diagnostics.vale,
         -- null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),
+        -- null_ls.builtins.diagnostics.credo,
         -- null_ls.builtins.diagnostics.write_good,
         -- null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.diagnostics.jsonlint,

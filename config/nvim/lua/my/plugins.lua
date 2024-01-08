@@ -36,28 +36,35 @@ local plugins = {
     { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
     {
         "elixir-tools/elixir-tools.nvim",
-        -- version = "*",
-        -- event = { "BufReadPre", "BufNewFile" },
-        -- config = function()
-        --     local elixir = require("elixir")
-        --     -- local elixirls = require("elixir.elixirls")
-        --
-        --     elixir.setup({
-        --         nextls = {
-        --             enable = false,
-        --             cmd = "/Users/leonid.batyuk/Playground/elixir/next-ls/burrito_out/next_ls_darwin_arm64",
-        --             init_options = {
-        --                 experimental = {
-        --                     completions = {
-        --                         enabled = true,
-        --                     },
-        --                 },
-        --             },
-        --         },
-        --         credo = { enable = false },
-        --         elixirls = { enable = false },
-        --     })
-        -- end,
+        enabled = false,
+        version = "*",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local elixir = require("elixir")
+            -- local elixirls = require("elixir.elixirls")
+
+            elixir.setup({
+                nextls = {
+                    enable = true,
+                    -- cmd = "/Users/leonid.batyuk/Playground/elixir/next-ls/burrito_out/next_ls_darwin_arm64",
+                    init_options = {
+                        extensions = {
+                            credo = {
+                                enabled = true,
+                            },
+                        },
+                        experimental = {
+
+                            completions = {
+                                enabled = true,
+                            },
+                        },
+                    },
+                },
+                credo = { enable = false },
+                elixirls = { enable = false },
+            })
+        end,
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
@@ -93,6 +100,7 @@ local plugins = {
 
     {
         "folke/noice.nvim",
+        enabled = true,
         config = function()
             require("noice").setup({
                 lsp = {
@@ -200,6 +208,7 @@ local plugins = {
         config = function()
             require("nvim-tree").setup({
                 update_focused_file = { enable = true },
+                view = { width = 40 },
             })
         end,
     },

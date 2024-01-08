@@ -60,6 +60,11 @@ export GPG_TTY=$(tty)
 [ "$HISTSIZE" -lt 50000 ] && HISTSIZE=50000
 [ "$SAVEHIST" -lt 10000 ] && SAVEHIST=10000
 
+## Edit command line in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^v' edit-command-line
+
 ## History command configuration
 setopt extended_history       # record timestamp of command in HISTFILE
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE

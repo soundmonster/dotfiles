@@ -1,9 +1,22 @@
 #!/bin/sh
 
-branch=$(git branch -a --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)" \
-	| fzf --header "Select a branch" -d '\t' --nth '2' \
-	| awk -F "\t" '{print $2}')
+branch=$(git branch -a --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)" |
+	fzf --header "Select a branch" -d '\t' --nth '2' |
+	awk -F "\t" '{print $2}')
 
-if [ "$branch" != "" ] ; then
+if [ "$branch" = "" ]; then exit; fi
+
+case "$branch" in
+"") ;;
+"origin/"*)
+	branch=$(echo "$branch" | sed 's#origin/##')
 	git checkout "$branch"
-fi
+	;;
+"upstream/"*)
+	branch=$(echo "$branch" | sed 's#upstream/##')
+	git checkout "$branch"
+	;;
+*)
+	git checkout "$branch"
+	;;
+esac
