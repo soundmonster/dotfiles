@@ -6,7 +6,8 @@ compinit
 export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
 export KERL_BUILD_DOCS="yes"
 export KERL_DOC_TARGETS="chunks"
-export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-wx --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
+# export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-wx --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
+export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
 export ASDF_HASHICORP_OVERWRITE_ARCH=amd64
@@ -15,10 +16,9 @@ export EDITOR=nvim
 
 source ~/.zsh_aliases
 unalias ll 2> /dev/null
-alias ls='exa'
-alias ll='exa --long --header --git --group'
-alias lsa='exa --long --header --git --group --all'
-alias gbr="git branch | fzf | xargs git checkout"
+alias ls='eza'
+alias ll='eza --long --header --git --group'
+alias lsa='eza --long --header --git --group --all'
 
 # fh - repeat history
 unalias fh 2> /dev/null
@@ -37,7 +37,7 @@ export PATH="${PYTHON3_USER_PATH}:${PYTHON3_UNVERSIONED_BIN_PATH}:${OPENJDK_PATH
 # source "$ASDF_DIR/asdf.sh"
 # asdf_dir="/opt/homebrew/opt/asdf/libexec"
 # source /opt/homebrew/opt/asdf/libexec/asdf.sh
-eval "$(rtx activate zsh)"
+eval "$(mise activate zsh)"
 
 # Use the fuck, an awesome command post-correction tool
 eval "$(thefuck --alias)"

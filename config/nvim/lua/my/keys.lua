@@ -68,9 +68,10 @@ wk.register({
     ["<leader>d"] = {
         name = "diagnostics",
         d = { "<cmd>TroubleToggle<cr>", "toggle" },
-        c = { "<cmd>TroubleClose<cr>", "close" },
-        f = { "<cmd>Trouble document_diagnostics<cr>", "file diagnostics" },
-        p = { "<cmd>Trouble workspace_diagnostics<cr>", "project diagnostics" },
+        f = { "<cmd>TroubleToggle document_diagnostics<cr>", "file diagnostics" },
+        w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "project diagnostics" },
+        l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+        q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
     },
     ["<leader>t"] = {
         name = "neotest",

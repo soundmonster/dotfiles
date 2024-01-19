@@ -59,7 +59,7 @@ cmp.setup({
         -- { name = 'vsnip' },
         { name = "luasnip", priority = 2 },
         { name = "git" },
-        { name = "copilot" },
+        { name = "copilot", priority = 1 },
     }, {
         {
             name = "buffer",
