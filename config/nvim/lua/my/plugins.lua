@@ -373,8 +373,7 @@ local plugins = {
     {
         "nvim-neotest/neotest",
         dependencies = {
-            -- "jfpedroza/neotest-elixir",
-            { "soundmonster/neotest-elixir", branch = "extra_block_identifiers" },
+            "jfpedroza/neotest-elixir",
         },
         config = function()
             require("neotest").setup({
