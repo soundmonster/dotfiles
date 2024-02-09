@@ -11,11 +11,10 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
     desc = "Hide barbecue winbar when blame is open",
     callback = function()
         local win_ids = vim.api.nvim_list_wins()
-
         for _, win_id in ipairs(win_ids) do
             local buf_id = vim.api.nvim_win_get_buf(win_id)
             local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
-            if buf_ft == "blame" then
+            if buf_ft == "fugitiveblame" then
                 require("lualine").hide({
                     place = { "winbar" },
                     unhide = false,

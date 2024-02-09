@@ -327,7 +327,7 @@ null_ls.setup({
         null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.completion.luasnip,
         null_ls.builtins.diagnostics.codespell.with({
-            extra_args = { "-L", "keypair,keypairs,crate" },
+            extra_args = { "-L", "keypair,keypairs,crate,statics" },
         }),
         -- null_ls.builtins.diagnostics.vale,
         -- null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),

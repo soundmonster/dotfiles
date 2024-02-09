@@ -345,19 +345,6 @@ local plugins = {
     -- Git
     "tpope/vim-fugitive",
     "tpope/vim-rhubarb",
-    {
-        "pwntester/octo.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-            "nvim-tree/nvim-web-devicons",
-        },
-        config = function()
-            require("octo").setup()
-        end,
-    },
-
-    "FabijanZulj/blame.nvim",
     "tpope/vim-surround",
     "tpope/vim-repeat",
     -- Automatically adjust whitespace formatting
