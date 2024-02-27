@@ -323,7 +323,10 @@ local plugins = {
                         "encoding",
                         "fileformat",
                         "filetype",
-                        { "g:lsp_autoformat", on_click = require("my/autoformat").toggle_autoformat },
+                        {
+                            require("my/autoformat").print_autoformat,
+                            on_click = require("my/autoformat").toggle_autoformat,
+                        },
                     },
                 },
             })
