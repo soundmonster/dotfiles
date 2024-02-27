@@ -2,5 +2,5 @@
 
 set -x
 
-git branch | grep -ve '^\*' | grep -v master | xargs git branch -D
+git branch | grep -ve '^\*' | grep -v master | grep -v main | xargs git branch -D
 git remote prune origin
