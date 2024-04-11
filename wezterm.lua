@@ -128,6 +128,10 @@ return {
 		{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
 		{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
 		{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+		{ key = "LeftArrow", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+		{ key = "DownArrow", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+		{ key = "UpArrow", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+		{ key = "RightArrow", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
 		{ key = "{", mods = "LEADER|SHIFT", action = act.RotatePanes("CounterClockwise") },
 		{ key = "}", mods = "LEADER|SHIFT", action = act.RotatePanes("Clockwise") },
 		{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
@@ -138,7 +142,17 @@ return {
 			action = act.Multiple({ act.AdjustPaneSize({ "Left", 1 }), activate_resize_keytable }),
 		},
 		{
+			key = "LeftArrow",
+			mods = "LEADER|CTRL",
+			action = act.Multiple({ act.AdjustPaneSize({ "Left", 1 }), activate_resize_keytable }),
+		},
+		{
 			key = "j",
+			mods = "LEADER|CTRL",
+			action = act.Multiple({ act.AdjustPaneSize({ "Down", 1 }), activate_resize_keytable }),
+		},
+		{
+			key = "DownArrow",
 			mods = "LEADER|CTRL",
 			action = act.Multiple({ act.AdjustPaneSize({ "Down", 1 }), activate_resize_keytable }),
 		},
@@ -148,7 +162,17 @@ return {
 			action = act.Multiple({ act.AdjustPaneSize({ "Up", 1 }), activate_resize_keytable }),
 		},
 		{
+			key = "UpArrow",
+			mods = "LEADER|CTRL",
+			action = act.Multiple({ act.AdjustPaneSize({ "Up", 1 }), activate_resize_keytable }),
+		},
+		{
 			key = "l",
+			mods = "LEADER|CTRL",
+			action = act.Multiple({ act.AdjustPaneSize({ "Right", 1 }), activate_resize_keytable }),
+		},
+		{
+			key = "RightArrow",
 			mods = "LEADER|CTRL",
 			action = act.Multiple({ act.AdjustPaneSize({ "Right", 1 }), activate_resize_keytable }),
 		},
