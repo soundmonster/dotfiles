@@ -34,19 +34,16 @@
 	gpgsign = false
 [pull]
 	ff = only
-# [alias]
-	# recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
-	# recent = branch -a --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\" | fzf --header "Select a branch" | awk -F '\t'  '{print $2}'
 
 [includeIf "gitdir:~/Projects/*/"]
   path = ~/.gitconfig-work
 
 # brew install git-delta
 [core]
-    pager = delta
+    pager = git delta
 
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = git delta --color-only
 
 [delta]
     syntax-theme = ansi
@@ -54,8 +51,44 @@
     light = false    # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
     side-by-side = true
 
+[delta "tokyonight-day"]
+  minus-style                   = syntax "#dfccd4"
+  minus-non-emph-style          = syntax "#dfccd4"
+  minus-emph-style              = syntax "#d99ea2"
+  minus-empty-line-marker-style = syntax "#dfccd4"
+  line-numbers-minus-style      = "#c25d64"
+  plus-style                    = syntax "#aecde6"
+  plus-non-emph-style           = syntax "#aecde6"
+  plus-emph-style               = syntax "#57a7bc"
+  plus-empty-line-marker-style  = syntax "#aecde6"
+  line-numbers-plus-style       = "#399a96"
+  line-numbers-zero-style       = "#a8aecb"
+
+[delta "tokyonight-moon"]
+  minus-style                   = syntax "#3a273a"
+  minus-non-emph-style          = syntax "#3a273a"
+  minus-emph-style              = syntax "#6b2e43"
+  minus-empty-line-marker-style = syntax "#3a273a"
+  line-numbers-minus-style      = "#b55a67"
+  plus-style                    = syntax "#273849"
+  plus-non-emph-style           = syntax "#273849"
+  plus-emph-style               = syntax "#305f6f"
+  plus-empty-line-marker-style  = syntax "#273849"
+  line-numbers-plus-style       = "#627259"
+  line-numbers-zero-style       = "#3b4261"
+
+[alias]
+    # a workaround for Delta to pick up the correct dark/light mode
+    delta = !delta $(defaults read -g AppleInterfaceStyle &>/dev/null && echo --features tokyonight-moon || echo --features tokyonight-day --light)
+
 [merge]
     conflictstyle = diff3
 
 [diff]
     colorMoved = default
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
