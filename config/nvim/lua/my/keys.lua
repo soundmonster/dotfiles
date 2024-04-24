@@ -59,7 +59,8 @@ wk.register({
     ["<leader>f"] = {
         name = "file",
         f = { "<cmd>Telescope find_files<cr>", "find file" },
-        g = { "<cmd>Telescope live_grep<cr>", "search text in files" },
+        -- g = { "<cmd>Telescope live_grep<cr>", "search text in files" },
+        g = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", "search text in files" },
         b = { "<cmd>Telescope buffers<cr>", "buffers" },
         r = { "<cmd>Telescope oldfiles<cr>", "recent files" },
         t = { "<cmd>NvimTreeToggle<cr>", "file tree" },

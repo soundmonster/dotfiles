@@ -222,6 +222,7 @@ local plugins = {
         dependencies = {
             "nvim-lua/plenary.nvim",
             "debugloop/telescope-undo.nvim",
+             "nvim-telescope/telescope-live-grep-args.nvim",
         },
     },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -256,6 +257,7 @@ local plugins = {
                     sidebars = "dark", -- style for sidebars, see below
                     floats = "dark", -- style for floating windows
                 },
+              sidebars = { "qf", "help" },
                 on_highlights = function(hl, c)
                     local prompt = "#2d3149"
                     hl.TelescopeNormal = {
