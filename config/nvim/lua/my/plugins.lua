@@ -374,7 +374,8 @@ local plugins = {
         config = function()
             require("neotest").setup({
                 icons = {
-                    passed = "",
+                    passed = "✔",
+                    failed = "⨯",
                     running_animated = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
                 },
                 adapters = {
