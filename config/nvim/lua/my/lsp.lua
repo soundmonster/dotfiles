@@ -123,11 +123,6 @@ local on_attach = function(client, bufnr)
         require("nvim-navic").attach(client, bufnr)
     end
 
-    -- TODO remove this
-    -- if client.name == "elixirls" then
-    --     require("elixir.elixirls").on_attach(client, bufnr)
-    -- end
-
     --Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -184,9 +179,11 @@ local on_attach = function(client, bufnr)
     -- 	vim.cmd([[autocmd BufWritePre <buffer> lua vim.g.lsp_autoformat and vim.lsp.buf.format({ async = false })]])
     -- 	vim.cmd([[augroup END]])
     -- end
-    if client.server_capabilities.codeLensProvider then
-        vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
-    end
+
+    -- this doesn't always work reliably, and cause visual noise when logging errors
+    -- if client.server_capabilities.codeLensProvider then
+    --     vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
+    -- end
 end
 
 local elixir_lsp = "lexical" -- 'nextls', 'elixirls' or 'lexical'
@@ -269,39 +266,42 @@ end
 
 local mason_registry = require("mason-registry")
 
-if mason_registry.is_installed("nextls") and not configs.nextls then
-    local nextls = mason_registry.get_package("nextls")
-    -- this will only ever run on a Mac
-    local binary = ""
-    if vim.loop.os_uname().machine == "arm64" then
-        binary = "next_ls_darwin_arm64"
-    else
-        binary = "next_ls_darwin_amd64"
-    end
-    local path_to_binary = nextls:get_install_path() .. "/" .. binary
-    print(path_to_binary)
-    configs.nextls = {
-        default_config = {
-            filetypes = { "elixir", "eelixir", "heex" },
-            -- cmd = mason_registry.get_install_path("nextls"),
-            cmd = { path_to_binary, "--stdio" },
-            root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
-            settings = {
-                extensions = {
-                    credo = {
-                        enabled = true,
+if elixir_lsp == "nextls" then
+    if mason_registry.is_installed("nextls") and not configs.nextls then
+        local nextls = mason_registry.get_package("nextls")
+        -- this will only ever run on a Mac
+        local binary = ""
+        if vim.loop.os_uname().machine == "arm64" then
+            binary = "next_ls_darwin_arm64"
+        else
+            binary = "next_ls_darwin_amd64"
+        end
+        local path_to_binary = nextls:get_install_path() .. "/" .. binary
+        print(path_to_binary)
+        if not configs.nextls then
+            configs.nextls = {
+                default_config = {
+                    filetypes = { "elixir", "eelixir", "heex" },
+                    -- cmd = mason_registry.get_install_path("nextls"),
+                    cmd = { path_to_binary, "--stdio" },
+                    cmd_env = { NEXTLS_SPITFIRE_ENABLED = "1" },
+                    root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
+                    settings = {
+                        extensions = {
+                            credo = {
+                                enable = true,
+                            },
+                        },
+                        experimental = {
+                            completions = {
+                                enable = true,
+                            },
+                        },
                     },
                 },
-                experimental = {
-                    completions = {
-                        enabled = true,
-                    },
-                },
-            },
-        },
-    }
+            }
+        end
 
-    if elixir_lsp == "nextls" then
         lspconfig["nextls"].setup({
             on_attach = on_attach,
             capabilities = capabilities,
@@ -321,23 +321,14 @@ local null_ls = require("null-ls")
 null_ls.setup({
     on_attach = on_attach,
     sources = {
-        -- null_ls.builtins.code_actions.gitsigns,
-        null_ls.builtins.code_actions.shellcheck,
-        null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.completion.luasnip,
         null_ls.builtins.diagnostics.codespell.with({
             extra_args = { "-L", "keypair,keypairs,crate,statics" },
         }),
-        -- null_ls.builtins.diagnostics.vale,
         -- null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),
         -- null_ls.builtins.diagnostics.credo,
-        -- null_ls.builtins.diagnostics.write_good,
-        -- null_ls.builtins.diagnostics.yamllint,
-        null_ls.builtins.diagnostics.jsonlint,
         null_ls.builtins.diagnostics.zsh,
-        -- null_ls.builtins.formatting.codespell,
         null_ls.builtins.formatting.stylua,
-        null_ls.builtins.formatting.rustfmt,
-        null_ls.builtins.formatting.jq,
+        null_ls.builtins.formatting.shellharden,
     },
 })

@@ -50,13 +50,12 @@ local plugins = {
                     init_options = {
                         extensions = {
                             credo = {
-                                enabled = true,
+                                enable = true,
                             },
                         },
                         experimental = {
-
                             completions = {
-                                enabled = true,
+                                enable = true,
                             },
                         },
                     },
@@ -162,6 +161,19 @@ local plugins = {
         end,
     },
     -- "github/copilot.vim",
+    {
+        "CopilotC-Nvim/CopilotChat.nvim",
+        branch = "canary",
+        dependencies = {
+            { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+            { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+        },
+        opts = {
+            debug = true, -- Enable debugging
+            -- See Configuration section for rest
+        },
+        -- See Commands section for default commands if you want to lazy load on them
+    },
     -- Snippets
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
@@ -222,7 +234,7 @@ local plugins = {
         dependencies = {
             "nvim-lua/plenary.nvim",
             "debugloop/telescope-undo.nvim",
-             "nvim-telescope/telescope-live-grep-args.nvim",
+            "nvim-telescope/telescope-live-grep-args.nvim",
         },
     },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -257,7 +269,7 @@ local plugins = {
                     sidebars = "dark", -- style for sidebars, see below
                     floats = "dark", -- style for floating windows
                 },
-              sidebars = { "qf", "help" },
+                sidebars = { "qf", "help" },
                 on_highlights = function(hl, c)
                     local prompt = "#2d3149"
                     hl.TelescopeNormal = {
@@ -369,7 +381,7 @@ local plugins = {
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
-            "jfpedroza/neotest-elixir"
+            "jfpedroza/neotest-elixir",
         },
         config = function()
             require("neotest").setup({
@@ -409,8 +421,15 @@ local plugins = {
             })
         end,
     },
-
     "AndrewRadev/sideways.vim",
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function()
+            vim.fn["mkdp#util#install"]()
+        end,
+    },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

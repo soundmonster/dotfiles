@@ -52,11 +52,11 @@ wk.register({
 
 -- Files
 wk.register({
-    ["<leader>*"] = {
+    ["*"] = {
         "<cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand('<cword>')})<cr>",
         "search word under cursor in project",
     },
-    ["<leader>f"] = {
+    f = {
         name = "file",
         f = { "<cmd>Telescope find_files<cr>", "find file" },
         -- g = { "<cmd>Telescope live_grep<cr>", "search text in files" },
@@ -66,7 +66,7 @@ wk.register({
         t = { "<cmd>NvimTreeToggle<cr>", "file tree" },
         l = { "<cmd>NvimTreeFindFile<cr>", "locate current file in tree" },
     },
-    ["<leader>d"] = {
+    d = {
         name = "diagnostics",
         d = { "<cmd>TroubleToggle<cr>", "toggle" },
         f = { "<cmd>TroubleToggle document_diagnostics<cr>", "file diagnostics" },
@@ -74,7 +74,7 @@ wk.register({
         l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
         q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
     },
-    ["<leader>t"] = {
+    t = {
         name = "neotest",
         t = { "<cmd>lua require('neotest').summary.toggle()<cr>", "toggle tree" },
         o = { "<cmd>lua require('neotest').output.toggle()<cr>", "toggle output" },
@@ -83,9 +83,37 @@ wk.register({
         l = { "<cmd>lua require('neotest').run.run()<cr>", "run test" },
         s = { "<cmd>lua require('neotest').run.run({suite=true})<cr>", "run suite" },
     },
-    ["<leader>n"] = {
+    n = {
         name = "notifications",
         l = { "<cmd>NoiceLog<cr>", "list" },
         c = { "<cmd>lua require('notify').dismiss()<cr>", "clear" },
     },
-})
+    cc = {
+        name = "CopilotChat",
+        q = {
+            function()
+                local input = vim.fn.input("Quick Chat: ")
+                if input ~= "" then
+                    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+                end
+            end,
+            "Quick chat",
+        },
+        h = {
+            function()
+                local actions = require("CopilotChat.actions")
+                require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+            end,
+            "Help actions",
+        },
+        -- Show prompts actions with telescope
+        p = {
+            function()
+                local actions = require("CopilotChat.actions")
+                require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+            end,
+            "Prompt actions",
+            mode = { "n", "v" },
+        },
+    },
+}, { prefix = "<leader>" })
