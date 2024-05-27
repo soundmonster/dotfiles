@@ -117,7 +117,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
-    -- require("inlay-hints").on_attach(client, bufnr)
+    require("inlay-hints").on_attach(client, bufnr)
     print("Started LSP client for " .. client.name)
     if client.server_capabilities.documentSymbolProvider then
         require("nvim-navic").attach(client, bufnr)
