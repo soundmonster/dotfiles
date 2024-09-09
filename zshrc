@@ -6,7 +6,7 @@ compinit
 export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
 export KERL_BUILD_DOCS="yes"
 export KERL_DOC_TARGETS="chunks"
-export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc)"
+export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc) --with-wx"
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
 export ASDF_HASHICORP_OVERWRITE_ARCH=amd64
@@ -27,6 +27,8 @@ fh() {
 
 PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"
 PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
+# Created by `pipx` on 2024-06-04 08:47:56
+export PATH="$PATH:$HOME/.local/bin"
 # PYTHON3_USER_PATH="/Users/leonid.batyuk/Library/Python/3.9/bin"
 OPENJDK_PATH="$(brew --prefix openjdk)/bin"
 # OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
@@ -49,10 +51,13 @@ function z() {
 
 export GPG_TTY=$(tty)
 
-## History file configuration
+## Atuin for history
+eval "$(atuin init zsh)"
+
+## History file configuration (deprecated, use atuin)
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
-[ "$HISTSIZE" -lt 50000 ] && HISTSIZE=50000
-[ "$SAVEHIST" -lt 10000 ] && SAVEHIST=10000
+[ "$HISTSIZE" -lt 100000 ] && HISTSIZE=100000
+[ "$SAVEHIST" -lt 100000 ] && SAVEHIST=100000
 
 ## Edit command line in $EDITOR
 autoload -U edit-command-line
@@ -90,3 +95,4 @@ eval "$(sheldon source)"
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+

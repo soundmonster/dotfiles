@@ -1,119 +1,103 @@
-local wk = require("which-key")
-
--- windows.nvim
-wk.register({
-    ["<C-w>"] = {
-        name = "window",
-        z = { "<cmd>WindowsMaximize<cr>", "maximize window" },
+return {
+    { "<leader><leader>", group = "hops",             mode = { "n", "v" } },
+    {
+        "<leader><leader>w",
+        "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
+        desc = "words after cursor",
+        mode = { "n", "v" },
     },
-})
+    {
+        "<leader><leader>b",
+        "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>",
+        desc = "words before cursor",
+        mode = { "n", "v" },
+    },
+    {
+        "<leader><leader>j",
+        "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
+        desc = "lines down",
+        mode = { "n", "v" },
+    },
+    {
+        "<leader><leader>k",
+        "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>",
+        desc = "lines up",
+        mode = { "n", "v" },
+    },
+    -- Sideways
+    { "<C-h>",            "<cmd>SidewaysLeft<cr>",    desc = "sideways left" },
+    { "<C-l>",            "<cmd>SidewaysRight<cr>",   desc = "sideways right" },
+    -- Elixir Tools
+    -- { "<C-k>", "<cmd>ElixirToPipe<cr>", "Elixir to pipe" },
+    -- { "<C-j>", "<cmd>ElixirFromPipe<cr>", "Elixir from pipe" },
+    -- windows.nvim
+    { "<C-w>z",           "<cmd>WindowsMaximize<cr>", desc = "maximize window" },
+    -- copy to system clipboard
+    { "<leader>yy",       'ggVG"*y',                  desc = "file to system clipboard",      mode = "n" },
+    { "<leader>yy",       '"*y',                      desc = "selection to system clipboard", mode = "v" },
+    -- reselect pasted text
+    { "gp",               "`[v`]",                    desc = "reselect pasted text" },
 
--- copy to system clipboard
-wk.register({ ["<leader>yy"] = { 'ggVG"*y', "file to system clipboard" } }, { mode = "n" })
-wk.register({ ["<leader>yy"] = { '"*y', "selection to system clipboard" } }, { mode = "v" })
--- reselect pasted text
-wk.register({ gp = { "`[v`]", "reselect pasted text" } })
+    {
+        "<leader>*",
+        "<cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand('<cword>')})<cr>",
+        desc = "search word under cursor in project",
+    },
+    { "<leader>f",  group = "files" },
+    { "<leader>ff", "<cmd>Telescope find_files<cr>",                                                desc = "find file" },
+    { "<leader>fg", "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", desc = "search text in files", },
+    { "<leader>fb", "<cmd>Telescope buffers<cr>",                                                   desc = "buffers" },
+    { "<leader>fr", "<cmd>Telescope oldfiles<cr>",                                                  desc = "recent files" },
+    { "<leader>ft", "<cmd>NvimTreeToggle<cr>",                                                      desc = "file tree" },
+    { "<leader>fl", "<cmd>NvimTreeFindFile<cr>",                                                    desc = "locate current file in tree", },
+    { "<leader>a",  "<cmd>Trouble symbols toggle<cr>",                                              desc = "toggle symbols" },
 
-local hops = {
-    ["<leader><leader>"] = {
-        name = "Hops",
-        w = {
-            "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
-            -- "<cmd>lua require'leap'.leap({})<cr>",
-            "words after cursor",
-        },
-        b = {
-            "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>",
-            -- "<cmd>lua require'leap'.leap({backward=true})<cr>",
-            "words before cursor",
-        },
-        j = {
-            "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
-            -- "<cmd>lua require'my.hops'.leap_to_line(require'my.hops'.HintDirection.AFTER_CURSOR)<cr>",
-            "lines down",
-        },
-        k = {
-            "<cmd>lua require'hop'.hint_lines_skip_whitespace({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR })<cr>",
-            -- "<cmd>lua require'my.hops'.leap_to_line(require'my.hops'.HintDirection.BEFORE_CURSOR)<cr>",
-            "lines up",
-        },
+    { "<leader>d",  group = "diagnostics" },
+    { "<leader>dd", "<cmd>Trouble diagnostics toggle<cr>",                                          desc = "toggle diagnostics" },
+    { "<leader>dl", "<cmd>Trouble loclist toggle<cr>",                                              desc = "toggle loclist" },
+    { "<leader>dq", "<cmd>Trouble quickfix toggle<cr>",                                             desc = "toggle quickfix" },
+    { "<leader>dt", "<cmd>Trouble telescope toggle<cr>",                                            desc = "toggle telescope" },
+
+    { "<leader>t",  group = "neotest" },
+    { "<leader>tt", "<cmd>lua require('neotest').summary.toggle()<cr>",                             desc = "toggle tree" },
+    { "<leader>to", "<cmd>lua require('neotest').output.toggle()<cr>",                              desc = "toggle output" },
+    { "<leader>tp", "<cmd>lua require('neotest').output_panel.toggle()<cr>",                        desc = "toggle output panel" },
+    { "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>",                  desc = "run file" },
+    { "<leader>tl", "<cmd>lua require('neotest').run.run()<cr>",                                    desc = "run test" },
+    { "<leader>ts", "<cmd>lua require('neotest').run.run({suite=true})<cr>",                        desc = "run suite" },
+    { "<leader>tr", "<cmd>lua require('neotest').run.run_last()<cr>",                               desc = "run last" },
+
+    { "<leader>n",  group = "notifications" },
+    { "<leader>nl", "<cmd>NoiceLog<cr>",                                                            desc = "list" },
+    { "<leader>nc", "<cmd>lua require('notify').dismiss()<cr>",                                     desc = "clear" },
+
+    { "<leader>cc", group = "copilot-chat" },
+    {
+        "<leader>ccq",
+        function()
+            local input = vim.fn.input("Quick Chat: ")
+            if input ~= "" then
+                require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+            end
+        end,
+        desc = "Quick chat",
+    },
+    {
+        "<leader>cch",
+        function()
+            local actions = require("CopilotChat.actions")
+            require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+        end,
+        desc = "Help actions",
+    },
+    -- Show prompts actions with telescope
+    {
+        "<leader>ccp",
+        function()
+            local actions = require("CopilotChat.actions")
+            require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+        end,
+        desc = "Prompt actions",
+        mode = { "n", "v" },
     },
 }
-wk.register(hops, { mode = "n" })
-wk.register(hops, { mode = "v" })
-
--- Sideways
-wk.register({
-    ["<C-h>"] = { "<cmd>SidewaysLeft<cr>", "sideways left" },
-    ["<C-l>"] = { "<cmd>SidewaysRight<cr>", "sideways right" },
-    ["<C-k>"] = { "<cmd>ElixirToPipe<cr>", "Elixir to pipe" },
-    ["<C-j>"] = { "<cmd>ElixirFromPipe<cr>", "Elixir from pipe" },
-})
-
--- Files
-wk.register({
-    ["*"] = {
-        "<cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand('<cword>')})<cr>",
-        "search word under cursor in project",
-    },
-    f = {
-        name = "file",
-        f = { "<cmd>Telescope find_files<cr>", "find file" },
-        -- g = { "<cmd>Telescope live_grep<cr>", "search text in files" },
-        g = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", "search text in files" },
-        b = { "<cmd>Telescope buffers<cr>", "buffers" },
-        r = { "<cmd>Telescope oldfiles<cr>", "recent files" },
-        t = { "<cmd>NvimTreeToggle<cr>", "file tree" },
-        l = { "<cmd>NvimTreeFindFile<cr>", "locate current file in tree" },
-    },
-    d = {
-        name = "diagnostics",
-        d = { "<cmd>TroubleToggle<cr>", "toggle" },
-        f = { "<cmd>TroubleToggle document_diagnostics<cr>", "file diagnostics" },
-        w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "project diagnostics" },
-        l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
-        q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
-    },
-    t = {
-        name = "neotest",
-        t = { "<cmd>lua require('neotest').summary.toggle()<cr>", "toggle tree" },
-        o = { "<cmd>lua require('neotest').output.toggle()<cr>", "toggle output" },
-        p = { "<cmd>lua require('neotest').output_panel.toggle()<cr>", "toggle output panel" },
-        f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "run file" },
-        l = { "<cmd>lua require('neotest').run.run()<cr>", "run test" },
-        s = { "<cmd>lua require('neotest').run.run({suite=true})<cr>", "run suite" },
-    },
-    n = {
-        name = "notifications",
-        l = { "<cmd>NoiceLog<cr>", "list" },
-        c = { "<cmd>lua require('notify').dismiss()<cr>", "clear" },
-    },
-    cc = {
-        name = "CopilotChat",
-        q = {
-            function()
-                local input = vim.fn.input("Quick Chat: ")
-                if input ~= "" then
-                    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-                end
-            end,
-            "Quick chat",
-        },
-        h = {
-            function()
-                local actions = require("CopilotChat.actions")
-                require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-            end,
-            "Help actions",
-        },
-        -- Show prompts actions with telescope
-        p = {
-            function()
-                local actions = require("CopilotChat.actions")
-                require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-            end,
-            "Prompt actions",
-            mode = { "n", "v" },
-        },
-    },
-}, { prefix = "<leader>" })

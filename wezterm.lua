@@ -20,6 +20,7 @@ end
 
 local font = "JetBrains Mono"
 local italic_font = font
+-- local font_size = 12.5
 local font_size = 12.5
 -- local font = "Monaspace Neon" -- Neon Argon Xenon Radon Krypton
 -- local italic_font = "Monaspace Radon"
@@ -199,6 +200,16 @@ return {
 				label = "select url",
 				patterns = {
 					"https?://\\S+",
+				},
+			}),
+		},
+		{
+			key = "F",
+			mods = "LEADER|SHIFT",
+			action = wezterm.action.QuickSelectArgs({
+				label = "select project filename",
+				patterns = {
+					"(\\/[a-z_\\-\\s0-9\\.]+)+\\.(ex|exs|eex|heex|js|json|rb|py|sh)",
 				},
 			}),
 		},

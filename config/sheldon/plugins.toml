@@ -17,9 +17,6 @@ shell = "zsh"
 [plugins.thefuck]
 github = 'laggardkernel/zsh-thefuck'
 
-# [plugins.asdf]
-# github = 'kiurchv/asdf.plugin.zsh'
-
 [plugins.fast-syntax-highlighting]
 github = 'zdharma-continuum/fast-syntax-highlighting'
 

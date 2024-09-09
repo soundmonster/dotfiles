@@ -1,8 +1,6 @@
 local plugins = {
-
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
     "nvim-treesitter/nvim-treesitter-textobjects",
-    "stevearc/aerial.nvim",
     {
         "lewis6991/gitsigns.nvim",
         config = function()
@@ -33,7 +31,7 @@ local plugins = {
             require("barbecue").setup({ theme = "tokyonight" })
         end,
     },
-    { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
+    { "SmiteshP/nvim-navic",             dependencies = "neovim/nvim-lspconfig" },
     {
         "elixir-tools/elixir-tools.nvim",
         enabled = false,
@@ -112,11 +110,11 @@ local plugins = {
                 },
                 -- you can enable a preset for easier configuration
                 presets = {
-                    bottom_search = false, -- use a classic bottom cmdline for search
-                    command_palette = false, -- position the cmdline and popupmenu together
+                    bottom_search = false,        -- use a classic bottom cmdline for search
+                    command_palette = false,      -- position the cmdline and popupmenu together
                     long_message_to_split = true, -- long messages will be sent to a split
-                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = false, -- add a border to hover docs and signature help
+                    inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+                    lsp_doc_border = false,       -- add a border to hover docs and signature help
                 },
             })
         end,
@@ -135,7 +133,31 @@ local plugins = {
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-cmdline",
-    "hrsh7th/nvim-cmp",
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- Library items can be absolute paths
+                -- "~/projects/my-awesome-lib",
+                -- Or relative, which means they will be resolved as a plugin
+                -- "LazyVim",
+                -- When relative, you can also provide a path to the library in the plugin dir
+                "luvit-meta/library", -- see below
+            },
+        },
+    },
+    { "Bilal2453/luvit-meta",   lazy = true }, -- optional `vim.uv` typings
+    {                                          -- optional completion source for require statements and module annotations
+        "hrsh7th/nvim-cmp",
+        opts = function(_, opts)
+            opts.sources = opts.sources or {}
+            table.insert(opts.sources, {
+                name = "lazydev",
+                group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+            })
+        end,
+    },
     {
         "petertriho/cmp-git",
         config = function()
@@ -144,6 +166,7 @@ local plugins = {
         dependencies = { "nvim-lua/plenary.nvim" },
     },
     "onsails/lspkind-nvim",
+    -- "github/copilot.vim",
     {
         "zbirenbaum/copilot.lua",
         config = function()
@@ -160,19 +183,14 @@ local plugins = {
             require("copilot_cmp").setup()
         end,
     },
-    -- "github/copilot.vim",
     {
         "CopilotC-Nvim/CopilotChat.nvim",
         branch = "canary",
         dependencies = {
             { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-            { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+            { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
         },
-        opts = {
-            debug = true, -- Enable debugging
-            -- See Configuration section for rest
-        },
-        -- See Commands section for default commands if you want to lazy load on them
+        opts = { debug = false },
     },
     -- Snippets
     "L3MON4D3/LuaSnip",
@@ -184,37 +202,19 @@ local plugins = {
         config = function()
             require("trouble").setup({
                 padding = false,
+                modes = { symbols = { win = { size = 50 } } },
             })
         end,
     },
-
-    {
-        "folke/neodev.nvim",
-        config = function()
-            require("neodev").setup({
-                override = function(root_dir, library)
-                    if root_dir:find("/dotfiles/config/nvim", 1, true) then
-                        library.enabled = true
-                        library.plugins = true
-                    end
-                end,
-            })
-        end,
-    },
-
     -- Key discovery
     {
         "folke/which-key.nvim",
-        config = function()
-            require("which-key").setup({
-                show_help = false,
-                show_keys = false,
-            })
-        end,
+        event = "VeryLazy",
+        opts = {},
+        keys = require("my.keys"),
     },
     -- devicons
-    { "nvim-tree/nvim-web-devicons", lazy = true },
-
+    { "nvim-tree/nvim-web-devicons",              lazy = true },
     {
         "nvim-tree/nvim-tree.lua",
         config = function()
@@ -244,7 +244,7 @@ local plugins = {
     {
         "mileszs/ack.vim",
         config = function()
-            vim.cmd([[ 
+            vim.cmd([[
 		if executable('rg')
 		  let g:ackprg = 'rg --vimgrep'
 		endif
@@ -267,11 +267,12 @@ local plugins = {
                     variables = {},
                     -- Background styles. Can be "dark", "transparent" or "normal"
                     sidebars = "dark", -- style for sidebars, see below
-                    floats = "dark", -- style for floating windows
+                    floats = "dark",   -- style for floating windows
                 },
                 sidebars = { "qf", "help" },
                 on_highlights = function(hl, c)
-                    local prompt = "#2d3149"
+                    -- local bg_prompt = c.bg_float
+                    local bg_prompt = c.bg_highlight
                     hl.TelescopeNormal = {
                         bg = c.bg_dark,
                         fg = c.fg,
@@ -281,15 +282,15 @@ local plugins = {
                         fg = c.bg_dark,
                     }
                     hl.TelescopePromptNormal = {
-                        bg = prompt,
+                        bg = bg_prompt,
                     }
                     hl.TelescopePromptBorder = {
-                        bg = prompt,
-                        fg = prompt,
+                        bg = bg_prompt,
+                        fg = bg_prompt,
                     }
                     hl.TelescopePromptTitle = {
-                        bg = prompt,
-                        fg = prompt,
+                        bg = bg_prompt,
+                        fg = c.fg,
                     }
                     hl.TelescopePreviewTitle = {
                         bg = c.bg_dark,
@@ -334,6 +335,25 @@ local plugins = {
                         -- { navic.get_location, cond = navic.is_available },
                     },
                     lualine_x = {
+                        {
+                            require("noice").api.status.message.get_hl,
+                            cond = require("noice").api.status.message.has,
+                        },
+                        {
+                            require("noice").api.status.command.get,
+                            cond = require("noice").api.status.command.has,
+                            color = { fg = "#ff9e64" },
+                        },
+                        {
+                            require("noice").api.status.mode.get,
+                            cond = require("noice").api.status.mode.has,
+                            color = { fg = "#ff9e64" },
+                        },
+                        {
+                            require("noice").api.status.search.get,
+                            cond = require("noice").api.status.search.has,
+                            color = { fg = "#ff9e64" },
+                        },
                         "encoding",
                         "fileformat",
                         "filetype",
@@ -359,14 +379,34 @@ local plugins = {
         end,
     },
     "HiPhish/rainbow-delimiters.nvim",
-    -- Git
-    "tpope/vim-fugitive",
-    "tpope/vim-rhubarb",
-    "tpope/vim-surround",
-    "tpope/vim-repeat",
-    -- Automatically adjust whitespace formatting
-    "tpope/vim-sleuth",
+    {
+        "cameron-wags/rainbow_csv.nvim",
+        config = true,
+        ft = {
+            "csv",
+            "tsv",
+            "csv_semicolon",
+            "csv_whitespace",
+            "csv_pipe",
+            "rfc_csv",
+            "rfc_semicolon",
+        },
+        cmd = {
+            "RainbowDelim",
+            "RainbowDelimSimple",
+            "RainbowDelimQuoted",
+            "RainbowMultiDelim",
+        },
+    },
+    -- begin tpope
     "tpope/vim-abolish",
+    "tpope/vim-fugitive",
+    "tpope/vim-repeat",
+    "tpope/vim-rhubarb",
+    "tpope/vim-sleuth",
+    "tpope/vim-surround",
+    "tpope/vim-unimpaired",
+    -- end tpope
 
     -- Easymotion replacement
     {
@@ -410,7 +450,9 @@ local plugins = {
                                         "cmd=MIX_ENV=test DONT_RESET_ECTO=true " .. table.concat(wrapped_cmd, " "),
                                     }
                                 else
-                                    return vim.tbl_flatten({ { "env", "DONT_RESET_ECTO=true", "MIX_ENV=test" }, cmd })
+                                    return vim.iter({ { "env", "DONT_RESET_ECTO=true", "MIX_ENV=test" }, cmd })
+                                        :flatten()
+                                        :totable()
                                 end
                             else
                                 return cmd
@@ -430,6 +472,9 @@ local plugins = {
             vim.fn["mkdp#util#install"]()
         end,
     },
+    -- towolf/vim-helm provides basic syntax highlighting and filetype detection
+    -- ft = 'helm' is important to not start yamlls
+    { "towolf/vim-helm", ft = "helm" },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
