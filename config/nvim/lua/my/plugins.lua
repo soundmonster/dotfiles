@@ -10,11 +10,11 @@ local plugins = {
         end,
     },
 
-    -- Close unused buffers
-    {
-        "axkirillov/hbac.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
-    },
+    -- -- Close unused buffers
+    -- {
+    --     "axkirillov/hbac.nvim",
+    --     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
+    -- },
     -- LSP
     -- Plug 'williamboman/nvim-lsp-installer'
     "williamboman/mason.nvim",
@@ -129,10 +129,6 @@ local plugins = {
     },
 
     -- Completion
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-cmdline",
     {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files
@@ -157,6 +153,13 @@ local plugins = {
                 group_index = 0, -- set group index to 0 to skip loading LuaLS completions
             })
         end,
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+        },
+
     },
     {
         "petertriho/cmp-git",
@@ -214,7 +217,7 @@ local plugins = {
         keys = require("my.keys"),
     },
     -- devicons
-    { "nvim-tree/nvim-web-devicons",              lazy = true },
+    { "nvim-tree/nvim-web-devicons", lazy = true },
     {
         "nvim-tree/nvim-tree.lua",
         config = function()
@@ -233,12 +236,50 @@ local plugins = {
         "nvim-telescope/telescope.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "debugloop/telescope-undo.nvim",
             "nvim-telescope/telescope-live-grep-args.nvim",
+            "nvim-telescope/telescope-ui-select.nvim",
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            "folke/trouble.nvim",
         },
+        lazy = true,
+        cmd = "Telescope",
+        config = function()
+            local trouble = require("trouble.sources.telescope")
+            local telescope = require("telescope")
+            local actions = require("telescope.actions")
+            telescope.setup({
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<c-t>"] = trouble.open,
+                            ["<c-q>"] = actions.send_to_qflist + actions.open_qflist,
+                            ["<c-a>"] = actions.add_to_qflist,
+                            ["<c-f>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                        },
+                        n = {
+                            ["<c-t>"] = trouble.open,
+                            ["<c-q>"] = actions.send_to_qflist + actions.open_qflist,
+                            ["<c-a>"] = actions.add_to_qflist,
+                            ["<c-f>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                        },
+                    },
+                },
+                extensions = {
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown({}),
+                    },
+                    undo = {
+                        use_delta = false,
+                        use_custom_command = { "bash", "-c", "echo '$DIFF' | delta --no-gitconfig" },
+                    },
+                },
+            })
+
+            telescope.load_extension("ui-select")
+            telescope.load_extension("fzf")
+            telescope.load_extension("live_grep_args")
+        end,
     },
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    "nvim-telescope/telescope-ui-select.nvim",
 
     -- Search
     {
@@ -474,7 +515,7 @@ local plugins = {
     },
     -- towolf/vim-helm provides basic syntax highlighting and filetype detection
     -- ft = 'helm' is important to not start yamlls
-    { "towolf/vim-helm", ft = "helm" },
+    { "towolf/vim-helm",             ft = "helm" },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
