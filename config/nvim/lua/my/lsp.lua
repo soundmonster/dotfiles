@@ -1,5 +1,3 @@
--- require("neodev").setup({})
-
 -- Enable logs for LSP
 -- vim.lsp.set_log_level("debug")
 -- Setup nvim-cmp.

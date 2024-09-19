@@ -33,6 +33,16 @@ local plugins = {
     },
     { "SmiteshP/nvim-navic",             dependencies = "neovim/nvim-lspconfig" },
     {
+        'stevearc/aerial.nvim',
+        opts = {
+        },
+        -- Optional dependencies
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons"
+        },
+    },
+    {
         "elixir-tools/elixir-tools.nvim",
         enabled = false,
         version = "*",

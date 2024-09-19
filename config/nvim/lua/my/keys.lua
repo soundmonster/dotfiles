@@ -1,5 +1,5 @@
 return {
-    { "<leader><leader>", group = "hops",             mode = { "n", "v" } },
+    { "<leader><leader>", group = "hops",                                    mode = { "n", "v" } },
     {
         "<leader><leader>w",
         "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
@@ -25,18 +25,19 @@ return {
         mode = { "n", "v" },
     },
     -- Sideways
-    { "<C-h>",            "<cmd>SidewaysLeft<cr>",    desc = "sideways left" },
-    { "<C-l>",            "<cmd>SidewaysRight<cr>",   desc = "sideways right" },
+    { "<C-h>",            "<cmd>SidewaysLeft<cr>",                           desc = "sideways left" },
+    { "<C-l>",            "<cmd>SidewaysRight<cr>",                          desc = "sideways right" },
     -- Elixir Tools
     -- { "<C-k>", "<cmd>ElixirToPipe<cr>", "Elixir to pipe" },
     -- { "<C-j>", "<cmd>ElixirFromPipe<cr>", "Elixir from pipe" },
     -- windows.nvim
-    { "<C-w>z",           "<cmd>WindowsMaximize<cr>", desc = "maximize window" },
+    { "<C-w>z",           "<cmd>WindowsMaximize<cr>",                        desc = "maximize window" },
     -- copy to system clipboard
-    { "<leader>yy",       'ggVG"*y',                  desc = "file to system clipboard",      mode = "n" },
-    { "<leader>yy",       '"*y',                      desc = "selection to system clipboard", mode = "v" },
+    { "<leader>yy",       'ggVG"*y',                                         desc = "file to system clipboard",                              mode = "n" },
+    { "<leader>yy",       '"*y',                                             desc = "selection to system clipboard",                         mode = "v" },
+    { "<leader>yl",       "<cmd>let @+ = expand('%') . ':' . line('.')<cr>", desc = "copy current path and line number to global paste buffer" },
     -- reselect pasted text
-    { "gp",               "`[v`]",                    desc = "reselect pasted text" },
+    { "gp",               "`[v`]",                                           desc = "reselect pasted text" },
 
     {
         "<leader>*",
@@ -50,7 +51,8 @@ return {
     { "<leader>fr", "<cmd>Telescope oldfiles<cr>",                                                  desc = "recent files" },
     { "<leader>ft", "<cmd>NvimTreeToggle<cr>",                                                      desc = "file tree" },
     { "<leader>fl", "<cmd>NvimTreeFindFile<cr>",                                                    desc = "locate current file in tree", },
-    { "<leader>a",  "<cmd>Trouble symbols toggle<cr>",                                              desc = "toggle symbols" },
+
+    { "<leader>a",  "<cmd>AerialToggle!<cr>",                                                       desc = "toggle symbols" },
 
     { "<leader>d",  group = "diagnostics" },
     { "<leader>dd", "<cmd>Trouble diagnostics toggle<cr>",                                          desc = "toggle diagnostics" },
