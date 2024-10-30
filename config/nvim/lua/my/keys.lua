@@ -33,8 +33,9 @@ return {
     -- windows.nvim
     { "<C-w>z",           "<cmd>WindowsMaximize<cr>",                        desc = "maximize window" },
     -- copy to system clipboard
-    { "<leader>yy",       'ggVG"*y',                                         desc = "file to system clipboard",                              mode = "n" },
-    { "<leader>yy",       '"*y',                                             desc = "selection to system clipboard",                         mode = "v" },
+    { "<leader>yy",       'ggVG"*y',                                         desc = "file to system clipboard",                                mode = "n" },
+    { "<leader>yy",       '"*y',                                             desc = "selection to system clipboard",                           mode = "v" },
+    { "<leader>yf",       "<cmd>let @+ = expand('%')<cr>",                   desc = "copy current path to global paste buffer" },
     { "<leader>yl",       "<cmd>let @+ = expand('%') . ':' . line('.')<cr>", desc = "copy current path and line number to global paste buffer" },
     -- reselect pasted text
     { "gp",               "`[v`]",                                           desc = "reselect pasted text" },

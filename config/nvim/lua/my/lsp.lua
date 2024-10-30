@@ -16,6 +16,16 @@ for type, icon in pairs(signs) do
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
+local deprioritize_copilot = function(entry1, entry2)
+    if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
+        return false
+    elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
+        return true
+    end
+end
+
+local default_cmp_conf = require('cmp.config.default')
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -76,6 +86,9 @@ cmp.setup({
             },
         },
     }),
+    sorting = {
+        comparators = vim.iter({ deprioritize_copilot, default_cmp_conf().sorting.comparators }):flatten():totable(),
+    },
     formatting = {
         format = lspkind.cmp_format({
             mode = "symbol_text",
