@@ -15,9 +15,10 @@ export EDITOR=nvim
 
 source ~/.zsh_aliases
 unalias ll 2> /dev/null
-alias ls='eza'
-alias ll='eza --long --header --git --group'
-alias lsa='eza --long --header --git --group --all'
+export EZA_CONFIG_DIR="$HOME/dotfiles/config/eza"
+alias ls='eza --icons=auto'
+alias ll='eza --long --header --git --group --icons=auto'
+alias lsa='eza --long --header --git --group --all --icons=auto'
 
 # fh - repeat history
 unalias fh 2> /dev/null
