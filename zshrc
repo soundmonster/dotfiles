@@ -16,6 +16,7 @@ export EDITOR=nvim
 source ~/.zsh_aliases
 unalias ll 2> /dev/null
 export EZA_CONFIG_DIR="$HOME/dotfiles/config/eza"
+alias vim='nvim'
 alias ls='eza --icons=auto'
 alias ll='eza --long --header --git --group --icons=auto'
 alias lsa='eza --long --header --git --group --all --icons=auto'

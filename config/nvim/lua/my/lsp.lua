@@ -243,17 +243,6 @@ require("mason-lspconfig").setup_handlers({
             capabilities = capabilities,
         })
     end,
-    ["helm-ls"] = function()
-        lspconfig.helm_ls.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-                yamlls = {
-                    path = "yaml-language-server",
-                },
-            },
-        })
-    end,
     ["elixirls"] = function()
         if elixir_lsp == "elixirls" then
             lspconfig["elixirls"].setup({
