@@ -18,16 +18,33 @@ local function scheme_for_appearance(appearance)
 	end
 end
 
+-- local font = "Maple Mono"
+-- local italic_font = font
+-- local font_size = 12.5
+
+-- local font = "Terminus (TTF)"
+-- local italic_font = font
+-- local font_size = 13.0
+
+-- local font = "Departure Mono"
+-- local italic_font = font
+-- local font_size = 11.0
+
+-- local font = "CommitMono"
+-- local italic_font = font
+-- local font_size = 12.5
+
 local font = "JetBrains Mono"
 local italic_font = font
--- local font_size = 12.5
 local font_size = 12.5
+
 -- local font = "Monaspace Neon" -- Neon Argon Xenon Radon Krypton
 -- local italic_font = "Monaspace Radon"
--- local font_size = 13.0
+-- local font_size = 12.5
+
 -- local font = "Iosevka Nerd Font"
 -- local italic_font = font
--- local font_size = 14.0
+-- local font_size = 13.5
 --
 local color_scheme_name = scheme_for_appearance(wezterm.gui.get_appearance())
 local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
@@ -178,6 +195,7 @@ return {
 			action = act.Multiple({ act.AdjustPaneSize({ "Right", 1 }), activate_resize_keytable }),
 		},
 		-- wezterm
+		{ key = "v",     mods = "LEADER",       action = act.ActivateCopyMode },
 		{
 			key = "u",
 			mods = "LEADER",
@@ -222,12 +240,16 @@ return {
 
 	key_tables = {
 		resize_pane = {
-			{ key = "h",      mods = "CTRL",         action = act.AdjustPaneSize({ "Left", 1 }) },
-			{ key = "j",      mods = "CTRL",         action = act.AdjustPaneSize({ "Down", 1 }) },
-			{ key = "k",      mods = "CTRL",         action = act.AdjustPaneSize({ "Up", 1 }) },
-			{ key = "l",      mods = "CTRL",         action = act.AdjustPaneSize({ "Right", 1 }) },
+			{ key = "h",          mods = "CTRL",         action = act.AdjustPaneSize({ "Left", 1 }) },
+			{ key = "LeftArrow",  mods = "CTRL",         action = act.AdjustPaneSize({ "Left", 1 }) },
+			{ key = "j",          mods = "CTRL",         action = act.AdjustPaneSize({ "Down", 1 }) },
+			{ key = "DownArrow",  mods = "CTRL",         action = act.AdjustPaneSize({ "Down", 1 }) },
+			{ key = "k",          mods = "CTRL",         action = act.AdjustPaneSize({ "Up", 1 }) },
+			{ key = "UpArrow",    mods = "CTRL",         action = act.AdjustPaneSize({ "Up", 1 }) },
+			{ key = "l",          mods = "CTRL",         action = act.AdjustPaneSize({ "Right", 1 }) },
+			{ key = "RightArrow", mods = "CTRL",         action = act.AdjustPaneSize({ "Right", 1 }) },
 			-- Cancel the mode by pressing escape
-			{ key = "Escape", action = "PopKeyTable" },
+			{ key = "Escape",     action = "PopKeyTable" },
 		},
 	},
 }

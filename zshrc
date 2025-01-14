@@ -9,7 +9,6 @@ export KERL_DOC_TARGETS="chunks"
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc) --with-wx"
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
-export ASDF_HASHICORP_OVERWRITE_ARCH=amd64
 
 export EDITOR=nvim
 
@@ -22,10 +21,11 @@ alias ll='eza --long --header --git --group --icons=auto'
 alias lsa='eza --long --header --git --group --all --icons=auto'
 
 # fh - repeat history
-unalias fh 2> /dev/null
-fh() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
-}
+# deprecated, use atuin. Only here for future reference
+# unalias fh 2> /dev/null
+# fh() {
+#   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
+# }
 
 PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"
 PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
@@ -36,9 +36,8 @@ OPENJDK_PATH="$(brew --prefix openjdk)/bin"
 # OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
 export PATH="${PYTHON3_USER_PATH}:${PYTHON3_UNVERSIONED_BIN_PATH}:${OPENJDK_PATH}:${PATH}"
 
+source <(fzf --zsh)
 eval "$(mise activate zsh)"
-
-# Use the fuck, an awesome command post-correction tool
 eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 
@@ -90,7 +89,7 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 zstyle ':completion:*' complete-options true
 
 # configure xterm title
-ZSH_TAB_TITLE_ADDITIONAL_TERMS=wezterm
+ZSH_TAB_TITLE_ADDITIONAL_TERMS='wezterm|kitty|tmux|ghostty'
 ZSH_TAB_TITLE_CONCAT_FOLDER_PROCESS=true
 ZSH_TAB_TITLE_ONLY_FOLDER=true
 eval "$(sheldon source)"
@@ -98,3 +97,4 @@ eval "$(sheldon source)"
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+export NODE_EXTRA_CA_CERTS="/Library/Application Support/Playtika Corp. IT/Certs/Playtika-SCA.pem"
