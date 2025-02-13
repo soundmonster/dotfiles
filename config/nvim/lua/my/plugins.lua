@@ -10,13 +10,6 @@ local plugins = {
     end,
   },
 
-  -- -- Close unused buffers
-  -- {
-  --     "axkirillov/hbac.nvim",
-  --     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
-  -- },
-  -- LSP
-  -- Plug 'williamboman/nvim-lsp-installer'
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
@@ -312,7 +305,6 @@ local plugins = {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
   "onsails/lspkind-nvim",
-  -- "github/copilot.vim",
   {
     "zbirenbaum/copilot.lua",
     config = function()
@@ -591,7 +583,18 @@ local plugins = {
   "tpope/vim-surround",
   "tpope/vim-unimpaired",
   -- end tpope
-
+  -- Search and replace
+  {
+    'MagicDuck/grug-far.nvim',
+    config = function()
+      require('grug-far').setup({
+        -- options, see Configuration section below
+        -- there are no required options atm
+        -- engine = 'ripgrep' is default, but 'astgrep' can be specified
+        engine = 'astgrep'
+      });
+    end
+  },
   -- Easymotion replacement
   {
     "smoka7/hop.nvim",
