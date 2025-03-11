@@ -1,9 +1,42 @@
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+PROFILE_STARTUP=false
+
+if [[ "$PROFILE_STARTUP" == true ]]; then
+  zmodload zsh/zprof
+  PS4=$'%D{%M%S%.} %N:%i> '
+  exec 3>&2 2>$HOME/startlog.$$
+  setopt xtrace prompt_subst
+fi
+
+case $(uname -m) in
+  "arm64")
+    homebrew_prefix=/opt/homebrew
+    ;;
+  "x86_64")
+    homebrew_prefix=/usr/local
+    ;;
+  *)
+    homebrew_prefix=$(brew --prefix)
+    ;;
+esac
+
+FPATH="$homebrew_prefix/share/zsh/site-functions:${FPATH}"
 zmodload zsh/complist
 autoload -Uz compinit
 compinit
 
-export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
+# export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
+path=( 
+  $HOME/.bin
+  $HOME/bin
+  # Created by `pipx` on 2024-06-04 08:47:56
+  $HOME/.local/bin
+  ${KREW_ROOT:-$HOME/.krew}/bin
+  $homebrew_prefix/bin
+  $homebrew_prefix/sbin
+  $homebrew_prefix/opt/python/libexec/bin
+  $homebrew_prefix/opt/openjdk/bin
+  $path
+)
 export KERL_BUILD_DOCS="yes"
 export KERL_DOC_TARGETS="chunks"
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@1.1) --with-odbc=$(brew --prefix unixodbc) --with-wx"
@@ -20,21 +53,13 @@ alias ls='eza --icons=auto'
 alias ll='eza --long --header --git --group --icons=auto'
 alias lsa='eza --long --header --git --group --all --icons=auto'
 
-# fh - repeat history
-# deprecated, use atuin. Only here for future reference
-# unalias fh 2> /dev/null
-# fh() {
-#   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
-# }
-
-PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"
-PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
-# Created by `pipx` on 2024-06-04 08:47:56
-export PATH="$PATH:$HOME/.local/bin"
+# Not doing this anymore, keep it around for reference
+# PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"
+# PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
 # PYTHON3_USER_PATH="/Users/leonid.batyuk/Library/Python/3.9/bin"
-OPENJDK_PATH="$(brew --prefix openjdk)/bin"
-# OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
-export PATH="${PYTHON3_USER_PATH}:${PYTHON3_UNVERSIONED_BIN_PATH}:${OPENJDK_PATH}:${PATH}"
+# OPENJDK_PATH="$(brew --prefix openjdk)/bin"
+# # OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
+# export PATH="${PYTHON3_USER_PATH}:${PYTHON3_UNVERSIONED_BIN_PATH}:${OPENJDK_PATH}:${PATH}"
 
 source <(fzf --zsh)
 eval "$(mise activate zsh)"
@@ -97,4 +122,9 @@ eval "$(sheldon source)"
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-export NODE_EXTRA_CA_CERTS="/Library/Application Support/Playtika Corp. IT/Certs/Playtika-SCA.pem"
+if [[ "$PROFILE_STARTUP" == true ]]; then
+  zmodload zsh/zprof
+  PS4=$'%D{%M%S%.} %N:%i> '
+  exec 3>&2 2>$HOME/startlog.$$
+  setopt xtrace prompt_subst
+fi
