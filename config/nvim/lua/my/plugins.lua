@@ -1,6 +1,7 @@
 local plugins = {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   "nvim-treesitter/nvim-treesitter-textobjects",
+  "aaronik/treewalker.nvim",
   {
     "lewis6991/gitsigns.nvim",
     config = function()
@@ -10,8 +11,8 @@ local plugins = {
     end,
   },
 
-  "williamboman/mason.nvim",
-  "williamboman/mason-lspconfig.nvim",
+  "mason-org/mason.nvim",
+  "mason-org/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
   {
     "utilyre/barbecue.nvim",
@@ -82,21 +83,9 @@ local plugins = {
     end,
   },
 
-  -- LSP status
-  "simrat39/rust-tools.nvim",
   -- LS for all files with handy actions; e.g. git blame
   -- { "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   { "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-  -- Show a lightbulb in the gutter if actions available
-  {
-    "kosayoda/nvim-lightbulb",
-    config = function()
-      require("nvim-lightbulb").setup({
-        autocmd = { enabled = true },
-      })
-    end,
-  },
-
   {
     "folke/noice.nvim",
     enabled = true,
@@ -431,16 +420,17 @@ local plugins = {
     end,
   },
 
-  -- Search
+  -- Search and replace
   {
-    "mileszs/ack.vim",
+    'MagicDuck/grug-far.nvim',
     config = function()
-      vim.cmd([[
-		if executable('rg')
-		  let g:ackprg = 'rg --vimgrep'
-		endif
-		]])
-    end,
+      require('grug-far').setup({
+        -- options, see Configuration section below
+        -- there are no required options atm
+        -- engine = 'ripgrep' is default, but 'astgrep' can be specified
+        engine = 'astgrep'
+      });
+    end
   },
   -- Themes
   {
@@ -558,12 +548,6 @@ local plugins = {
     end,
   },
   {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
-  },
-  {
     "numToStr/Comment.nvim",
     config = function()
       require("Comment").setup()
@@ -598,19 +582,20 @@ local plugins = {
   "tpope/vim-surround",
   "tpope/vim-unimpaired",
   -- end tpope
-  -- Search and replace
+  -- Projectionist replacement
   {
-    'MagicDuck/grug-far.nvim',
-    config = function()
-      require('grug-far').setup({
-        -- options, see Configuration section below
-        -- there are no required options atm
-        -- engine = 'ripgrep' is default, but 'astgrep' can be specified
-        engine = 'astgrep'
-      });
-    end
+    "rgroli/other.nvim",
+    main = "other-nvim",
+    opts = {
+      mappings = {
+        "rails",
+        "golang",
+        "rust",
+        "elixir",
+      },
+    }
   },
-  -- Easymotion replacement
+  -- EasyMotion replacement
   {
     "smoka7/hop.nvim",
     version = "*",
@@ -640,20 +625,7 @@ local plugins = {
             -- args = { "--no-watch" },
             post_process_command = function(cmd)
               if string.find(vim.fn.getcwd(), "Projects/sbs-") then
-                if vim.loop.fs_stat(vim.fn.getcwd() .. "/.env.local") == nil then
-                  local wrapped_cmd = {}
-                  for index, value in ipairs(cmd) do
-                    wrapped_cmd[index] = "'" .. value .. "'"
-                  end
-                  return {
-                    "make",
-                    "dockerless",
-                    "dockerless=true",
-                    "cmd=MIX_ENV=test DONT_RESET_ECTO=true " .. table.concat(wrapped_cmd, " "),
-                  }
-                else
-                  return vim.iter({ { "env", "DONT_RESET_ECTO=true", "MIX_ENV=test" }, cmd }):flatten():totable()
-                end
+                return vim.iter({ { "env", "DONT_RESET_ECTO=true", "MIX_ENV=test" }, cmd }):flatten():totable()
               else
                 return cmd
               end
@@ -663,7 +635,6 @@ local plugins = {
       })
     end,
   },
-  "AndrewRadev/sideways.vim",
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
