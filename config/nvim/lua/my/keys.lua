@@ -57,14 +57,16 @@ return {
   { "<leader>fg",  "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", desc = "search text in files", },
   { "<leader>fb",  "<cmd>Telescope buffers<cr>",                                                   desc = "buffers" },
   { "<leader>fr",  "<cmd>Telescope oldfiles<cr>",                                                  desc = "recent files" },
+  { "<leader>fm",  "<cmd>Telescope marks<cr>",                                                     desc = "recent files" },
   { "<leader>ft",  "<cmd>NvimTreeToggle<cr>",                                                      desc = "file tree" },
   { "<leader>fl",  "<cmd>NvimTreeFindFile<cr>",                                                    desc = "locate current file in tree", },
+
   { "<leader>fo",  group = "alternative files" },
   { "<leader>foo", "<cmd>Other<cr>",                                                               desc = "jump to alt file", },
   { "<leader>fov", "<cmd>OtherVSplit<cr>",                                                         desc = "alt file in vsplit", },
   { "<leader>foc", "<cmd>OtherClear<cr>",                                                          desc = "clear alt file", },
 
-  { "<leader>a",   "<cmd>AerialToggle!<cr>",                                                       desc = "toggle symbols" },
+  { "<leader>s",   "<cmd>AerialToggle!<cr>",                                                       desc = "toggle symbols" },
 
   { "<leader>d",   group = "diagnostics" },
   { "<leader>dd",  "<cmd>Trouble diagnostics toggle<cr>",                                          desc = "toggle diagnostics" },
@@ -85,6 +87,9 @@ return {
   { "<leader>nl",  "<cmd>NoiceLog<cr>",                                                            desc = "list" },
   { "<leader>nc",  "<cmd>lua require('notify').dismiss()<cr>",                                     desc = "clear" },
 
+  { "<leader>a",   group = "codecompanion" },
+  { "<leader>aa",  "<cmd>CodeCompanionActions<cr>",                                                desc = "action palette" },
+
   { "<leader>cc",  group = "copilot-chat" },
   {
     "<leader>ccq",
@@ -94,7 +99,7 @@ return {
         require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
       end
     end,
-    desc = "Quick chat",
+    desc = "[Copilot] Quick chat",
   },
   {
     "<leader>cch",

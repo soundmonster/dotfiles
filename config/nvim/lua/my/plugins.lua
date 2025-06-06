@@ -295,6 +295,16 @@ local plugins = {
   },
   "onsails/lspkind-nvim",
   {
+    "echasnovski/mini.diff",
+    config = function()
+      local diff = require("mini.diff")
+      diff.setup({
+        -- Disabled by default
+        source = diff.gen_source.none(),
+      })
+    end,
+  },
+  {
     "zbirenbaum/copilot.lua",
     config = function()
       require("copilot").setup({
@@ -318,6 +328,83 @@ local plugins = {
       { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
     },
     opts = { debug = false },
+  },
+  {
+    "ravitemer/mcphub.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
+    config = function()
+      require("mcphub").setup()
+    end
+  },
+  {
+    "Davidyz/VectorCode",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    build = "uv tool upgrade vectorcode", -- optional but recommended. This keeps your CLI up-to-date.
+    -- cmd = "VectorCode", -- if you're lazy-loading VectorCode
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    opts = function()
+      return {
+        extensions = {
+          vectorcode = {
+            opts = { add_tool = true, add_slash_command = true, tool_opts = {} },
+          },
+          mcphub = {
+            callback = "mcphub.extensions.codecompanion",
+            opts = {
+              show_result_in_chat = true, -- Show mcp tool results in chat
+              make_vars = true,           -- Convert resources to #variables
+              make_slash_commands = true, -- Add prompts as /slash commands
+            }
+          }
+        },
+        display = {
+          action_palette = {
+            -- prompt = "Prompt ",                   -- Prompt used for interactive LLM calls
+            provider = "default",                 -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+            opts = {
+              show_default_actions = true,        -- Show the default actions in the action palette?
+              show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+            },
+          },
+          diff = { provider = "mini_diff" },
+        },
+        strategies = {
+          chat = {
+            adapter = "copilot",
+          },
+          inline = {
+            adapter = "copilot",
+            keymaps = {
+              accept_change = {
+                modes = { n = "<leader>a" },
+                description = "Accept the suggested change",
+              },
+              reject_change = {
+                modes = { n = "<leader>r" },
+                description = "Reject the suggested change",
+              },
+            },
+          },
+          cmd = {
+            adapter = "copilot",
+          }
+        },
+      }
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "ravitemer/mcphub.nvim",
+      "j-hui/fidget.nvim"
+    },
+    init = function()
+      require("my.cc_fidget"):init()
+    end,
   },
   -- Snippets
   "L3MON4D3/LuaSnip",
@@ -634,6 +721,10 @@ local plugins = {
         },
       })
     end,
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "codecompanion" }
   },
   {
     "iamcco/markdown-preview.nvim",

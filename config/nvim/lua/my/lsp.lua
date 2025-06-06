@@ -10,7 +10,9 @@ local elixir_lsp = "lexical" -- 'nextls', 'elixirls' or 'lexical'
 
 -- setup diagnostic symbols for sign column
 vim.diagnostic.config({
-  virtual_lines = true,
+  virtual_lines = { current_line = true },
+  virtual_text = { current_line = false },
+  float = true,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "",
@@ -184,7 +186,8 @@ local on_attach = function(client, bufnr)
       desc = "List workspace folders",
     },
     { "<leader>D",  "<cmd>lua vim.lsp.buf.type_definition()<cr>",         desc = "type definition" },
-    { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>",                  desc = "rename" },
+    -- rename is grn by default now?
+    -- { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>",                  desc = "rename" },
     { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>",             desc = "code actions" },
     { "<leader>e",  "<cmd>lua vim.diagnostic.open_float()<cr>",           desc = "open float" },
     { "<leader>F",  "<cmd>lua vim.lsp.buf.format({ async = false })<cr>", desc = "format file" },
@@ -250,7 +253,7 @@ if not configs.lexical then
   configs.lexical = {
     default_config = {
       filetypes = { "elixir", "eelixir", "heex" },
-      cmd = { "/Users/leonid.batyuk/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh" },
+      cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
       root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
       settings = { dialyzerEnabled = true },
     },
@@ -272,7 +275,6 @@ if elixir_lsp == "nextls" then
 
     lspconfig["nextls"].setup({
       cmd = { "nextls", "--stdio" },
-      -- cmd = { "/Users/leonid.batyuk/Playground/elixir/next-ls/burrito_out/next_ls_darwin_arm64", "--stdio" },
       cmd_env = { NEXTLS_SPITFIRE_ENABLED = "1" },
       on_attach = on_attach,
       capabilities = capabilities,

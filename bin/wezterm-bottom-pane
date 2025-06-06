@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+pane_id=$(wezterm cli get-pane-direction Down)
+
+if [ "$pane_id" == "" ]; then
+	pane_id=$(wezterm cli split-pane --bottom --percent 20)
+fi
+wezterm cli send-text --no-paste --pane-id "$pane_id" "$*
+"

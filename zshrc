@@ -56,7 +56,7 @@ alias lsa='eza --long --header --git --group --all --icons=auto'
 # Not doing this anymore, keep it around for reference
 # PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"
 # PYTHON3_USER_PATH="$(python3 -m site --user-base)/bin"
-# PYTHON3_USER_PATH="/Users/leonid.batyuk/Library/Python/3.9/bin"
+# PYTHON3_USER_PATH="${HOME}/Library/Python/3.9/bin"
 # OPENJDK_PATH="$(brew --prefix openjdk)/bin"
 # # OPENJDK_PATH="/opt/homebrew/opt/openjdk/bin"
 # export PATH="${PYTHON3_USER_PATH}:${PYTHON3_UNVERSIONED_BIN_PATH}:${OPENJDK_PATH}:${PATH}"
@@ -67,13 +67,15 @@ eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 
 
-eval "$(zoxide init zsh --no-aliases)"
-unalias z 2> /dev/null
-alias z=__zoxide_zi
-function z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
-}
+eval "$(zoxide init zsh)"
+
+# eval "$(zoxide init zsh --no-aliases)"
+# unalias z 2> /dev/null
+# alias z=__zoxide_zi
+# function z() {
+#   [ $# -gt 0 ] && _z "$*" && return
+#   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+# }
 
 export GPG_TTY=$(tty)
 
