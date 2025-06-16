@@ -376,9 +376,11 @@ local plugins = {
         strategies = {
           chat = {
             adapter = "copilot",
+            model = "claude-3.7-sonnet", -- "gpt-4.1", "gpt-4o", "claude-3.7-sonnet", "o3-mini", "claude-3.5-sonnet", "claude-3.7-sonnet-thought",
           },
           inline = {
             adapter = "copilot",
+            model = "claude-3.7-sonnet", -- "gpt-4.1", "gpt-4o", "claude-3.7-sonnet", "o3-mini", "claude-3.5-sonnet", "claude-3.7-sonnet-thought",
             keymaps = {
               accept_change = {
                 modes = { n = "<leader>a" },
@@ -392,6 +394,7 @@ local plugins = {
           },
           cmd = {
             adapter = "copilot",
+            model = "claude-3.7-sonnet", -- "gpt-4.1", "gpt-4o", "claude-3.7-sonnet", "o3-mini", "claude-3.5-sonnet", "claude-3.7-sonnet-thought",
           }
         },
       }

@@ -74,12 +74,17 @@ return {
   { "<leader>dq",  "<cmd>Trouble quickfix toggle<cr>",                                             desc = "toggle quickfix" },
   { "<leader>dt",  "<cmd>Trouble telescope toggle<cr>",                                            desc = "toggle telescope" },
 
+  { "<leader>T",   group = "in a wezterm pane, ..." },
+  { "<leader>Tf",  "<cmd>!wezterm-bottom-pane mix test %<cr>",                                     desc = "run file from current buffer" },
+  { "<leader>Tl",  "<cmd>exec '!wezterm-bottom-pane mix test %:' . line('.')<cr>",                 desc = "run test under cursor" },
+  { "<leader>Ts",  "<cmd>!wezterm-bottom-pane mix test<cr>",                                       desc = "run suite" },
+
   { "<leader>t",   group = "neotest" },
   { "<leader>tt",  "<cmd>lua require('neotest').summary.toggle()<cr>",                             desc = "toggle tree" },
   { "<leader>to",  "<cmd>lua require('neotest').output.toggle()<cr>",                              desc = "toggle output" },
   { "<leader>tp",  "<cmd>lua require('neotest').output_panel.toggle()<cr>",                        desc = "toggle output panel" },
-  { "<leader>tf",  "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>",                  desc = "run file" },
-  { "<leader>tl",  "<cmd>lua require('neotest').run.run()<cr>",                                    desc = "run test" },
+  { "<leader>tf",  "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>",                  desc = "run file for current buffer" },
+  { "<leader>tl",  "<cmd>lua require('neotest').run.run()<cr>",                                    desc = "run test under cursor" },
   { "<leader>ts",  "<cmd>lua require('neotest').run.run({suite=true})<cr>",                        desc = "run suite" },
   { "<leader>tr",  "<cmd>lua require('neotest').run.run_last()<cr>",                               desc = "run last" },
 
@@ -107,7 +112,7 @@ return {
       local actions = require("CopilotChat.actions")
       require("CopilotChat.integrations.telescope").pick(actions.help_actions())
     end,
-    desc = "Help actions",
+    desc = "[Copilot] Help actions",
   },
   -- Show prompts actions with telescope
   {
@@ -116,7 +121,7 @@ return {
       local actions = require("CopilotChat.actions")
       require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
     end,
-    desc = "Prompt actions",
+    desc = "[Copilot] Prompt actions",
     mode = { "n", "v" },
   },
 }
