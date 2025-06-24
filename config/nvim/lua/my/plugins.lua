@@ -330,7 +330,23 @@ local plugins = {
     opts = { debug = false },
   },
   {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      -- OR 'nvim-telescope/telescope.nvim',
+      -- OR 'ibhagwan/fzf-lua',
+      -- OR 'folke/snacks.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
+    opts = {
+      use_local_fs = false, -- use local files on right side of reviews
+      picker = "telescope", -- or "fzf-lua" or "snacks"
+    },
+  },
+  {
     "ravitemer/mcphub.nvim",
+    enabled = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -341,73 +357,43 @@ local plugins = {
   },
   {
     "Davidyz/VectorCode",
+    enabled = false,
     dependencies = { "nvim-lua/plenary.nvim" },
     build = "uv tool upgrade vectorcode", -- optional but recommended. This keeps your CLI up-to-date.
     -- cmd = "VectorCode", -- if you're lazy-loading VectorCode
   },
   {
-    "olimorris/codecompanion.nvim",
-    opts = function()
-      return {
-        extensions = {
-          vectorcode = {
-            opts = { add_tool = true, add_slash_command = true, tool_opts = {} },
-          },
-          mcphub = {
-            callback = "mcphub.extensions.codecompanion",
-            opts = {
-              show_result_in_chat = true, -- Show mcp tool results in chat
-              make_vars = true,           -- Convert resources to #variables
-              make_slash_commands = true, -- Add prompts as /slash commands
-            }
-          }
-        },
-        display = {
-          action_palette = {
-            -- prompt = "Prompt ",                   -- Prompt used for interactive LLM calls
-            provider = "default",                 -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
-            opts = {
-              show_default_actions = true,        -- Show the default actions in the action palette?
-              show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-            },
-          },
-          diff = { provider = "mini_diff" },
-        },
-        strategies = {
-          chat = {
-            adapter = "copilot",
-            model = "claude-3.7-sonnet", -- "gpt-4.1", "gpt-4o", "claude-3.7-sonnet", "o3-mini", "claude-3.5-sonnet", "claude-3.7-sonnet-thought",
-          },
-          inline = {
-            adapter = "copilot",
-            model = "claude-3.7-sonnet", -- "gpt-4.1", "gpt-4o", "claude-3.7-sonnet", "o3-mini", "claude-3.5-sonnet", "claude-3.7-sonnet-thought",
-            keymaps = {
-              accept_change = {
-                modes = { n = "<leader>a" },
-                description = "Accept the suggested change",
-              },
-              reject_change = {
-                modes = { n = "<leader>r" },
-                description = "Reject the suggested change",
-              },
-            },
-          },
-          cmd = {
-            adapter = "copilot",
-            model = "claude-3.7-sonnet", -- "gpt-4.1", "gpt-4o", "claude-3.7-sonnet", "o3-mini", "claude-3.5-sonnet", "claude-3.7-sonnet-thought",
-          }
-        },
-      }
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "ravitemer/mcphub.nvim",
-      "j-hui/fidget.nvim"
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false, -- Never set this value to "*"! Never!
+    build = "make",
+    opts = {
+      provider = "copilot",
+      providers = {
+        copilot = {
+          model = "claude-3.5-sonnet", -- Optional, specify a model to use
+        }
+      },
+      -- auto_suggestions_provider = "copilot",
+      behaviour = {
+        auto_suggestions = false,           -- Experimental stage
+        enable_cursor_planning_mode = true, -- enable cursor planning mode!
+      },
+      -- File selector configuration
+      --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
+      file_selector = {
+        provider = "telescope", -- Avoid native provider issues
+        provider_opts = {},
+      },
     },
-    init = function()
-      require("my.cc_fidget"):init()
-    end,
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- build = "make",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "folke/snacks.nvim", -- for input provider snacks
+    },
   },
   -- Snippets
   "L3MON4D3/LuaSnip",
@@ -727,7 +713,10 @@ local plugins = {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "codecompanion" }
+    opts = {
+      file_types = { "markdown", "codecompanion", "Avante" },
+    },
+    ft = { "markdown", "codecompanion", "Avante" }
   },
   {
     "iamcco/markdown-preview.nvim",

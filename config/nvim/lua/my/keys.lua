@@ -1,5 +1,5 @@
 return {
-  { "<leader><leader>", group = "hops",                                    mode = { "n", "v" } },
+  { "<leader><leader>", group = "hops",                                        mode = { "n", "v" } },
   {
     "<leader><leader>w",
     "<cmd>lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR })<cr>",
@@ -25,27 +25,27 @@ return {
     mode = { "n", "v" },
   },
   -- Treewalker motions
-  { "<C-h>",            "<cmd>Treewalker Left<cr>",                        desc = "treewalker left" },
-  { "<C-j>",            "<cmd>Treewalker Down<cr>",                        desc = "treewalker down" },
-  { "<C-k>",            "<cmd>Treewalker Up<cr>",                          desc = "treewalker up" },
-  { "<C-l>",            "<cmd>Treewalker Right<cr>",                       desc = "treewalker right" },
+  { "<C-h>",            "<cmd>Treewalker Left<cr>",                            desc = "treewalker left" },
+  { "<C-j>",            "<cmd>Treewalker Down<cr>",                            desc = "treewalker down" },
+  { "<C-k>",            "<cmd>Treewalker Up<cr>",                              desc = "treewalker up" },
+  { "<C-l>",            "<cmd>Treewalker Right<cr>",                           desc = "treewalker right" },
   -- Treewalker swapping (like sideways.nvim)
-  { "<C-S-h>",          "<cmd>Treewalker SwapLeft<cr>",                    desc = "treewalker left" },
-  { "<C-S-j>",          "<cmd>Treewalker SwapDown<cr>",                    desc = "treewalker down" },
-  { "<C-S-k>",          "<cmd>Treewalker SwapUp<cr>",                      desc = "treewalker up" },
-  { "<C-S-l>",          "<cmd>Treewalker SwapRight<cr>",                   desc = "treewalker right" },
+  { "<C-S-h>",          "<cmd>Treewalker SwapLeft<cr>",                        desc = "treewalker left" },
+  { "<C-S-j>",          "<cmd>Treewalker SwapDown<cr>",                        desc = "treewalker down" },
+  { "<C-S-k>",          "<cmd>Treewalker SwapUp<cr>",                          desc = "treewalker up" },
+  { "<C-S-l>",          "<cmd>Treewalker SwapRight<cr>",                       desc = "treewalker right" },
   -- Elixir Tools
   -- { "<C-k>", "<cmd>ElixirToPipe<cr>", "Elixir to pipe" },
   -- { "<C-j>", "<cmd>ElixirFromPipe<cr>", "Elixir from pipe" },
   -- windows.nvim
-  { "<C-w>z",           "<cmd>WindowsMaximize<cr>",                        desc = "maximize window" },
+  { "<C-w>z",           "<cmd>WindowsMaximize<cr>",                            desc = "maximize window" },
   -- copy to system clipboard
-  { "<leader>yy",       '<cmd>%y+<cr>',                                    desc = "file to system clipboard",                                mode = "n" },
-  { "<leader>yy",       '"+y',                                             desc = "selection to system clipboard",                           mode = "v" },
-  { "<leader>yf",       "<cmd>let @+ = expand('%')<cr>",                   desc = "copy current path to global paste buffer" },
-  { "<leader>yl",       "<cmd>let @+ = expand('%') . ':' . line('.')<cr>", desc = "copy current path and line number to global paste buffer" },
+  { "<leader>yy",       '<cmd>%y+<cr>',                                        desc = "file to system clipboard",                                mode = "n" },
+  { "<leader>yy",       '"+y',                                                 desc = "selection to system clipboard",                           mode = "v" },
+  { "<leader>yf",       "<cmd>let @+ = expand('%:~:.')<cr>",                   desc = "copy current path to global paste buffer" },
+  { "<leader>yl",       "<cmd>let @+ = expand('%:~:.') . ':' . line('.')<cr>", desc = "copy current path and line number to global paste buffer" },
   -- reselect pasted text
-  { "gp",               "`[v`]",                                           desc = "reselect pasted text" },
+  { "gp",               "`[v`]",                                               desc = "reselect pasted text" },
 
   {
     "<leader>*",
@@ -57,7 +57,7 @@ return {
   { "<leader>fg",  "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", desc = "search text in files", },
   { "<leader>fb",  "<cmd>Telescope buffers<cr>",                                                   desc = "buffers" },
   { "<leader>fr",  "<cmd>Telescope oldfiles<cr>",                                                  desc = "recent files" },
-  { "<leader>fm",  "<cmd>Telescope marks<cr>",                                                     desc = "recent files" },
+  { "<leader>fm",  "<cmd>Telescope marks<cr>",                                                     desc = "marks" },
   { "<leader>ft",  "<cmd>NvimTreeToggle<cr>",                                                      desc = "file tree" },
   { "<leader>fl",  "<cmd>NvimTreeFindFile<cr>",                                                    desc = "locate current file in tree", },
 
@@ -92,8 +92,7 @@ return {
   { "<leader>nl",  "<cmd>NoiceLog<cr>",                                                            desc = "list" },
   { "<leader>nc",  "<cmd>lua require('notify').dismiss()<cr>",                                     desc = "clear" },
 
-  { "<leader>a",   group = "codecompanion" },
-  { "<leader>aa",  "<cmd>CodeCompanionActions<cr>",                                                desc = "action palette" },
+  -- { "<leader>a",   group = "ai" },
 
   { "<leader>cc",  group = "copilot-chat" },
   {
