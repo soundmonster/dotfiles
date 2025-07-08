@@ -78,12 +78,18 @@ cmp.setup({
     end,
   }),
   sources = cmp.config.sources({
-    { name = "nvim_lsp", priority = 4 },
+    { name = "nvim_lsp" },
     { name = "nvim_lua" },
     -- { name = 'vsnip' },
-    { name = "luasnip",  priority = 2 },
+    { name = "luasnip" },
     { name = "git" },
-    { name = "copilot",  priority = 1 },
+    { name = "copilot" },
+    -- { name = "nvim_lsp", priority = 4 },
+    -- { name = "nvim_lua" },
+    -- -- { name = 'vsnip' },
+    -- { name = "luasnip",  priority = 2 },
+    -- { name = "git" },
+    -- { name = "copilot",  priority = 1 },
   }, {
     {
       name = "buffer",

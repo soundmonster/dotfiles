@@ -18,4 +18,4 @@ GPATH
 .iex.exs
 .env
 .envrc
-llms.txt
+AGENTS.md

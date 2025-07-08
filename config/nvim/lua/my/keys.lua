@@ -95,6 +95,9 @@ return {
   -- { "<leader>a",   group = "ai" },
 
   { "<leader>cc",  group = "copilot-chat" },
+  { "<leader>ccs", "<cmd>lua require('codecompanion.adapters.copilot').show_copilot_stats()<cr>",  desc = "Copilot Usage Statistics" },
+  { "<leader>ccc", "<cmd>CodeCompanionChat<cr>",                                                   desc = "[CodeCompanion] Chat" },
+  { "<leader>cca", "<cmd>CodeCompanionActions<cr>",                                                desc = "[CodeCompanion] Actions" },
   {
     "<leader>ccq",
     function()

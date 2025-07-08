@@ -80,6 +80,13 @@
 [alias]
     # a workaround for Delta to pick up the correct dark/light mode
     delta = !delta $(defaults read -g AppleInterfaceStyle &>/dev/null && echo --features tokyonight-moon || echo --features tokyonight-day --light)
+    # `git log` with patches shown with difftastic.
+    dl = -c diff.external=difft log -p --ext-diff
+    # Show the most recent commit with difftastic.
+    ds = -c diff.external=difft show --ext-diff
+    # `git diff` with difftastic.
+    dft = -c diff.external=difft diff
+
 
 [merge]
     conflictstyle = diff3

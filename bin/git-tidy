@@ -2,23 +2,27 @@
 
 set -e
 
-backup_dir_prefix="../data"
+if [ "$1" != "" ]; then
+  backup_dir="$1"
+else
+  backup_dir="../data/$(date +%Y-%m-%d)-$(basename "$(git rev-parse --show-toplevel)")"
+  if [ -d "$backup_dir" ]; then 
+    # Append current time in HH:MM:SS format
+    backup_dir="${backup_dir}-$(date +%H:%M:%S)"
+  else
+    # create folder with the name of the repo prepended with the current date
+    mkdir -p "$backup_dir"
+  fi
+fi
+
 
 if [ -d .git ]; then
   # if there are any untracked files
   if [ "$(git ls-files --others --exclude-standard)" != "" ]; then
-    # create folder with the name of the repo prepended with the current date; exit if it already exists
-    backup_dir="$backup_dir_prefix/$(date +%Y-%m-%d)-$(basename "$(git rev-parse --show-toplevel)")"
-    if [ -d "$backup_dir" ]; then
-      echo "Backup folder already exists"
-      exit 1
-    else
-      mkdir -p "$backup_dir"
-      # move untracked files to the folder
-      while IFS= read -r file ; do
-        mv "$file" "$backup_dir"
-      done < <(git ls-files --others --exclude-standard)
-    fi
+    # move untracked files to the folder
+    while IFS= read -r file ; do
+      mv "$file" "$backup_dir"
+    done < <(git ls-files --others --exclude-standard)
     # stash any changes
     git stash
   fi

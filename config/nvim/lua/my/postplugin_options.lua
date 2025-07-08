@@ -39,9 +39,9 @@ vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
   callback = function()
     local current_dir = vim.fn.getcwd()
     local files = {
-      current_dir .. "/llms.txt",
+      current_dir .. "/AGENTS.md",
       -- current_dir .. "/README.md",
-      current_dir .. "/../llms.txt",
+      current_dir .. "/../AGENTS.md",
     }
 
     local system_prompt = "You are in the directory: " .. current_dir .. "\n"

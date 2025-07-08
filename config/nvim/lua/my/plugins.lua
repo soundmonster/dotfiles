@@ -4,13 +4,8 @@ local plugins = {
   "aaronik/treewalker.nvim",
   {
     "lewis6991/gitsigns.nvim",
-    config = function()
-      require("gitsigns").setup({
-        current_line_blame = true,
-      })
-    end,
+    opts = { current_line_blame = true, },
   },
-
   "mason-org/mason.nvim",
   "mason-org/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
@@ -21,9 +16,7 @@ local plugins = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons", -- optional dependency
     },
-    config = function()
-      require("barbecue").setup({ theme = "tokyonight" })
-    end,
+    opts = { theme = "tokyonight" },
   },
   { "SmiteshP/nvim-navic",             dependencies = "neovim/nvim-lspconfig" },
   {
@@ -69,46 +62,50 @@ local plugins = {
       "nvim-lua/plenary.nvim",
     },
   },
-  {
-    "simrat39/inlay-hints.nvim",
-    config = function()
-      require("inlay-hints").setup()
-    end,
-  },
+  { "simrat39/inlay-hints.nvim", config = true, },
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    config = function()
-      require("ibl").setup({ indent = { char = "▏" } })
-    end,
+    opts = { indent = { char = "▏" } },
+  },
+  {
+    "sphamba/smear-cursor.nvim",
+    enabled = false,
+    opts = {
+      -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+      -- Smears will blend better on all backgrounds.
+      legacy_computing_symbols_support = false,
+      -- Smear cursor in insert mode.
+      -- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
+      smear_insert_mode = false,
+      smear_terminal_mode = false,
+    },
   },
 
   -- LS for all files with handy actions; e.g. git blame
   -- { "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-  { "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvimtools/none-ls.nvim",    dependencies = { "nvim-lua/plenary.nvim" } },
   {
     "folke/noice.nvim",
     enabled = true,
-    config = function()
-      require("noice").setup({
-        lsp = {
-          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
-          },
+    opts = {
+      lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
         },
-        -- you can enable a preset for easier configuration
-        presets = {
-          bottom_search = false,        -- use a classic bottom cmdline for search
-          command_palette = false,      -- position the cmdline and popupmenu together
-          long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = false,           -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false,       -- add a border to hover docs and signature help
-        },
-      })
-    end,
+      },
+      -- you can enable a preset for easier configuration
+      presets = {
+        bottom_search = false,        -- use a classic bottom cmdline for search
+        command_palette = false,      -- position the cmdline and popupmenu together
+        long_message_to_split = true, -- long messages will be sent to a split
+        inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false,       -- add a border to hover docs and signature help
+      },
+    },
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module='...'` entries
       "MunifTanjim/nui.nvim",
@@ -253,7 +250,6 @@ local plugins = {
       })
     end,
   },
-
   -- Completion
   {
     "folke/lazydev.nvim",
@@ -288,9 +284,7 @@ local plugins = {
   },
   {
     "petertriho/cmp-git",
-    config = function()
-      require("cmp_git").setup()
-    end,
+    config = true,
     dependencies = { "nvim-lua/plenary.nvim" },
   },
   "onsails/lspkind-nvim",
@@ -306,20 +300,13 @@ local plugins = {
   },
   {
     "zbirenbaum/copilot.lua",
-    config = function()
-      require("copilot").setup({
-        -- disable panel and suggestions, this is handled by copilot-cmp
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-      })
-    end,
+    opts = {
+      -- disable panel and suggestions, this is handled by copilot-cmp
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+    },
   },
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
+  { "zbirenbaum/copilot-cmp", config = true, },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "main",
@@ -328,6 +315,24 @@ local plugins = {
       { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
     },
     opts = { debug = false },
+  },
+  {
+    "copilotlsp-nvim/copilot-lsp",
+    config = function()
+      local nes = require('copilot-lsp.nes')
+      vim.g.copilot_nes_debounce = 500
+      vim.lsp.enable("copilot_ls")
+      vim.keymap.set('n', '<leader><cr>', function()
+        -- Try to jump to the start of the suggestion edit.
+        -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+        local _ = nes.walk_cursor_start_edit()
+            or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
+      end, { desc = 'Accept Copilot NES suggestion', expr = true })
+      -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
+      vim.keymap.set("n", "<leader><esc>", function()
+        nes.clear()
+      end, { desc = "Clear Copilot suggestion or fallback" })
+    end,
   },
   {
     'pwntester/octo.nvim',
@@ -351,9 +356,7 @@ local plugins = {
       "nvim-lua/plenary.nvim",
     },
     build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
-    config = function()
-      require("mcphub").setup()
-    end
+    config = true,
   },
   {
     "Davidyz/VectorCode",
@@ -363,15 +366,54 @@ local plugins = {
     -- cmd = "VectorCode", -- if you're lazy-loading VectorCode
   },
   {
+    "olimorris/codecompanion.nvim",
+    opts = {
+      strategies = {
+        chat = {
+          adapter = "copilot",
+          -- model = "claude-3.7-sonnet-thought", -- "gpt-4.1",  "claude-3.7-sonnet", "claude-3.5-sonnet", "gpt-4o", "o3-mini",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+        cmd = {
+          adapter = "copilot",
+        }
+      },
+      display = {
+        action_palette = {
+          width = 95,
+          height = 10,
+          prompt = "Prompt ",                   -- Prompt used for interactive LLM calls
+          provider = "default",                 -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+          opts = {
+            show_default_actions = true,        -- Show the default actions in the action palette?
+            show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+          },
+        },
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
+  {
     "yetone/avante.nvim",
     event = "VeryLazy",
     version = false, -- Never set this value to "*"! Never!
     build = "make",
     opts = {
       provider = "copilot",
+      auto_suggestions_provider = "ollama", -- ollama or copilot
       providers = {
+        ollama = {
+          endpoint = "http://localhost:11434",
+          model = "llama3.2:3b",
+        },
         copilot = {
-          model = "claude-3.5-sonnet", -- Optional, specify a model to use
+          -- model = "claude-3.5-sonnet", -- Optional, specify a model to use
+          disabled_tools = { "python" }
         }
       },
       -- auto_suggestions_provider = "copilot",
@@ -385,6 +427,14 @@ local plugins = {
         provider = "telescope", -- Avoid native provider issues
         provider_opts = {},
       },
+      input = {
+        provider = "snacks",
+        provider_opts = {
+          -- Additional snacks.input options
+          title = "Avante Input",
+          icon = " ",
+        },
+      }
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     -- build = "make",
@@ -402,12 +452,10 @@ local plugins = {
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("trouble").setup({
-        padding = false,
-        modes = { symbols = { win = { size = 50 } } },
-      })
-    end,
+    opts = {
+      padding = false,
+      modes = { symbols = { win = { size = 50 } } },
+    }
   },
   {
     "folke/todo-comments.nvim",
@@ -435,12 +483,10 @@ local plugins = {
   { "nvim-tree/nvim-web-devicons", lazy = true },
   {
     "nvim-tree/nvim-tree.lua",
-    config = function()
-      require("nvim-tree").setup({
-        update_focused_file = { enable = true },
-        view = { width = 40 },
-      })
-    end,
+    opts = {
+      update_focused_file = { enable = true },
+      view = { width = 40 },
+    },
   },
 
   "ryanoasis/vim-devicons",
@@ -499,14 +545,12 @@ local plugins = {
   -- Search and replace
   {
     'MagicDuck/grug-far.nvim',
-    config = function()
-      require('grug-far').setup({
-        -- options, see Configuration section below
-        -- there are no required options atm
-        -- engine = 'ripgrep' is default, but 'astgrep' can be specified
-        engine = 'astgrep'
-      });
-    end
+    opts = {
+      -- options, see Configuration section below
+      -- there are no required options atm
+      -- engine = 'ripgrep' is default, but 'astgrep' can be specified
+      engine = 'astgrep'
+    }
   },
   -- Themes
   {
