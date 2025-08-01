@@ -26,6 +26,9 @@ github = 'zsh-users/zsh-completions'
 [plugins.zsh-autosuggestions]
 github = 'zsh-users/zsh-autosuggestions'
 
+[plugins.zsh-autoenv]
+github = 'Tarrasch/zsh-autoenv'
+
 [plugins.zsh-history-search]
 github = 'zsh-users/zsh-history-substring-search'
 
