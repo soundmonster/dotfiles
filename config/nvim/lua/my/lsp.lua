@@ -261,6 +261,8 @@ if elixir_lsp == "elixirls" then
   }
 end
 
+vim.lsp.config('terraformls', { cmd = { 'terraform-ls', 'serve', '-log-file /dev/null' } })
+
 if not configs.lexical then
   configs.lexical = {
     default_config = {

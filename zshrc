@@ -52,6 +52,7 @@ alias vim='nvim'
 alias ls='eza --icons=auto'
 alias ll='eza --long --header --git --group --icons=auto'
 alias lsa='eza --long --header --git --group --all --icons=auto'
+alias dft='git dft'
 
 # Not doing this anymore, keep it around for reference
 # PYTHON3_UNVERSIONED_BIN_PATH="$(brew --prefix python)/libexec/bin"

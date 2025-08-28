@@ -49,7 +49,76 @@ local font_size = 12.5
 local color_scheme_name = scheme_for_appearance(wezterm.gui.get_appearance())
 local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
 
-return {
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+
+local home_dir = os.getenv("HOME")
+local function custom_tabline_pwd(tab)
+	local opts = { max_length = 20 }
+	local cwd = ''
+	local cwd_uri = tab.active_pane.current_working_dir
+	if cwd_uri then
+		local file_path = cwd_uri.file_path
+		if file_path == (home_dir .. '/') then
+			cwd = '~'
+		else
+			cwd = file_path:match('([^/]+)/?$')
+			if cwd and #cwd > opts.max_length then
+				cwd = cwd:sub(1, opts.max_length - 1) .. '…'
+			end
+			if cwd:match('^sbs-') then
+				cwd = cwd:sub(5) -- remove 'sbs-' prefix
+			end
+		end
+	end
+	return (cwd or '') .. ' '
+end
+
+tabline.setup({
+	options = {
+		theme = color_scheme_name,
+		section_separators = {
+			left = wezterm.nerdfonts.ple_right_half_circle_thick,
+			right = wezterm.nerdfonts.ple_left_half_circle_thick,
+		},
+		component_separators = {
+			left = wezterm.nerdfonts.ple_right_half_circle_thin,
+			right = wezterm.nerdfonts.ple_left_half_circle_thin,
+		},
+		tab_separators = {
+			left = wezterm.nerdfonts.ple_right_half_circle_thick,
+			right = wezterm.nerdfonts.ple_left_half_circle_thick,
+		},
+	},
+	sections = {
+		tabline_a = { 'mode' },
+		tabline_b = { 'workspace' },
+		tabline_c = { ' ' },
+		tab_active = {
+			'index',
+			-- { 'parent', padding = 0 },
+			-- '/',
+			-- custom_tabline_pwd,
+			{ 'cwd',     padding = { left = 0, right = 1 } },
+			{ 'process', padding = { left = 0, right = 1 } },
+			{ 'zoomed',  padding = 0 },
+		},
+		-- 			bg_color = color_scheme.ansi[4],
+		-- 			fg_color = color_scheme.ansi[1],
+		tab_inactive = {
+			'index',
+			-- custom_tabline_pwd,
+			-- { custom_tabline_pwd, padding = { left = 0, right = 1 } },
+			{ 'cwd',     padding = { left = 0, right = 1 } },
+			{ 'process', padding = { left = 0, right = 1 } },
+		},
+		tabline_x = { 'ram', 'cpu' },
+		tabline_y = { 'datetime', 'battery' },
+		tabline_z = { 'hostname' },
+	},
+	extensions = {},
+})
+
+local config = {
 	-- default_prog = { '/opt/homebrew/bin/zsh' },
 	-- default_prog = { '/usr/local/bin/zsh' },
 	font = wezterm.font({ family = font, weight = "Regular" }),
@@ -87,30 +156,31 @@ return {
 		target = "CursorColor",
 	},
 	color_scheme = color_scheme_name,
-	colors = {
-		tab_bar = {
-			background = color_scheme.background,
-			active_tab = {
-				bg_color = color_scheme.ansi[5],
-				fg_color = color_scheme.ansi[1],
-			},
-			inactive_tab = {
-				bg_color = color_scheme.background,
-				fg_color = color_scheme.ansi[8],
-			},
-			new_tab = {
-				bg_color = color_scheme.ansi[4],
-				fg_color = color_scheme.ansi[1],
-			},
-		},
-	},
+	-- disabled in favor of tabline plugin
+	-- colors = {
+	-- 	tab_bar = {
+	-- 		background = color_scheme.background,
+	-- 		active_tab = {
+	-- 			bg_color = color_scheme.ansi[],
+	-- 			fg_color = color_scheme.ansi[1],
+	-- 		},
+	-- 		inactive_tab = {
+	-- 			bg_color = color_scheme.background,
+	-- 			fg_color = color_scheme.ansi[8],
+	-- 		},
+	-- 		new_tab = {
+	-- 			bg_color = color_scheme.ansi[4],
+	-- 			fg_color = color_scheme.ansi[1],
+	-- 		},
+	-- 	},
+	-- },
 	tab_bar_at_bottom = true,
 	tab_max_width = 64,
 	use_fancy_tab_bar = false,
 	disable_default_key_bindings = true,
 	-- timeout_milliseconds defaults to 1000 and can be omitted
 	leader = { key = "a", mods = "CTRL", timeout_milliseconds = 5000 },
-	debug_key_events = true,
+	debug_key_events = false,
 	keys = {
 		-- normal keys
 		{ key = "v",          mods = "CMD",          action = act.PasteFrom("Clipboard") },
@@ -195,7 +265,8 @@ return {
 			action = act.Multiple({ act.AdjustPaneSize({ "Right", 1 }), activate_resize_keytable }),
 		},
 		-- wezterm
-		{ key = "v",     mods = "LEADER",       action = act.ActivateCopyMode },
+		{ key = "v", mods = "LEADER", action = act.ActivateCopyMode },
+		{ key = "/", mods = "LEADER", action = act.Search("CurrentSelectionOrEmptyString") },
 		{
 			key = "u",
 			mods = "LEADER",
@@ -253,3 +324,7 @@ return {
 		},
 	},
 }
+
+tabline.apply_to_config(config)
+
+return config

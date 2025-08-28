@@ -318,9 +318,13 @@ local plugins = {
   },
   {
     "copilotlsp-nvim/copilot-lsp",
+    enabled = false,
     config = function()
       local nes = require('copilot-lsp.nes')
-      vim.g.copilot_nes_debounce = 500
+      nes.setup({
+        move_count_threshold = 2, -- Clear after 3 cursor movements
+      })
+      vim.g.copilot_nes_debounce = 1500
       vim.lsp.enable("copilot_ls")
       vim.keymap.set('n', '<leader><cr>', function()
         -- Try to jump to the start of the suggestion edit.
