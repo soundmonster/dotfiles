@@ -486,6 +486,10 @@ local plugins = {
   -- devicons
   { "nvim-tree/nvim-web-devicons", lazy = true },
   {
+    "ziontee113/icon-picker.nvim",
+    opts = { disable_legacy_commands = true }
+  },
+  {
     "nvim-tree/nvim-tree.lua",
     opts = {
       update_focused_file = { enable = true },
