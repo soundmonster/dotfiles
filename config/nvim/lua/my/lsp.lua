@@ -234,88 +234,37 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local lspconfig = require("lspconfig")
 require("mason").setup()
-require("mason-lspconfig").setup()
 
 vim.lsp.config("*", {
   on_attach = on_attach,
   capabilities = capabilities,
 })
--- Manual set up for language servers
-local configs = require("lspconfig.configs")
-
-if elixir_lsp == "elixirls" then
-  configs.elixirls = {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
-    settings = {
-      elixirLS = {
-        suggestSpecs = true,
-        testLenses = true,
-        dialyzerEnabled = true,
-        fetchDeps = true,
-      },
-    },
-  }
-end
 
 vim.lsp.config('terraformls', { cmd = { 'terraform-ls', 'serve', '-log-file /dev/null' } })
 
-if not configs.lexical then
-  configs.lexical = {
-    default_config = {
-      filetypes = { "elixir", "eelixir", "heex" },
-      cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
-      root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
-      settings = { dialyzerEnabled = true },
+vim.lsp.config('elixirls', {
+  filetypes = { "elixir", "eelixir", "heex" },
+  root_markers = { "mix.lock", ".git" },
+  settings = {
+    elixirLS = {
+      suggestSpecs = true,
+      testLenses = true,
+      dialyzerEnabled = true,
+      fetchDeps = true,
     },
-  }
-end
+  },
+})
+vim.lsp.config('lexical', {
+  filetypes = { "elixir", "eelixir", "heex" },
+  -- cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
+  cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/burrito_out/expert_darwin_arm64") },
+  root_markers = { "mix.lock", ".git" },
+  settings = {},
+})
 
-local mason_registry = require("mason-registry")
-
-if elixir_lsp == "nextls" then
-  if mason_registry.is_installed("nextls") then
-    if not configs.nextls then
-      configs.nextls = {
-        default_config = {
-          filetypes = { "elixir", "eelixir", "heex" },
-          root_dir = lspconfig.util.root_pattern("mix.lock", ".git"),
-        },
-      }
-    end
-
-    lspconfig["nextls"].setup({
-      cmd = { "nextls", "--stdio" },
-      cmd_env = { NEXTLS_SPITFIRE_ENABLED = "1" },
-      on_attach = on_attach,
-      capabilities = capabilities,
-      init_options = {
-        mix_env = "test",
-        extensions = {
-          credo = {
-            enable = true,
-          },
-        },
-        experimental = {
-          completions = {
-            enable = true,
-          },
-        },
-      },
-    })
-  end
-end
-
-if elixir_lsp == "lexical" then
-  -- Manual setup for lexical, an LSP for Elixir
-  lspconfig["lexical"].setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
-end
+vim.lsp.enable(elixir_lsp)
+require("mason-lspconfig").setup()
 
 local null_ls = require("null-ls")
 null_ls.setup({
