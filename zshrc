@@ -24,13 +24,11 @@ zmodload zsh/complist
 autoload -Uz compinit
 compinit
 
-# export PATH="${HOME}/.bin:${HOME}/bin:${KREW_ROOT:-$HOME/.krew}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:${PATH}"
 path=( 
   $HOME/.bin
   $HOME/bin
   # Created by `pipx` on 2024-06-04 08:47:56
   $HOME/.local/bin
-  ${KREW_ROOT:-$HOME/.krew}/bin
   $homebrew_prefix/bin
   $homebrew_prefix/sbin
   $homebrew_prefix/opt/python/libexec/bin

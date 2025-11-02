@@ -298,46 +298,46 @@ local plugins = {
       })
     end,
   },
-  {
-    "zbirenbaum/copilot.lua",
-    opts = {
-      -- disable panel and suggestions, this is handled by copilot-cmp
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-    },
-  },
-  { "zbirenbaum/copilot-cmp", config = true, },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
-    },
-    opts = { debug = false },
-  },
-  {
-    "copilotlsp-nvim/copilot-lsp",
-    enabled = false,
-    config = function()
-      local nes = require('copilot-lsp.nes')
-      nes.setup({
-        move_count_threshold = 2, -- Clear after 3 cursor movements
-      })
-      vim.g.copilot_nes_debounce = 1500
-      vim.lsp.enable("copilot_ls")
-      vim.keymap.set('n', '<leader><cr>', function()
-        -- Try to jump to the start of the suggestion edit.
-        -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-        local _ = nes.walk_cursor_start_edit()
-            or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
-      end, { desc = 'Accept Copilot NES suggestion', expr = true })
-      -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
-      vim.keymap.set("n", "<leader><esc>", function()
-        nes.clear()
-      end, { desc = "Clear Copilot suggestion or fallback" })
-    end,
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   opts = {
+  --     -- disable panel and suggestions, this is handled by copilot-cmp
+  --     suggestion = { enabled = false },
+  --     panel = { enabled = false },
+  --   },
+  -- },
+  -- { "zbirenbaum/copilot-cmp", config = true, },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   branch = "main",
+  --   dependencies = {
+  --     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+  --     { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
+  --   },
+  --   opts = { debug = false },
+  -- },
+  -- {
+  --   "copilotlsp-nvim/copilot-lsp",
+  --   enabled = false,
+  --   config = function()
+  --     local nes = require('copilot-lsp.nes')
+  --     nes.setup({
+  --       move_count_threshold = 2, -- Clear after 3 cursor movements
+  --     })
+  --     vim.g.copilot_nes_debounce = 1500
+  --     vim.lsp.enable("copilot_ls")
+  --     vim.keymap.set('n', '<leader><cr>', function()
+  --       -- Try to jump to the start of the suggestion edit.
+  --       -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+  --       local _ = nes.walk_cursor_start_edit()
+  --           or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
+  --     end, { desc = 'Accept Copilot NES suggestion', expr = true })
+  --     -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
+  --     vim.keymap.set("n", "<leader><esc>", function()
+  --       nes.clear()
+  --     end, { desc = "Clear Copilot suggestion or fallback" })
+  --   end,
+  -- },
   {
     'pwntester/octo.nvim',
     dependencies = {
@@ -369,86 +369,86 @@ local plugins = {
     build = "uv tool upgrade vectorcode", -- optional but recommended. This keeps your CLI up-to-date.
     -- cmd = "VectorCode", -- if you're lazy-loading VectorCode
   },
-  {
-    "olimorris/codecompanion.nvim",
-    opts = {
-      strategies = {
-        chat = {
-          adapter = "copilot",
-          -- model = "claude-3.7-sonnet-thought", -- "gpt-4.1",  "claude-3.7-sonnet", "claude-3.5-sonnet", "gpt-4o", "o3-mini",
-        },
-        inline = {
-          adapter = "copilot",
-        },
-        cmd = {
-          adapter = "copilot",
-        }
-      },
-      display = {
-        action_palette = {
-          width = 95,
-          height = 10,
-          prompt = "Prompt ",                   -- Prompt used for interactive LLM calls
-          provider = "default",                 -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
-          opts = {
-            show_default_actions = true,        -- Show the default actions in the action palette?
-            show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-          },
-        },
-      },
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-  },
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    version = false, -- Never set this value to "*"! Never!
-    build = "make",
-    opts = {
-      provider = "copilot",
-      auto_suggestions_provider = "ollama", -- ollama or copilot
-      providers = {
-        ollama = {
-          endpoint = "http://localhost:11434",
-          model = "llama3.2:3b",
-        },
-        copilot = {
-          -- model = "claude-3.5-sonnet", -- Optional, specify a model to use
-          disabled_tools = { "python" }
-        }
-      },
-      -- auto_suggestions_provider = "copilot",
-      behaviour = {
-        auto_suggestions = false,           -- Experimental stage
-        enable_cursor_planning_mode = true, -- enable cursor planning mode!
-      },
-      -- File selector configuration
-      --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
-      file_selector = {
-        provider = "telescope", -- Avoid native provider issues
-        provider_opts = {},
-      },
-      input = {
-        provider = "snacks",
-        provider_opts = {
-          -- Additional snacks.input options
-          title = "Avante Input",
-          icon = " ",
-        },
-      }
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    -- build = "make",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      "folke/snacks.nvim", -- for input provider snacks
-    },
-  },
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   opts = {
+  --     strategies = {
+  --       chat = {
+  --         adapter = "copilot",
+  --         -- model = "claude-3.7-sonnet-thought", -- "gpt-4.1",  "claude-3.7-sonnet", "claude-3.5-sonnet", "gpt-4o", "o3-mini",
+  --       },
+  --       inline = {
+  --         adapter = "copilot",
+  --       },
+  --       cmd = {
+  --         adapter = "copilot",
+  --       }
+  --     },
+  --     display = {
+  --       action_palette = {
+  --         width = 95,
+  --         height = 10,
+  --         prompt = "Prompt ",                   -- Prompt used for interactive LLM calls
+  --         provider = "default",                 -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+  --         opts = {
+  --           show_default_actions = true,        -- Show the default actions in the action palette?
+  --           show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+  --         },
+  --       },
+  --     },
+  --   },
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  -- },
+  -- {
+  --   "yetone/avante.nvim",
+  --   event = "VeryLazy",
+  --   version = false, -- Never set this value to "*"! Never!
+  --   build = "make",
+  --   opts = {
+  --     provider = "copilot",
+  --     auto_suggestions_provider = "ollama", -- ollama or copilot
+  --     providers = {
+  --       ollama = {
+  --         endpoint = "http://localhost:11434",
+  --         model = "llama3.2:3b",
+  --       },
+  --       copilot = {
+  --         -- model = "claude-3.5-sonnet", -- Optional, specify a model to use
+  --         disabled_tools = { "python" }
+  --       }
+  --     },
+  --     -- auto_suggestions_provider = "copilot",
+  --     behaviour = {
+  --       auto_suggestions = false,           -- Experimental stage
+  --       enable_cursor_planning_mode = true, -- enable cursor planning mode!
+  --     },
+  --     -- File selector configuration
+  --     --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
+  --     file_selector = {
+  --       provider = "telescope", -- Avoid native provider issues
+  --       provider_opts = {},
+  --     },
+  --     input = {
+  --       provider = "snacks",
+  --       provider_opts = {
+  --         -- Additional snacks.input options
+  --         title = "Avante Input",
+  --         icon = " ",
+  --       },
+  --     }
+  --   },
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   -- build = "make",
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     "folke/snacks.nvim", -- for input provider snacks
+  --   },
+  -- },
   -- Snippets
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",

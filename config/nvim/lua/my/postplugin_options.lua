@@ -32,29 +32,30 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
   end,
 })
 
-local avante_system_prompt_group = vim.api.nvim_create_augroup("avante_system_prompt", { clear = true })
-vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
-  group = avante_system_prompt_group,
-  desc = "Set Avante system prompt based on current directory",
-  callback = function()
-    local current_dir = vim.fn.getcwd()
-    local files = {
-      current_dir .. "/AGENTS.md",
-      -- current_dir .. "/README.md",
-      current_dir .. "/../AGENTS.md",
-    }
-
-    local system_prompt = "You are in the directory: " .. current_dir .. "\n"
-
-    for _, file in ipairs(files) do
-      if vim.fn.filereadable(file) == 1 then
-        local file_content = vim.fn.readfile(file)
-        if #file_content > 0 then
-          system_prompt = system_prompt .. "\n" .. table.concat(file_content, "\n")
-        end
-      end
-    end
-
-    require("avante.config").override({ system_prompt = system_prompt })
-  end,
-})
+-- Avante disabled for now
+-- local avante_system_prompt_group = vim.api.nvim_create_augroup("avante_system_prompt", { clear = true })
+-- vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
+--   group = avante_system_prompt_group,
+--   desc = "Set Avante system prompt based on current directory",
+--   callback = function()
+--     local current_dir = vim.fn.getcwd()
+--     local files = {
+--       current_dir .. "/AGENTS.md",
+--       -- current_dir .. "/README.md",
+--       current_dir .. "/../AGENTS.md",
+--     }
+--
+--     local system_prompt = "You are in the directory: " .. current_dir .. "\n"
+--
+--     for _, file in ipairs(files) do
+--       if vim.fn.filereadable(file) == 1 then
+--         local file_content = vim.fn.readfile(file)
+--         if #file_content > 0 then
+--           system_prompt = system_prompt .. "\n" .. table.concat(file_content, "\n")
+--         end
+--       end
+--     end
+--
+--     require("avante.config").override({ system_prompt = system_prompt })
+--   end,
+-- })

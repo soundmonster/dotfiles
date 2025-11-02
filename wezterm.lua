@@ -119,7 +119,7 @@ tabline.setup({
 })
 
 local config = {
-	-- default_prog = { '/opt/homebrew/bin/zsh' },
+	default_prog = { '/opt/homebrew/bin/zsh' },
 	-- default_prog = { '/usr/local/bin/zsh' },
 	font = wezterm.font({ family = font, weight = "Regular" }),
 	font_rules = {
