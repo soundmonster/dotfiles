@@ -18,23 +18,21 @@ case $(uname -m) in
     homebrew_prefix=$(brew --prefix)
     ;;
 esac
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 FPATH="$homebrew_prefix/share/zsh/site-functions:${FPATH}"
 zmodload zsh/complist
 autoload -Uz compinit
-compinit
+compinit -u
 
 path=( 
   $HOME/.bin
   $HOME/bin
   # Created by `pipx` on 2024-06-04 08:47:56
   $HOME/.local/bin
-  $homebrew_prefix/bin
-  $homebrew_prefix/sbin
-  $homebrew_prefix/opt/python/libexec/bin
-  $homebrew_prefix/opt/openjdk/bin
   $path
 )
+export PKG_CONFIG_PATH="/opt/homebrew/bin/pkg-config:$(brew --prefix icu4c)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig"
 export KERL_BUILD_DOCS="yes"
 export KERL_DOC_TARGETS="chunks"
 export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@3) --with-odbc=$(brew --prefix unixodbc) --with-wx"
