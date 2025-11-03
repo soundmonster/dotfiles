@@ -127,24 +127,6 @@ local plugins = {
         width = 90,
         sections = {
           { section = "header" },
-          {
-            pane = 2,
-            padding = 1,
-            section = "terminal",
-            ttl = 5 * 60,
-            indent = 3,
-            enabled = function()
-              return Snacks.git.get_root() ~= nil
-            end,
-            icon = " ",
-            title = "Open PRs",
-            cmd = "gh pr list -L 3",
-            key = "p",
-            action = function()
-              vim.fn.jobstart("gh pr list --web", { detach = true })
-            end,
-            height = 7,
-          },
           { section = "keys", gap = 1, padding = 1 },
           { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
           { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
