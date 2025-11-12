@@ -31,11 +31,8 @@ path=(
   # Created by `pipx` on 2024-06-04 08:47:56
   $HOME/.local/bin
   $path
+  /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
 )
-export PKG_CONFIG_PATH="/opt/homebrew/bin/pkg-config:$(brew --prefix icu4c)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig"
-export KERL_BUILD_DOCS="yes"
-export KERL_DOC_TARGETS="chunks"
-export KERL_CONFIGURE_OPTIONS="--enable-hipe --enable-smp-support --enable-threads --enable-kernel-poll --without-javac --with-ssl=$(brew --prefix openssl@3) --with-odbc=$(brew --prefix unixodbc) --with-wx"
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
 
@@ -48,6 +45,7 @@ alias vim='nvim'
 alias ls='eza --icons=auto'
 alias ll='eza --long --header --git --group --icons=auto'
 alias lsa='eza --long --header --git --group --all --icons=auto'
+alias tree='eza --tree --icons=auto --all'
 alias dft='git dft'
 
 # Not doing this anymore, keep it around for reference

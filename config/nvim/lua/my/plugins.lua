@@ -83,7 +83,6 @@ local plugins = {
   },
 
   -- LS for all files with handy actions; e.g. git blame
-  -- { "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   { "nvimtools/none-ls.nvim",    dependencies = { "nvim-lua/plenary.nvim" } },
   {
     "folke/noice.nvim",
@@ -247,8 +246,8 @@ local plugins = {
       },
     },
   },
-  { "Bilal2453/luvit-meta",   lazy = true }, -- optional `vim.uv` typings
-  {                                          -- optional completion source for require statements and module annotations
+  { "Bilal2453/luvit-meta",        lazy = true }, -- optional `vim.uv` typings
+  {                                               -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
       opts.sources = opts.sources or {}
@@ -542,6 +541,12 @@ local plugins = {
       engine = 'astgrep'
     }
   },
+  -- Fancy undo
+  {
+    "XXiaoA/atone.nvim",
+    cmd = "Atone",
+    opts = {}, -- your configuration here
+  },
   -- Themes
   {
     "folke/tokyonight.nvim",
@@ -749,6 +754,7 @@ local plugins = {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
       file_types = { "markdown", "codecompanion", "Avante" },
+      win_options = { conceallevel = { rendered = 0 } },
     },
     ft = { "markdown", "codecompanion", "Avante" }
   },
@@ -762,7 +768,7 @@ local plugins = {
   },
   -- towolf/vim-helm provides basic syntax highlighting and filetype detection
   -- ft = 'helm' is important to not start yamlls
-  { "towolf/vim-helm",             ft = "helm" },
+  { "towolf/vim-helm", ft = "helm" },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

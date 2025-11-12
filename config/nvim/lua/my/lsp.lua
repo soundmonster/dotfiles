@@ -248,17 +248,17 @@ vim.lsp.config('elixirls', {
   root_markers = { "mix.lock", ".git" },
   settings = {
     elixirLS = {
-      suggestSpecs = true,
-      testLenses = true,
-      dialyzerEnabled = true,
-      fetchDeps = true,
+      suggestSpecs = false,
+      testLenses = false,
+      dialyzerEnabled = false,
+      fetchDeps = false,
     },
   },
 })
 vim.lsp.config('lexical', {
   filetypes = { "elixir", "eelixir", "heex" },
   -- cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
-  cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/burrito_out/expert_darwin_arm64") },
+  cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/burrito_out/expert_darwin_arm64"), "--stdio" },
   root_markers = { "mix.lock", ".git" },
   settings = {},
 })
