@@ -1,0 +1,53 @@
+packages:
+  darwin:
+    brews:
+      - age
+      - ast-grep
+      - atuin
+      - bash
+      - bat
+      - bottom
+      - chezmoi
+      - coreutils
+      - curl
+      - dark-mode
+      - difftastic
+      - direnv
+      - duf
+      - dust
+      - eza
+      - fd
+      - fzf
+      - gh
+      - git
+      - git-delta
+      - git-lfs
+      - gnupg
+      - hexyl
+      - htop
+      - just
+      - lazygit
+      - mise
+      - neovim
+      - openssl
+      - postgresql
+      - prettyping
+      - pwgen
+      - ripgrep
+      - sheldon
+      - stylua
+      - the_silver_searcher
+      - thefuck
+      - tig
+      - tree-sitter
+      - tree-sitter-cli
+      - typos-cli
+      - usage
+      - zoxide
+      - zsh
+    casks:
+      - font-jetbrains-mono
+      # - font-fira-code
+      # - font-iosevka
+      - rectangle
+      - wezterm
