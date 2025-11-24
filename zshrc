@@ -31,6 +31,7 @@ path=(
   # Created by `pipx` on 2024-06-04 08:47:56
   $HOME/.local/bin
   $path
+  /Applications/Cursor.app/Contents/Resources/app/bin
   /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
 )
 # enable history in Erlang/Elixir REPL
@@ -125,3 +126,6 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
   exec 3>&2 2>$HOME/startlog.$$
   setopt xtrace prompt_subst
 fi
+#
+# Some  🤡 eNdPoInT sEcUrItY 🤡 tools keep automatically changing this file.
+# Watch out for these changes

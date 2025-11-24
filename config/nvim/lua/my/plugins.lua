@@ -1,10 +1,13 @@
+-- local preferred_theme = "tokyonight"
+-- local preferred_theme = "rose-pine"
+local preferred_theme = "catppuccin"
 local plugins = {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   "nvim-treesitter/nvim-treesitter-textobjects",
   "aaronik/treewalker.nvim",
   {
     "lewis6991/gitsigns.nvim",
-    opts = { current_line_blame = true, },
+    opts = { current_line_blame = true },
   },
   "mason-org/mason.nvim",
   "mason-org/mason-lspconfig.nvim",
@@ -16,7 +19,7 @@ local plugins = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons", -- optional dependency
     },
-    opts = { theme = "tokyonight" },
+    opts = { theme = preferred_theme },
   },
   { "SmiteshP/nvim-navic",             dependencies = "neovim/nvim-lspconfig" },
   {
@@ -62,7 +65,7 @@ local plugins = {
       "nvim-lua/plenary.nvim",
     },
   },
-  { "simrat39/inlay-hints.nvim", config = true, },
+  { "simrat39/inlay-hints.nvim", config = true },
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
@@ -214,6 +217,16 @@ local plugins = {
           vim.print = _G.dd -- Override print to use snacks for `:=` command
 
           -- Create some toggle mappings
+          Snacks.toggle.new({
+            id = "lsp_autoformat",
+            name = "LSP Autoformat",
+            get = function()
+              return vim.api.nvim_get_var("lsp_autoformat")
+            end,
+            set = function(value)
+              vim.api.nvim_set_var("lsp_autoformat", value)
+            end,
+          }, {}):map("<leader>uF")
           Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
           Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
           Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
@@ -319,70 +332,6 @@ local plugins = {
   --     end, { desc = "Clear Copilot suggestion or fallback" })
   --   end,
   -- },
-  {
-    'pwntester/octo.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      -- OR 'nvim-telescope/telescope.nvim',
-      -- OR 'ibhagwan/fzf-lua',
-      -- OR 'folke/snacks.nvim',
-      'nvim-tree/nvim-web-devicons',
-    },
-    opts = {
-      use_local_fs = false, -- use local files on right side of reviews
-      picker = "telescope", -- or "fzf-lua" or "snacks"
-    },
-  },
-  {
-    "ravitemer/mcphub.nvim",
-    enabled = false,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
-    config = true,
-  },
-  {
-    "Davidyz/VectorCode",
-    enabled = false,
-    dependencies = { "nvim-lua/plenary.nvim" },
-    build = "uv tool upgrade vectorcode", -- optional but recommended. This keeps your CLI up-to-date.
-    -- cmd = "VectorCode", -- if you're lazy-loading VectorCode
-  },
-  -- {
-  --   "olimorris/codecompanion.nvim",
-  --   opts = {
-  --     strategies = {
-  --       chat = {
-  --         adapter = "copilot",
-  --         -- model = "claude-3.7-sonnet-thought", -- "gpt-4.1",  "claude-3.7-sonnet", "claude-3.5-sonnet", "gpt-4o", "o3-mini",
-  --       },
-  --       inline = {
-  --         adapter = "copilot",
-  --       },
-  --       cmd = {
-  --         adapter = "copilot",
-  --       }
-  --     },
-  --     display = {
-  --       action_palette = {
-  --         width = 95,
-  --         height = 10,
-  --         prompt = "Prompt ",                   -- Prompt used for interactive LLM calls
-  --         provider = "default",                 -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
-  --         opts = {
-  --           show_default_actions = true,        -- Show the default actions in the action palette?
-  --           show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-  --         },
-  --       },
-  --     },
-  --   },
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-treesitter/nvim-treesitter",
-  --   },
-  -- },
   -- {
   --   "yetone/avante.nvim",
   --   event = "VeryLazy",
@@ -440,7 +389,8 @@ local plugins = {
     opts = {
       padding = false,
       modes = { symbols = { win = { size = 50 } } },
-    }
+    },
+    cmd = "Trouble"
   },
   {
     "folke/todo-comments.nvim",
@@ -468,7 +418,7 @@ local plugins = {
   { "nvim-tree/nvim-web-devicons", lazy = true },
   {
     "ziontee113/icon-picker.nvim",
-    opts = { disable_legacy_commands = true }
+    opts = { disable_legacy_commands = true },
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -477,7 +427,6 @@ local plugins = {
       view = { width = 40 },
     },
   },
-
   "ryanoasis/vim-devicons",
   -- telescope (fzf replacement)
   "nvim-lua/popup.nvim",
@@ -533,13 +482,13 @@ local plugins = {
 
   -- Search and replace
   {
-    'MagicDuck/grug-far.nvim',
+    "MagicDuck/grug-far.nvim",
     opts = {
       -- options, see Configuration section below
       -- there are no required options atm
       -- engine = 'ripgrep' is default, but 'astgrep' can be specified
-      engine = 'astgrep'
-    }
+      engine = "astgrep",
+    },
   },
   -- Fancy undo
   {
@@ -548,57 +497,87 @@ local plugins = {
     opts = {}, -- your configuration here
   },
   -- Themes
+  { "Mofiqul/dracula.nvim" },
+  {
+    "rose-pine/neovim",
+    enabled = true,
+    lazy = false,
+    priority = 1000,
+    name = "rose-pine",
+    config = function()
+      -- vim.cmd.colorscheme("rose-pine")
+    end
+  },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    enabled = true,
+    lazy = false,
+    opts = {
+      -- flavour = "mocha",
+      -- background = {},
+      dim_inactive = { enabled = true }
+    },
+    config = function()
+      vim.cmd.colorscheme("catppuccin")
+    end
+  },
   {
     "folke/tokyonight.nvim",
-    config = function()
-      require("tokyonight").setup({
-        dim_inactive = true,
-        lualine_bold = true,
-        styles = {
-          -- Style to be applied to different syntax groups
-          -- Value is any valid attr-list value for `:help nvim_set_hl`
-          comments = { italic = true },
-          keywords = { italic = true },
-          functions = {},
-          variables = {},
-          -- Background styles. Can be "dark", "transparent" or "normal"
-          sidebars = "dark", -- style for sidebars, see below
-          floats = "dark",   -- style for floating windows
-        },
-        sidebars = { "qf", "help" },
-        on_highlights = function(hl, c)
-          -- local bg_prompt = c.bg_float
-          local bg_prompt = c.bg_highlight
-          hl.TelescopeNormal = {
-            bg = c.bg_dark,
-            fg = c.fg,
-          }
-          hl.TelescopeBorder = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
-          }
-          hl.TelescopePromptNormal = {
-            bg = bg_prompt,
-          }
-          hl.TelescopePromptBorder = {
-            bg = bg_prompt,
-            fg = bg_prompt,
-          }
-          hl.TelescopePromptTitle = {
-            bg = bg_prompt,
-            fg = c.fg,
-          }
-          hl.TelescopePreviewTitle = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
-          }
-          hl.TelescopeResultsTitle = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
-          }
-        end,
-      })
-    end,
+    enabled = true,
+    lazy = false,
+    priority = 1000,
+    opts = {
+      style = "night",
+      light_style = "day",
+      day_brightness = 0.2,
+      dim_inactive = true,
+      lualine_bold = true,
+      styles = {
+        -- Style to be applied to different syntax groups
+        -- Value is any valid attr-list value for `:help nvim_set_hl`
+        comments = { italic = true },
+        keywords = { italic = true },
+        functions = {},
+        variables = {},
+        -- Background styles. Can be "dark", "transparent" or "normal"
+        sidebars = "dark", -- style for sidebars, see below
+        floats = "dark",   -- style for floating windows
+      },
+      sidebars = { "qf", "help" },
+      on_highlights = function(hl, c)
+        -- local bg_prompt = c.bg_float
+        local bg_prompt = c.bg_highlight
+        hl.TelescopeNormal = {
+          bg = c.bg_dark,
+          fg = c.fg,
+        }
+        hl.TelescopeBorder = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+        hl.TelescopePromptNormal = {
+          bg = bg_prompt,
+        }
+        hl.TelescopePromptBorder = {
+          bg = bg_prompt,
+          fg = bg_prompt,
+        }
+        hl.TelescopePromptTitle = {
+          bg = bg_prompt,
+          fg = c.fg,
+        }
+        hl.TelescopePreviewTitle = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+        hl.TelescopeResultsTitle = {
+          bg = c.bg_dark,
+          fg = c.bg_dark,
+        }
+      end,
+    },
   },
   {
     "f-person/auto-dark-mode.nvim",
@@ -608,12 +587,13 @@ local plugins = {
       auto_dark_mode.setup({
         -- update_interval = 1000,
         set_dark_mode = function()
-          vim.api.nvim_set_option("background", "dark")
-          vim.cmd("colorscheme tokyonight-moon")
+          vim.api.nvim_set_option_value("background", "dark", {})
+          -- use this for color schemes that don't autoupdate, or to switch the theme entirely
+          -- vim.cmd("colorscheme tokyonight-moon")
         end,
         set_light_mode = function()
-          vim.api.nvim_set_option("background", "light")
-          vim.cmd("colorscheme tokyonight-day")
+          vim.api.nvim_set_option_value("background", "light", {})
+          -- vim.cmd("colorscheme tokyonight-day")
         end,
       })
       auto_dark_mode.init()
@@ -624,7 +604,7 @@ local plugins = {
     config = function()
       -- local navic = require("nvim-navic")
       require("lualine").setup({
-        theme = "tokyonight",
+        theme = preferred_theme,
         sections = {
           lualine_c = {
             "filename",
@@ -708,7 +688,7 @@ local plugins = {
         "rust",
         "elixir",
       },
-    }
+    },
   },
   -- EasyMotion replacement
   {
@@ -768,7 +748,7 @@ local plugins = {
   },
   -- towolf/vim-helm provides basic syntax highlighting and filetype detection
   -- ft = 'helm' is important to not start yamlls
-  { "towolf/vim-helm", ft = "helm" },
+  { "towolf/vim-helm",     ft = "helm" },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

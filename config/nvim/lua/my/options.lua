@@ -15,6 +15,7 @@ vim.opt.mouse = "a"
 -- always show signcolumns
 vim.opt.signcolumn = "yes"
 -- TODO find out how to escape this properly
+vim.opt.list = true
 vim.opt.listchars = { tab = "→ ", trail = "·", lead = "·" }
 -- show just one status line instead of many
 vim.opt.laststatus = 3

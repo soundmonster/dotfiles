@@ -1,5 +1,3 @@
--- vim.opt.background = 'dark'
-vim.cmd.colorscheme("tokyonight-moon")
 -- CodeLens colors
 vim.api.nvim_set_hl(0, "LspCodeLens", { link = "DiagnosticVirtualTextHint" })
 vim.api.nvim_set_hl(0, "LspCodeLensSeparator", { link = "DiagnosticSignHint" })
@@ -13,7 +11,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
     local win_ids = vim.api.nvim_list_wins()
     for _, win_id in ipairs(win_ids) do
       local buf_id = vim.api.nvim_win_get_buf(win_id)
-      local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
+      local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
       if buf_ft == "fugitiveblame" then
         require("lualine").hide({
           place = { "winbar" },
