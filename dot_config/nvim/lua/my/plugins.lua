@@ -1,6 +1,4 @@
--- local preferred_theme = "tokyonight"
--- local preferred_theme = "rose-pine"
-local preferred_theme = "catppuccin"
+local preferred_theme = "oasis"
 local plugins = {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   "nvim-treesitter/nvim-treesitter-textobjects",
@@ -520,7 +518,19 @@ local plugins = {
       dim_inactive = { enabled = true }
     },
     config = function()
-      vim.cmd.colorscheme("catppuccin")
+      -- vim.cmd.colorscheme("catppuccin")
+    end
+  },
+  {
+    "uhs-robert/oasis.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("oasis").setup({
+        -- dark_style = "lagoon",
+        -- light_style = "dawn"
+      })
+      vim.cmd.colorscheme("oasis")
     end
   },
   {

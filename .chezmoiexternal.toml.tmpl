@@ -1,0 +1,9 @@
+{{ range $repo := .wezterm_colorschemes }}
+{{ range .themes }}
+[".config/wezterm/colors/{{ . }}.toml"]
+  type = "archive-file"
+  url = "{{ $repo.url }}"
+  refreshPeriod = "168h"
+  path = "{{ $repo.sub_folder }}/{{ . }}.toml"
+{{ end }}
+{{ end }}

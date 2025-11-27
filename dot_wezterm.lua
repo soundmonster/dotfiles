@@ -10,12 +10,14 @@ local activate_resize_keytable = act.ActivateKeyTable({
 
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		return "Catppuccin Mocha"
+		return "oasis_lagoon"
+		-- return "Catppuccin Mocha"
 		-- return "tokyonight_moon"
 		-- return "tokyonight_night"
 		-- return "rose-pine"
 	else
-		return "Catppuccin Latte"
+		return "oasis_dawn"
+		-- return "Catppuccin Latte"
 		-- return "tokyonight-day"
 		-- return "rose-pine-dawn"
 	end
@@ -31,7 +33,7 @@ end
 
 -- local font = "Departure Mono"
 -- local italic_font = font
--- local font_size = 11.0
+-- local font_size = 12.5
 
 -- local font = "CommitMono"
 -- local italic_font = font
@@ -41,6 +43,10 @@ local font = "JetBrains Mono"
 local italic_font = font
 local font_size = 12.5
 
+-- local font = "IBM Plex Mono"
+-- local italic_font = font
+-- local font_size = 13
+
 -- local font = "Monaspace Neon" -- Neon Argon Xenon Radon Krypton
 -- local italic_font = "Monaspace Radon"
 -- local font_size = 12.5
@@ -48,37 +54,46 @@ local font_size = 12.5
 -- local font = "Iosevka Nerd Font"
 -- local italic_font = font
 -- local font_size = 13.5
---
+
 local color_scheme_name = scheme_for_appearance(wezterm.gui.get_appearance())
 local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
+if color_scheme == nil then
+	local home_dir = os.getenv("HOME")
+	local color_scheme_filename = home_dir .. "/.config/wezterm/colors/" .. color_scheme_name .. ".toml"
+	wezterm.log_info("Attempting to load " .. color_scheme_filename)
+	color_scheme = wezterm.color.load_scheme(color_scheme_filename)
+	wezterm.log_info(color_scheme)
+end
+wezterm.log_info(color_scheme)
 
 local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
-
-local home_dir = os.getenv("HOME")
-local function custom_tabline_pwd(tab)
-	local opts = { max_length = 20 }
-	local cwd = ''
-	local cwd_uri = tab.active_pane.current_working_dir
-	if cwd_uri then
-		local file_path = cwd_uri.file_path
-		if file_path == (home_dir .. '/') then
-			cwd = '~'
-		else
-			cwd = file_path:match('([^/]+)/?$')
-			if cwd and #cwd > opts.max_length then
-				cwd = cwd:sub(1, opts.max_length - 1) .. '…'
-			end
-			if cwd:match('^sbs-') then
-				cwd = cwd:sub(5) -- remove 'sbs-' prefix
-			end
-		end
-	end
-	return (cwd or '') .. ' '
-end
+--
+-- local home_dir = os.getenv("HOME")
+-- local function custom_tabline_pwd(tab)
+-- 	local opts = { max_length = 20 }
+-- 	local cwd = ''
+-- 	local cwd_uri = tab.active_pane.current_working_dir
+-- 	if cwd_uri then
+-- 		local file_path = cwd_uri.file_path
+-- 		if file_path == (home_dir .. '/') then
+-- 			cwd = '~'
+-- 		else
+-- 			cwd = file_path:match('([^/]+)/?$')
+-- 			if cwd and #cwd > opts.max_length then
+-- 				cwd = cwd:sub(1, opts.max_length - 1) .. '…'
+-- 			end
+-- 			if cwd:match('^sbs-') then
+-- 				cwd = cwd:sub(5) -- remove 'sbs-' prefix
+-- 			end
+-- 		end
+-- 	end
+-- 	return (cwd or '') .. ' '
+-- end
 
 tabline.setup({
 	options = {
-		theme = color_scheme_name,
+		-- theme = color_scheme_name,
+		colors = color_scheme,
 		section_separators = {
 			left = wezterm.nerdfonts.ple_right_half_circle_thick,
 			right = wezterm.nerdfonts.ple_left_half_circle_thick,
@@ -141,8 +156,8 @@ local config = {
 	-- underline_position = "-2px",
 	-- freetype_load_target = 'HorizontalLcd',
 	font_size = font_size,
-	cell_width = 1.0,
-	line_height = 1.0,
+	-- cell_width = 1.0,
+	-- line_height = 1.0,
 
 	-- https://wezfurlong.org/wezterm/config/lua/config/term.html
 	-- tempfile=$(mktemp) \
@@ -158,7 +173,9 @@ local config = {
 		fade_out_duration_ms = 75,
 		target = "CursorColor",
 	},
-	color_scheme = color_scheme_name,
+	colors = color_scheme,
+	-- disabled because it doesn't work with colors loaded from a custom file
+	-- color_scheme = color_scheme_name,
 	-- disabled in favor of tabline plugin
 	-- colors = {
 	-- 	tab_bar = {
@@ -201,6 +218,9 @@ local config = {
 		{ key = "a",          mods = "LEADER",       action = act.ActivateLastTab },
 		{ key = "n",          mods = "LEADER",       action = act.ActivateTabRelativeNoWrap(1) },
 		{ key = "p",          mods = "LEADER",       action = act.ActivateTabRelativeNoWrap(-1) },
+		{ key = "C",          mods = "LEADER|SHIFT", action = act.SpawnCommandInNewWindow({ cwd = "$HOME" }) },
+		{ key = "N",          mods = "LEADER|SHIFT", action = act.ActivateWindowRelative(1) },
+		{ key = "P",          mods = "LEADER|SHIFT", action = act.ActivateWindowRelative(-1) },
 		{ key = "1",          mods = "LEADER",       action = act.ActivateTab(0) },
 		{ key = "2",          mods = "LEADER",       action = act.ActivateTab(1) },
 		{ key = "3",          mods = "LEADER",       action = act.ActivateTab(2) },
