@@ -1,4 +1,4 @@
-local preferred_theme = "oasis"
+local preferred_theme = "tokyonight"
 local plugins = {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   "nvim-treesitter/nvim-treesitter-textobjects",
@@ -153,6 +153,11 @@ local plugins = {
       notifier = {
         enabled = false,
         timeout = 3000,
+      },
+      picker = {
+        formatters = {
+          file = { truncate = "left" },
+        }
       },
       quickfile = { enabled = true },
       scroll = { enabled = true },
@@ -530,7 +535,7 @@ local plugins = {
         -- dark_style = "lagoon",
         -- light_style = "dawn"
       })
-      vim.cmd.colorscheme("oasis")
+      -- vim.cmd.colorscheme("oasis")
     end
   },
   {
@@ -588,6 +593,9 @@ local plugins = {
         }
       end,
     },
+    config = function()
+      vim.cmd.colorscheme("tokyonight")
+    end
   },
   {
     "f-person/auto-dark-mode.nvim",
