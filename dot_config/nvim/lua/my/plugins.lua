@@ -7,7 +7,7 @@ local plugins = {
     "lewis6991/gitsigns.nvim",
     opts = { current_line_blame = true },
   },
-  "mason-org/mason.nvim",
+  { "mason-org/mason.nvim",            opts = { log_level = vim.log.levels.DEBUG } },
   "mason-org/mason-lspconfig.nvim",
   "neovim/nvim-lspconfig",
   {
@@ -19,7 +19,7 @@ local plugins = {
     },
     opts = { theme = preferred_theme },
   },
-  { "SmiteshP/nvim-navic",             dependencies = "neovim/nvim-lspconfig" },
+  { "SmiteshP/nvim-navic",       dependencies = "neovim/nvim-lspconfig" },
   {
     "stevearc/aerial.nvim",
     opts = {},
@@ -84,7 +84,7 @@ local plugins = {
   },
 
   -- LS for all files with handy actions; e.g. git blame
-  { "nvimtools/none-ls.nvim",    dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   {
     "folke/noice.nvim",
     enabled = true,
@@ -262,7 +262,7 @@ local plugins = {
       },
     },
   },
-  { "Bilal2453/luvit-meta",        lazy = true }, -- optional `vim.uv` typings
+  { "Bilal2453/luvit-meta",   lazy = true },      -- optional `vim.uv` typings
   {                                               -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -766,7 +766,7 @@ local plugins = {
   },
   -- towolf/vim-helm provides basic syntax highlighting and filetype detection
   -- ft = 'helm' is important to not start yamlls
-  { "towolf/vim-helm",     ft = "helm" },
+  { "towolf/vim-helm", ft = "helm" },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

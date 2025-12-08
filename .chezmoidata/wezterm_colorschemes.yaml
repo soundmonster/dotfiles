@@ -7,25 +7,7 @@ wezterm_colorschemes:
       - tokyonight_night
       - tokyonight_storm
   - url: "https://github.com/uhs-robert/oasis.nvim/archive/main.zip"
-    sub_folder: "oasis.nvim-main/extras/wezterm"
+    sub_folder: "oasis.nvim-main/extras/wezterm/themes/lagoon"
     themes:
-      - oasis_abyss
-      - oasis_cactus
-      - oasis_canyon
-      - oasis_dawn
-      - oasis_dawnlight
-      - oasis_day
-      - oasis_desert
-      - oasis_dune
-      - oasis_dusk
-      - oasis_dust
-      - oasis_lagoon
-      - oasis_midnight
-      - oasis_mirage
-      - oasis_night
-      - oasis_rose
-      - oasis_sol
-      - oasis_starlight
-      - oasis_twilight
-
-
+      - oasis_lagoon_dark
+      - oasis_lagoon_light_3

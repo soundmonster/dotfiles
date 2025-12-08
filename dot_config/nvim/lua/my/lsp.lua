@@ -271,14 +271,12 @@ local null_ls = require("null-ls")
 null_ls.setup({
   on_attach = on_attach,
   sources = {
-    null_ls.builtins.completion.luasnip,
-    -- null_ls.builtins.diagnostics.codespell.with({
-    --   extra_args = { "-L", "keypair,keypairs,crate,statics" },
-    -- }),
     -- null_ls.builtins.diagnostics.credo.with({ env = { MIX_ENV = "test" } }),
     -- null_ls.builtins.diagnostics.credo,
+    null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.completion.luasnip,
+    null_ls.builtins.diagnostics.yamllint,
     null_ls.builtins.diagnostics.zsh,
-    -- null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.shellharden,
   },
 })
