@@ -1,0 +1,87 @@
+#!/bin/bash
+
+set -e
+
+# Get current branch
+CURRENT_BRANCH=$(git branch --show-current)
+
+if [ "$CURRENT_BRANCH" = "" ]; then
+  echo "Error: Not on a branch"
+  exit 1
+fi
+
+echo "Current branch: $CURRENT_BRANCH"
+
+# Check for uncommitted changes
+if [ "$(git status --untracked-files=no --porcelain)" != "" ]; then
+  echo "Error: You have uncommitted changes. Please commit or stash them first."
+  git status --short
+  exit 1
+fi
+
+# Check for unpushed commits
+UNPUSHED_COMMITS=$(git rev-list @{u}..HEAD 2>/dev/null || echo "")
+if [ "$UNPUSHED_COMMITS" != "" ]; then
+  COMMIT_COUNT=$(echo "$UNPUSHED_COMMITS" | wc -l | tr -d ' ')
+  echo "Error: You have $COMMIT_COUNT unpushed commit(s). Please push your changes first."
+  git log @{u}..HEAD --oneline
+  exit 1
+fi
+
+echo "All changes are committed and pushed."
+
+# Find MR for current branch
+echo "Finding merge request for branch $CURRENT_BRANCH..."
+MR_INFO=$(glab mr list --source-branch "$CURRENT_BRANCH" --output=json  2>/dev/null)
+
+if [ "$MR_INFO" = "" ] || [ "$MR_INFO" = "[]" ]; then
+  echo "Error: No merge request found for branch $CURRENT_BRANCH"
+  exit 1
+fi
+
+# Extract MR number
+MR_NUMBER=$(echo "$MR_INFO" | jq -r '.[0].iid')
+MR_TITLE=$(echo "$MR_INFO" | jq -r '.[0].title')
+
+if [ "$MR_NUMBER" = "" ] || [ "$MR_NUMBER" = "null" ]; then
+  echo "Error: Could not determine MR number"
+  exit 1
+fi
+
+echo "Found MR !$MR_NUMBER: $MR_TITLE"
+
+# Get the latest pipeline for the MR
+echo "Getting pipeline status..."
+PIPELINE_STATUS=""
+PIPELINE_ID=""
+
+while true; do
+  PIPELINE_STATUS=$(glab mr view "$MR_NUMBER" --output=json | jq -r '.head_pipeline.status')
+
+  echo "Pipeline status: $PIPELINE_STATUS"
+
+  case "$PIPELINE_STATUS" in
+    "success")
+      echo "Pipeline passed!"
+      break
+      ;;
+    "failed"|"canceled"|"skipped")
+      echo "Error: Pipeline ended with status: $PIPELINE_STATUS"
+      exit 1
+      ;;
+    "running"|"pending"|"created"|"waiting_for_resource"|"preparing"|"scheduled")
+      echo "Pipeline still running, waiting 30 seconds..."
+      sleep 30
+      ;;
+    *)
+      echo "Unknown pipeline status: $PIPELINE_STATUS, waiting 30 seconds..."
+      sleep 30
+      ;;
+  esac
+done
+
+# Un-draft the MR
+echo "Marking MR !$MR_NUMBER as ready..."
+glab mr update "$MR_NUMBER" --ready
+
+echo "Done! MR !$MR_NUMBER is now ready for review."
