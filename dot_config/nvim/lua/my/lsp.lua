@@ -11,7 +11,8 @@ local elixir_lsp = "lexical" -- 'nextls', 'elixirls' or 'lexical'
 -- setup diagnostic symbols for sign column
 vim.diagnostic.config({
   virtual_lines = { current_line = true },
-  virtual_text = { current_line = false },
+  -- virtual_text = { current_line = false },
+  virtual_text = false,
   float = true,
   signs = {
     text = {

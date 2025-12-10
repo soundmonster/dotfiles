@@ -128,7 +128,7 @@ local plugins = {
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },
-          { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+          { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", cwd = true, indent = 2, padding = 1 },
           { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
           {
             pane = 2,
@@ -262,8 +262,8 @@ local plugins = {
       },
     },
   },
-  { "Bilal2453/luvit-meta",   lazy = true },      -- optional `vim.uv` typings
-  {                                               -- optional completion source for require statements and module annotations
+  { "Bilal2453/luvit-meta",   lazy = true }, -- optional `vim.uv` typings
+  {                                          -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
       opts.sources = opts.sources or {}
@@ -409,6 +409,27 @@ local plugins = {
         pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
       },
     },
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup({
+        options = {
+          multilines = {
+            enabled = true,
+          },
+          show_source = {
+            enabled = true,
+          },
+          use_icons_from_diagnostic = true,
+
+        }
+      })
+      vim.diagnostic.config({ virtual_text = false })                                   -- Disable Neovim's default virtual text diagnostics
+      vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float -- auto-disable on float
+    end,
   },
   -- Key discovery
   {
