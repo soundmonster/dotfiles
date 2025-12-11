@@ -422,13 +422,29 @@ local plugins = {
           },
           show_source = {
             enabled = true,
+            if_many = true,
           },
-          use_icons_from_diagnostic = true,
-
+          -- use_icons_from_diagnostic = true,
         }
       })
-      vim.diagnostic.config({ virtual_text = false })                                   -- Disable Neovim's default virtual text diagnostics
-      vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float -- auto-disable on float
+      -- auto-disable on float
+      vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
+
+      -- setup diagnostic symbols for sign column
+      vim.diagnostic.config({
+        -- virtual_lines = { current_line = true },
+        -- virtual_text = { current_line = false },
+        virtual_text = false,
+        -- float = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.HINT] = "",
+            [vim.diagnostic.severity.INFO] = "",
+          },
+        }
+      })
     end,
   },
   -- Key discovery

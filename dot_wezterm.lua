@@ -330,6 +330,8 @@ local config = {
 		{ key = "Space", mods = "LEADER",       action = act.ToggleFullScreen },
 		-- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
 		{ key = "a",     mods = "LEADER|CTRL",  action = act.SendString("\x01") },
+		-- Shift-Enter for Claude Code
+		{ key = "Enter", mods = "SHIFT",        action = wezterm.action { SendString = "\x1b\r" } },
 	},
 
 	key_tables = {

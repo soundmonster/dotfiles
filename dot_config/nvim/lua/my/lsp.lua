@@ -8,22 +8,6 @@ local luasnip = require("luasnip")
 -- Set preferred LSP server for Elixir here
 local elixir_lsp = "lexical" -- 'nextls', 'elixirls' or 'lexical'
 
--- setup diagnostic symbols for sign column
-vim.diagnostic.config({
-  virtual_lines = { current_line = true },
-  -- virtual_text = { current_line = false },
-  virtual_text = false,
-  float = true,
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "",
-      [vim.diagnostic.severity.WARN] = "",
-      [vim.diagnostic.severity.HINT] = "",
-      [vim.diagnostic.severity.INFO] = "",
-    },
-  }
-})
-
 local deprioritize_copilot = function(entry1, entry2)
   if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
     return false

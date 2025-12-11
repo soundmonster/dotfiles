@@ -2,6 +2,7 @@
 .elixir_ls
 .elixir-tools
 .lexical
+.expert
 .vscode
 .idea
 *.iml
