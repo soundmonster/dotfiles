@@ -28,3 +28,11 @@ vim.opt.encoding = "utf8"
 
 -- Avoid applying EditorConfig to Fugitive buffers
 vim.cmd([[ let g:EditorConfig_exclude_patterns = ['fugitive://.*'] ]])
+
+-- Wrap Markdown
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})

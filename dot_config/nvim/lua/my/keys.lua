@@ -53,10 +53,27 @@ return {
     "<cmd>lua Snacks.picker.grep_word()<cr>",
     desc = "search word under cursor in project",
   },
-  { "<leader>f",   group = "files" },
-  { "<leader>fF",  "<cmd>lua Snacks.picker.files({hidden = true})<cr>",                           desc = "find file" },
-  { "<leader>ff",  "<cmd>lua Snacks.picker.smart()<cr>",                                          desc = "find file with recency bonus" },
-  { "<leader>fg",  "<cmd>lua Snacks.picker.grep({hidden = true})<cr>",                            desc = "search text in files", },
+  { "<leader>f",  group = "files" },
+  { "<leader>fF", "<cmd>lua Snacks.picker.files({hidden = true})<cr>", desc = "find file" },
+  { "<leader>ff", "<cmd>lua Snacks.picker.smart()<cr>",                desc = "find file with recency bonus" },
+  { "<leader>fg", "<cmd>lua Snacks.picker.grep({hidden = true})<cr>",  desc = "search text in files", },
+  {
+    "<leader>fG",
+    function()
+      local tree_api = require('nvim-tree.api')
+      local selected_files = {}
+      local marks = tree_api.marks.list()
+      if table.getn(marks) > 0 then
+        for i, mark in ipairs(marks) do
+          selected_files[i] = mark.absolute_path
+        end
+      else
+        selected_files = { tree_api.tree.get_node_under_cursor().absolute_path }
+      end
+      Snacks.picker.grep({ dirs = selected_files, hidden = true })
+    end,
+    desc = "search text in the file/dir under cursor in nvim-tree",
+  },
   { "<leader>fb",  "<cmd>lua Snacks.picker.buffers()<cr>",                                        desc = "buffers" },
   { "<leader>fr",  "<cmd>lua Snacks.picker.recent()<cr>",                                         desc = "recent files" },
   { "<leader>fm",  "<cmd>lua Snacks.picker.marks()<cr>",                                          desc = "marks" },

@@ -4,6 +4,7 @@
 .lexical
 .expert
 .vscode
+.claude/settings.local.json
 .idea
 *.iml
 .*.swp

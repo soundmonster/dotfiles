@@ -7,7 +7,10 @@ wezterm_colorschemes:
       - tokyonight_night
       - tokyonight_storm
   - url: "https://github.com/uhs-robert/oasis.nvim/archive/main.zip"
-    sub_folder: "oasis.nvim-main/extras/wezterm/themes/lagoon"
+    sub_folder: "oasis.nvim-main/extras/wezterm/themes/dark"
     themes:
       - oasis_lagoon_dark
+  - url: "https://github.com/uhs-robert/oasis.nvim/archive/main.zip"
+    sub_folder: "oasis.nvim-main/extras/wezterm/themes/light/3"
+    themes:
       - oasis_lagoon_light_3

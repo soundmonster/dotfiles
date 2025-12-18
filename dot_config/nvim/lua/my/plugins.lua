@@ -725,7 +725,12 @@ local plugins = {
   },
   -- begin tpope
   "tpope/vim-abolish",
-  "tpope/vim-fugitive",
+  {
+    "tpope/vim-fugitive",
+    dependencies = {
+      "shumphrey/fugitive-gitlab.vim"
+    }
+  },
   "tpope/vim-repeat",
   "tpope/vim-rhubarb",
   "tpope/vim-sleuth",
