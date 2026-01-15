@@ -1,0 +1,5 @@
+[tools]
+elixir = "1.18.4-otp-28"
+erlang = "28"
+go = "latest"
+node = "latest"
