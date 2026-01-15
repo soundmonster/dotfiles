@@ -38,6 +38,7 @@ packages:
       - pwgen
       - ripgrep
       - sheldon
+      - starship
       - stylua
       - the_silver_searcher
       - thefuck

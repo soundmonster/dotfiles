@@ -8,7 +8,7 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
 fi
 
 homebrew_prefix=/opt/homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 
 FPATH="$homebrew_prefix/share/zsh/site-functions:${FPATH}"
 zmodload zsh/complist
