@@ -5,6 +5,7 @@ packages:
       - age
       - ast-grep
       - atuin
+      - awk
       - bash
       - bat
       - bottom
@@ -15,6 +16,7 @@ packages:
       - dark-mode
       - difftastic
       - direnv
+      - dos2unix
       - duf
       - dust
       - eza
@@ -22,9 +24,11 @@ packages:
       - fzf
       - gh
       - git
+      - git-crypt
       - git-delta
       - git-lfs
       - gnupg
+      - grep
       - hexyl
       - htop
       - just
@@ -47,6 +51,7 @@ packages:
       - tree-sitter-cli
       - typos-cli
       - usage
+      - uv
       - zoxide
       - zsh
     casks:
