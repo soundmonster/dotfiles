@@ -21,6 +21,7 @@ path=(
   # Created by `pipx` on 2024-06-04 08:47:56
   $HOME/.local/bin
   $path
+  /usr/local/bin
   /Applications/Cursor.app/Contents/Resources/app/bin
   /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
 )

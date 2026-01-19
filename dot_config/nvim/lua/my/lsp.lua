@@ -243,8 +243,9 @@ vim.lsp.config('elixirls', {
 })
 vim.lsp.config('lexical', {
   filetypes = { "elixir", "eelixir", "heex" },
-  -- cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
-  cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/burrito_out/expert_darwin_arm64"), "--stdio" },
+  cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
+  -- cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/_build/prod/rel/plain/bin/start_expert"), "--stdio" },
+  -- cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/burrito_out/expert_darwin_arm64"), "--stdio" },
   root_markers = { "mix.lock", ".git" },
   settings = {},
 })
