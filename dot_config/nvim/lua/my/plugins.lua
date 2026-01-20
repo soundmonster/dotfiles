@@ -477,7 +477,7 @@ local plugins = {
     },
   },
   { "zbirenbaum/copilot-cmp", config = true },
-  { "AndreM222/copilot-lualine", config = { show_colors = true } },
+  { "AndreM222/copilot-lualine", opts = { show_colors = true } },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "main",
