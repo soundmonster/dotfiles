@@ -265,6 +265,7 @@ null_ls.setup({
     null_ls.builtins.completion.luasnip,
     null_ls.builtins.diagnostics.yamllint,
     null_ls.builtins.diagnostics.zsh,
+    null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.shellharden,
   },
 })
