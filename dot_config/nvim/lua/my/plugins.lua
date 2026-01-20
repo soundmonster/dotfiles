@@ -2,10 +2,64 @@ local preferred_theme = "tokyonight"
 local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
-    lazy = false,
-    build = ":TSUpdate"
+    branch = "main", -- Ensure you are on the new branch
+    build = ":TSUpdate",
+    config = function()
+      local ts = require("nvim-treesitter")
+
+      -- 1. Install parsers
+      ts.install({
+        "bash",
+        "c",
+        "c_sharp",
+        "cmake",
+        "cpp",
+        "css",
+        "devicetree",
+        "dockerfile",
+        "eex",
+        "elixir",
+        "erlang",
+        "go",
+        "gomod",
+        "hcl",
+        "heex",
+        "html",
+        "http",
+        "java",
+        "json",
+        "latex",
+        "lua",
+        "make",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "regex",
+        "ruby",
+        "rust",
+        "scss",
+        "surface",
+        "toml",
+        "typescript",
+        "vim",
+        "yaml",
+        "zig",
+      })
+
+      -- 2. Use Neovim's built-in treesitter API for features
+      -- (The old .setup({ highlight = { enable = true } }) is deprecated)
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
+      })
+    end,
   },
-  "nvim-treesitter/nvim-treesitter-textobjects",
+  {
+    "nvim-treesitter/nvim-treesitter-context", -- Sticky headers for functions
+    opts = { max_lines = 3 },
+  },
+  -- { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
   "aaronik/treewalker.nvim",
   {
     "lewis6991/gitsigns.nvim",
@@ -23,7 +77,7 @@ local plugins = {
     },
     opts = { theme = preferred_theme },
   },
-  { "SmiteshP/nvim-navic",  dependencies = "neovim/nvim-lspconfig" },
+  { "SmiteshP/nvim-navic", dependencies = "neovim/nvim-lspconfig" },
   {
     "stevearc/aerial.nvim",
     opts = {},
@@ -88,7 +142,7 @@ local plugins = {
   },
 
   -- LS for all files with handy actions; e.g. git blame
-  { "nvimtools/none-ls.nvim",    dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   {
     "folke/noice.nvim",
     enabled = true,
@@ -103,11 +157,11 @@ local plugins = {
       },
       -- you can enable a preset for easier configuration
       presets = {
-        bottom_search = false,        -- use a classic bottom cmdline for search
-        command_palette = false,      -- position the cmdline and popupmenu together
+        bottom_search = false, -- use a classic bottom cmdline for search
+        command_palette = false, -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false,           -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false,       -- add a border to hover docs and signature help
+        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false, -- add a border to hover docs and signature help
       },
     },
     dependencies = {
@@ -132,7 +186,15 @@ local plugins = {
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },
-          { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", cwd = true, indent = 2, padding = 1 },
+          {
+            pane = 2,
+            icon = " ",
+            title = "Recent Files",
+            section = "recent_files",
+            cwd = true,
+            indent = 2,
+            padding = 1,
+          },
           { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
           {
             pane = 2,
@@ -161,7 +223,7 @@ local plugins = {
       picker = {
         formatters = {
           file = { truncate = "left" },
-        }
+        },
       },
       quickfile = { enabled = true },
       scroll = { enabled = true },
@@ -174,23 +236,127 @@ local plugins = {
       },
     },
     keys = {
-      { "<leader>z",  function() Snacks.zen() end,                     desc = "Toggle Zen Mode", },
-      { "<leader>Z",  function() Snacks.zen.zoom() end,                desc = "Toggle Zoom", },
-      { "<leader>.",  function() Snacks.scratch() end,                 desc = "Toggle Scratch Buffer", },
-      { "<leader>S",  function() Snacks.scratch.select() end,          desc = "Select Scratch Buffer", },
-      { "<leader>ns", function() Snacks.notifier.show_history() end,   desc = "Notification History", },
-      { "<leader>bd", function() Snacks.bufdelete() end,               desc = "Delete Buffer", },
-      { "<leader>cR", function() Snacks.rename.rename_file() end,      desc = "Rename File", },
-      { "<leader>gB", function() Snacks.gitbrowse() end,               desc = "Git Browse", },
-      { "<leader>gb", function() Snacks.git.blame_line() end,          desc = "Git Blame Line", },
-      { "<leader>gf", function() Snacks.lazygit.log_file() end,        desc = "Lazygit Current File History", },
-      { "<leader>gg", function() Snacks.lazygit() end,                 desc = "Lazygit", },
-      { "<leader>gl", function() Snacks.lazygit.log() end,             desc = "Lazygit Log (cwd)", },
-      { "<leader>nh", function() Snacks.notifier.hide() end,           desc = "Dismiss All Notifications", },
-      { "<c-/>",      function() Snacks.terminal() end,                desc = "Toggle Terminal", },
-      { "<c-_>",      function() Snacks.terminal() end,                desc = "which_key_ignore", },
-      { "]]",         function() Snacks.words.jump(vim.v.count1) end,  desc = "Next Reference",               mode = { "n", "t" }, },
-      { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference",               mode = { "n", "t" }, },
+      {
+        "<leader>z",
+        function()
+          Snacks.zen()
+        end,
+        desc = "Toggle Zen Mode",
+      },
+      {
+        "<leader>Z",
+        function()
+          Snacks.zen.zoom()
+        end,
+        desc = "Toggle Zoom",
+      },
+      {
+        "<leader>.",
+        function()
+          Snacks.scratch()
+        end,
+        desc = "Toggle Scratch Buffer",
+      },
+      {
+        "<leader>S",
+        function()
+          Snacks.scratch.select()
+        end,
+        desc = "Select Scratch Buffer",
+      },
+      {
+        "<leader>ns",
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = "Notification History",
+      },
+      {
+        "<leader>bd",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
+      {
+        "<leader>cR",
+        function()
+          Snacks.rename.rename_file()
+        end,
+        desc = "Rename File",
+      },
+      {
+        "<leader>gB",
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = "Git Browse",
+      },
+      {
+        "<leader>gb",
+        function()
+          Snacks.git.blame_line()
+        end,
+        desc = "Git Blame Line",
+      },
+      {
+        "<leader>gf",
+        function()
+          Snacks.lazygit.log_file()
+        end,
+        desc = "Lazygit Current File History",
+      },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<leader>gl",
+        function()
+          Snacks.lazygit.log()
+        end,
+        desc = "Lazygit Log (cwd)",
+      },
+      {
+        "<leader>nh",
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = "Dismiss All Notifications",
+      },
+      {
+        "<c-/>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "Toggle Terminal",
+      },
+      {
+        "<c-_>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "which_key_ignore",
+      },
+      {
+        "]]",
+        function()
+          Snacks.words.jump(vim.v.count1)
+        end,
+        desc = "Next Reference",
+        mode = { "n", "t" },
+      },
+      {
+        "[[",
+        function()
+          Snacks.words.jump(-vim.v.count1)
+        end,
+        desc = "Prev Reference",
+        mode = { "n", "t" },
+      },
       {
         "<leader>N",
         desc = "Neovim News",
@@ -224,24 +390,26 @@ local plugins = {
           vim.print = _G.dd -- Override print to use snacks for `:=` command
 
           -- Create some toggle mappings
-          Snacks.toggle.new({
-            id = "lsp_autoformat",
-            name = "LSP Autoformat",
-            get = function()
-              return vim.api.nvim_get_var("lsp_autoformat")
-            end,
-            set = function(value)
-              vim.api.nvim_set_var("lsp_autoformat", value)
-            end,
-          }, {}):map("<leader>uF")
+          Snacks.toggle
+            .new({
+              id = "lsp_autoformat",
+              name = "LSP Autoformat",
+              get = function()
+                return vim.api.nvim_get_var("lsp_autoformat")
+              end,
+              set = function(value)
+                vim.api.nvim_set_var("lsp_autoformat", value)
+              end,
+            }, {})
+            :map("<leader>uF")
           Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
           Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
           Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
           Snacks.toggle.diagnostics():map("<leader>ud")
           Snacks.toggle.line_number():map("<leader>ul")
           Snacks.toggle
-              .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-              :map("<leader>uc")
+            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+            :map("<leader>uc")
           Snacks.toggle.treesitter():map("<leader>uT")
           Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
           Snacks.toggle.inlay_hints():map("<leader>uh")
@@ -266,8 +434,8 @@ local plugins = {
       },
     },
   },
-  { "Bilal2453/luvit-meta",        lazy = true }, -- optional `vim.uv` typings
-  {                                          -- optional completion source for require statements and module annotations
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+  { -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
       opts.sources = opts.sources or {}
@@ -299,46 +467,60 @@ local plugins = {
       })
     end,
   },
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   opts = {
-  --     -- disable panel and suggestions, this is handled by copilot-cmp
-  --     suggestion = { enabled = false },
-  --     panel = { enabled = false },
-  --   },
-  -- },
-  -- { "zbirenbaum/copilot-cmp", config = true, },
-  -- {
-  --   "CopilotC-Nvim/CopilotChat.nvim",
-  --   branch = "main",
-  --   dependencies = {
-  --     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-  --     { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
-  --   },
-  --   opts = { debug = false },
-  -- },
-  -- {
-  --   "copilotlsp-nvim/copilot-lsp",
-  --   enabled = false,
-  --   config = function()
-  --     local nes = require('copilot-lsp.nes')
-  --     nes.setup({
-  --       move_count_threshold = 2, -- Clear after 3 cursor movements
-  --     })
-  --     vim.g.copilot_nes_debounce = 1500
-  --     vim.lsp.enable("copilot_ls")
-  --     vim.keymap.set('n', '<leader><cr>', function()
-  --       -- Try to jump to the start of the suggestion edit.
-  --       -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-  --       local _ = nes.walk_cursor_start_edit()
-  --           or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
-  --     end, { desc = 'Accept Copilot NES suggestion', expr = true })
-  --     -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
-  --     vim.keymap.set("n", "<leader><esc>", function()
-  --       nes.clear()
-  --     end, { desc = "Clear Copilot suggestion or fallback" })
-  --   end,
-  -- },
+  {
+    "zbirenbaum/copilot.lua",
+    opts = {
+      -- disable panel and suggestions, this is handled by copilot-cmp
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      copilot_node_command = "/opt/homebrew/opt/node/bin/node", -- Node.js version must be > 22
+    },
+  },
+  { "zbirenbaum/copilot-cmp", config = true },
+  { "AndreM222/copilot-lualine", config = { show_colors = true } },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "main",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    opts = { debug = false },
+  },
+  {
+    "copilotlsp-nvim/copilot-lsp",
+    enabled = false,
+    config = function()
+      local nes = require("copilot-lsp.nes")
+      nes.setup({
+        move_count_threshold = 2, -- Clear after 3 cursor movements
+      })
+      vim.g.copilot_nes_debounce = 1500
+      vim.lsp.enable("copilot_ls")
+      vim.keymap.set("n", "<leader><cr>", function()
+        -- Try to jump to the start of the suggestion edit.
+        -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+        local _ = nes.walk_cursor_start_edit() or (nes.apply_pending_nes() and nes.walk_cursor_end_edit())
+      end, { desc = "Accept Copilot NES suggestion", expr = true })
+      -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
+      vim.keymap.set("n", "<leader><esc>", function()
+        nes.clear()
+      end, { desc = "Clear Copilot suggestion or fallback" })
+    end,
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      -- NOTE: The log_level is in `opts.opts`
+      opts = {
+        log_level = "DEBUG", -- or "TRACE"
+      },
+    },
+  },
   -- {
   --   "yetone/avante.nvim",
   --   event = "VeryLazy",
@@ -397,7 +579,7 @@ local plugins = {
       padding = false,
       modes = { symbols = { win = { size = 50 } } },
     },
-    cmd = "Trouble"
+    cmd = "Trouble",
   },
   {
     "folke/todo-comments.nvim",
@@ -429,7 +611,7 @@ local plugins = {
             if_many = true,
           },
           -- use_icons_from_diagnostic = true,
-        }
+        },
       })
       -- auto-disable on float
       vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
@@ -447,7 +629,7 @@ local plugins = {
             [vim.diagnostic.severity.HINT] = "",
             [vim.diagnostic.severity.INFO] = "",
           },
-        }
+        },
       })
     end,
   },
@@ -550,7 +732,7 @@ local plugins = {
     name = "rose-pine",
     config = function()
       -- vim.cmd.colorscheme("rose-pine")
-    end
+    end,
   },
   {
     "catppuccin/nvim",
@@ -561,11 +743,11 @@ local plugins = {
     opts = {
       -- flavour = "mocha",
       -- background = {},
-      dim_inactive = { enabled = true }
+      dim_inactive = { enabled = true },
     },
     config = function()
       -- vim.cmd.colorscheme("catppuccin")
-    end
+    end,
   },
   {
     "uhs-robert/oasis.nvim",
@@ -577,7 +759,7 @@ local plugins = {
         -- light_style = "dawn"
       })
       -- vim.cmd.colorscheme("oasis")
-    end
+    end,
   },
   {
     "folke/tokyonight.nvim",
@@ -599,7 +781,7 @@ local plugins = {
         variables = {},
         -- Background styles. Can be "dark", "transparent" or "normal"
         sidebars = "dark", -- style for sidebars, see below
-        floats = "dark",   -- style for floating windows
+        floats = "dark", -- style for floating windows
       },
       sidebars = { "qf", "help" },
       on_highlights = function(hl, c)
@@ -636,7 +818,7 @@ local plugins = {
     },
     config = function()
       vim.cmd.colorscheme("tokyonight")
-    end
+    end,
   },
   {
     "f-person/auto-dark-mode.nvim",
@@ -689,6 +871,7 @@ local plugins = {
               cond = require("noice").api.status.search.has,
               color = { fg = "#ff9e64" },
             },
+            "copilot",
             "encoding",
             "fileformat",
             "filetype",
@@ -732,8 +915,8 @@ local plugins = {
   {
     "tpope/vim-fugitive",
     dependencies = {
-      "shumphrey/fugitive-gitlab.vim"
-    }
+      "shumphrey/fugitive-gitlab.vim",
+    },
   },
   "tpope/vim-repeat",
   "tpope/vim-rhubarb",
@@ -800,7 +983,7 @@ local plugins = {
       file_types = { "markdown", "codecompanion", "Avante" },
       win_options = { conceallevel = { rendered = 0 } },
     },
-    ft = { "markdown", "codecompanion", "Avante" }
+    ft = { "markdown", "codecompanion", "Avante" },
   },
   {
     "iamcco/markdown-preview.nvim",
@@ -812,7 +995,7 @@ local plugins = {
   },
   -- towolf/vim-helm provides basic syntax highlighting and filetype detection
   -- ft = 'helm' is important to not start yamlls
-  { "towolf/vim-helm",     ft = "helm" },
+  { "towolf/vim-helm", ft = "helm" },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

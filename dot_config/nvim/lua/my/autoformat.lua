@@ -20,9 +20,7 @@ local function on_attach(client, _)
   if client.server_capabilities.documentFormattingProvider then
     vim.cmd([[augroup Format]])
     vim.cmd([[autocmd! * <buffer>]])
-    vim.cmd(
-      [[autocmd BufWritePre <buffer> lua if vim.g.lsp_autoformat then vim.lsp.buf.format({ async = false }) end]]
-    )
+    vim.cmd([[autocmd BufWritePre <buffer> lua if vim.g.lsp_autoformat then vim.lsp.buf.format({ async = false }) end]])
     vim.cmd([[augroup END]])
   end
 end

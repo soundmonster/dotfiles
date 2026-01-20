@@ -19,7 +19,9 @@ end
 local default_cmp_conf = require("cmp.config.default")
 
 local has_words_before = function()
-  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+    return false
+  end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 end
@@ -174,35 +176,35 @@ local on_attach = function(client, bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local wk = require("which-key")
   wk.add({
-    { "<leader>w",  group = "workspace folders" },
-    { "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>",    desc = "Add workspace folder" },
+    { "<leader>w", group = "workspace folders" },
+    { "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>", desc = "Add workspace folder" },
     { "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>", desc = "Remove workspace folder" },
     {
       "<leader>wl",
       "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>",
       desc = "List workspace folders",
     },
-    { "<leader>D",  "<cmd>lua vim.lsp.buf.type_definition()<cr>",         desc = "type definition" },
+    { "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<cr>", desc = "type definition" },
     -- rename is grn by default now?
     -- { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>",                  desc = "rename" },
-    { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>",             desc = "code actions" },
-    { "<leader>e",  "<cmd>lua vim.diagnostic.open_float()<cr>",           desc = "open float" },
-    { "<leader>F",  "<cmd>lua vim.lsp.buf.format({ async = false })<cr>", desc = "format file" },
-    { "<leader>l",  group = "codelenses" },
-    { "<leader>ls", "<cmd>lua vim.lsp.codelens.display()<cr>",            desc = "show codelenses" },
-    { "<leader>lr", "<cmd>lua vim.lsp.codelens.run()<cr>",                desc = "run codelens on current line" },
-    { "K",          "<cmd>lua vim.lsp.buf.hover()<cr>",                   desc = "hover" },
+    { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
+    { "<leader>e", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "open float" },
+    { "<leader>F", "<cmd>lua vim.lsp.buf.format({ async = false })<cr>", desc = "format file" },
+    { "<leader>l", group = "codelenses" },
+    { "<leader>ls", "<cmd>lua vim.lsp.codelens.display()<cr>", desc = "show codelenses" },
+    { "<leader>lr", "<cmd>lua vim.lsp.codelens.run()<cr>", desc = "run codelens on current line" },
+    { "K", "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "hover" },
     -- conflicts with Treewalker, keeping it around in case I need it
     -- { "<C-j>",      "<cmd>lua vim.lsp.buf.signature_help()<cr>",          desc = "signature help" },
-    { "g",          group = "go" },
-    { "gd",         "<cmd>lua vim.lsp.buf.definition()<cr>",              desc = "go to definition" },
-    { "gD",         "<cmd>lua vim.lsp.buf.declaration()<cr>",             desc = "go to declaration" },
-    { "gi",         "<cmd>lua vim.lsp.buf.implementation()<cr>",          desc = "go to implementation" },
+    { "g", group = "go" },
+    { "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition" },
+    { "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "go to declaration" },
+    { "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", desc = "go to implementation" },
     -- { "gr",         "<cmd>Telescope lsp_references<cr>",                  desc = "references (popup)" },
-    { "gr",         "<cmd>lua Snacks.picker.lsp_references()<cr>",        desc = "references (popup)" },
-    { "gR",         "<cmd>Trouble lsp_references<cr>",                    desc = "references (bottom pane)" },
-    { "[d",         "<cmd>lua vim.diagnostic.goto_prev()<cr>",            desc = "previous diagnostic" },
-    { "]d",         "<cmd>lua vim.diagnostic.goto_next()<cr>",            desc = "next diagnostic" },
+    { "gr", "<cmd>lua Snacks.picker.lsp_references()<cr>", desc = "references (popup)" },
+    { "gR", "<cmd>Trouble lsp_references<cr>", desc = "references (bottom pane)" },
+    { "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "previous diagnostic" },
+    { "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "next diagnostic" },
     {
       "<leader>F",
       "<cmd>lua vim.lsp.buf.format({ async = false })<cr>",
@@ -227,9 +229,9 @@ vim.lsp.config("*", {
   capabilities = capabilities,
 })
 
-vim.lsp.config('terraformls', { cmd = { 'terraform-ls', 'serve', '-log-file /dev/null' } })
+vim.lsp.config("terraformls", { cmd = { "terraform-ls", "serve", "-log-file /dev/null" } })
 
-vim.lsp.config('elixirls', {
+vim.lsp.config("elixirls", {
   filetypes = { "elixir", "eelixir", "heex" },
   root_markers = { "mix.lock", ".git" },
   settings = {
@@ -241,7 +243,7 @@ vim.lsp.config('elixirls', {
     },
   },
 })
-vim.lsp.config('lexical', {
+vim.lsp.config("lexical", {
   filetypes = { "elixir", "eelixir", "heex" },
   cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
   -- cmd = { vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/_build/prod/rel/plain/bin/start_expert"), "--stdio" },

@@ -33,6 +33,7 @@ packages:
       - htop
       - just
       - lazygit
+      - node
       - miller
       - mise
       - neovim
@@ -47,6 +48,7 @@ packages:
       - the_silver_searcher
       - thefuck
       - tig
+      - tlrc
       - tree-sitter
       - tree-sitter-cli
       - typos-cli
