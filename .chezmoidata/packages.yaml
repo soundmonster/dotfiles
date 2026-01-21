@@ -36,6 +36,7 @@ packages:
       - node
       - miller
       - mise
+      - moreutils
       - neovim
       - openssl
       - postgresql

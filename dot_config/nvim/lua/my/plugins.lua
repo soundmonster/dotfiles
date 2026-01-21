@@ -477,7 +477,7 @@ local plugins = {
     },
   },
   { "zbirenbaum/copilot-cmp", config = true },
-  { "AndreM222/copilot-lualine", opts = { show_colors = true } },
+  "AndreM222/copilot-lualine",
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "main",
@@ -871,7 +871,15 @@ local plugins = {
               cond = require("noice").api.status.search.has,
               color = { fg = "#ff9e64" },
             },
-            "copilot",
+            {
+              "copilot",
+              -- Default values
+              symbols = {
+                spinners = "dots", -- has some premade spinners
+              },
+              show_colors = true,
+              show_loading = true,
+            },
             "encoding",
             "fileformat",
             "filetype",
