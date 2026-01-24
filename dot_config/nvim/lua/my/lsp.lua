@@ -253,7 +253,8 @@ vim.lsp.config("lexical", {
 })
 
 vim.lsp.enable(elixir_lsp)
-vim.lsp.enable('gleam')
+vim.lsp.enable("gleam")
+vim.lsp.enable("rust_analyzer")
 require("mason-lspconfig").setup()
 
 local null_ls = require("null-ls")
