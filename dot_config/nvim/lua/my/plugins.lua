@@ -20,6 +20,7 @@ local plugins = {
         "eex",
         "elixir",
         "erlang",
+        "gleam",
         "go",
         "gomod",
         "hcl",
