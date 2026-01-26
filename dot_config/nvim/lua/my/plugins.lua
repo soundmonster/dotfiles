@@ -38,6 +38,7 @@ local plugins = {
         "regex",
         "ruby",
         "rust",
+        "scala",
         "scss",
         "surface",
         "toml",
@@ -56,6 +57,7 @@ local plugins = {
       })
     end,
   },
+  { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
   {
     "nvim-treesitter/nvim-treesitter-context", -- Sticky headers for functions
     opts = { max_lines = 3 },
@@ -504,7 +506,7 @@ local plugins = {
     config = function()
       local nes = require("copilot-lsp.nes")
       nes.setup({
-        move_count_threshold = 2, -- Clear after 3 cursor movements
+        move_count_threshold = 2, -- Clear after 2 cursor movements
       })
       vim.g.copilot_nes_debounce = 1500
       vim.lsp.enable("copilot_ls")
@@ -585,12 +587,33 @@ local plugins = {
   -- Quickfix replacement of sorts
   {
     "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    optional = true,
     opts = {
       padding = false,
       modes = { symbols = { win = { size = 50 } } },
     },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "Trouble",
+    specs = {
+      "folke/snacks.nvim",
+      opts = function(_, opts)
+        return vim.tbl_deep_extend("force", opts or {}, {
+          picker = {
+            actions = require("trouble.sources.snacks").actions,
+            win = {
+              input = {
+                keys = {
+                  ["<c-t>"] = {
+                    "trouble_open",
+                    mode = { "n", "i" },
+                  },
+                },
+              },
+            },
+          },
+        })
+      end,
+    },
   },
   {
     "folke/todo-comments.nvim",
@@ -661,6 +684,7 @@ local plugins = {
     "nvim-tree/nvim-tree.lua",
     opts = {
       update_focused_file = { enable = true },
+      renderer = { group_empty = true },
       view = { width = 40 },
     },
   },

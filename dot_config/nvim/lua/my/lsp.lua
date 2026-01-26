@@ -255,6 +255,15 @@ vim.lsp.config("lexical", {
 vim.lsp.enable(elixir_lsp)
 vim.lsp.enable("gleam")
 vim.lsp.enable("rust_analyzer")
+
+vim.lsp.config("metals", {
+  filetypes = { "scala", "sbt", "java" },
+  cmd = { vim.fn.expand("$HOME/Library/Application Support/Coursier/bin/metals") },
+  root_markers = { "build.sbt", "build.sc", "build.gradle", "pom.xml", ".scala-build", ".git" },
+  settings = {},
+})
+vim.lsp.enable("metals")
+
 require("mason-lspconfig").setup()
 
 local null_ls = require("null-ls")

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+# run mix test, forward all shell arguments
+mix test --repeat-until-failure 10000 --max-failures 1 "$@"

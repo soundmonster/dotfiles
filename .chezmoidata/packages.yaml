@@ -21,6 +21,7 @@ packages:
       - dust
       - eza
       - fd
+      - fswatch
       - fzf
       - gh
       - git
@@ -31,19 +32,21 @@ packages:
       - grep
       - hexyl
       - htop
+      - hwatch
       - just
       - lazygit
-      - node
       - miller
       - mise
       - moreutils
       - neovim
+      - node
       - openssl
       - postgresql
       - prettyping
       - pwgen
       - ripgrep
       - sheldon
+      - shellharden
       - starship
       - stylua
       - the_silver_searcher
@@ -55,6 +58,7 @@ packages:
       - typos-cli
       - usage
       - uv
+      - watch
       - zoxide
       - zsh
     casks:
