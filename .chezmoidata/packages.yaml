@@ -8,6 +8,7 @@ packages:
       - awk
       - bash
       - bat
+      - bkt
       - bottom
       - chezmoi
       - coreutils
