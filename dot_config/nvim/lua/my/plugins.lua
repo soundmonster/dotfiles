@@ -224,9 +224,9 @@ local plugins = {
         timeout = 3000,
       },
       picker = {
-        formatters = {
-          file = { truncate = "left" },
-        },
+        -- formatters = {
+        --   file = { truncate = "left", min_width = 100 },
+        -- },
       },
       quickfile = { enabled = true },
       scroll = { enabled = true },
