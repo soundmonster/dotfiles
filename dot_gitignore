@@ -4,7 +4,7 @@
 .lexical
 .expert
 .vscode
-.claude/settings.local.json
+.claude
 .idea
 *.iml
 .*.swp
@@ -21,3 +21,4 @@ GPATH
 .env
 .envrc
 AGENTS.md
+CLAUDE.md
