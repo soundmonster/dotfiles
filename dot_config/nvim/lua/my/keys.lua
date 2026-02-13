@@ -122,7 +122,10 @@ return {
     "<cmd>OtherClear<cr>",
     desc = "clear alt file",
   },
-
+  -- git hunks
+  { "<leader>g", group = "Git" },
+  { "<leader>gj", "<cmd>Gitsigns next_hunk", desc = "next hunk" },
+  { "<leader>gk", "<cmd>Gitsigns prev_hunk", desc = "prev hunk" },
   { "<leader>s", group = "symbols" },
   {
     "<leader>st",

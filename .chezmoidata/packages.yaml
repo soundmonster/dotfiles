@@ -41,6 +41,7 @@ packages:
       - moreutils
       - neovim
       - node
+      - noti
       - openssl
       - postgresql
       - prettyping
@@ -53,6 +54,7 @@ packages:
       - the_silver_searcher
       - thefuck
       - tig
+      - timg
       - tlrc
       - tree-sitter
       - tree-sitter-cli

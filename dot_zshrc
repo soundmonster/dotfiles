@@ -24,6 +24,7 @@ path=(
   /usr/local/bin
   /Applications/Cursor.app/Contents/Resources/app/bin
   /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
+  $homebrew_prefix/opt/avr-gcc@8/bin
 )
 # enable history in Erlang/Elixir REPL
 export ERL_AFLAGS="-kernel shell_history enabled"
