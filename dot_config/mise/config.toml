@@ -1,4 +1,8 @@
+# [tool_alias]
+# rebar3 = "core:elixir"
+
 [tools]
+# rebar3 = { version = "1.18.4-otp-28", matching = "elixir", exe = "rebar3" }
 elixir = "1.18.4-otp-28"
 erlang = "28"
 go = "latest"
