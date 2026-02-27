@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+selected=$(git log -n 200 --color=always --format="%C(red)%h%C(reset) %C(green)%<(20,trunc)%an%C(reset) %C(yellow)%D%C(reset) %s" \
+  | fzf --ansi --no-sort --prompt="Rebase onto> ") || exit 0
+
+commit=$(echo "$selected" | awk '{print $1}')
+
+git rebase -i "$commit"

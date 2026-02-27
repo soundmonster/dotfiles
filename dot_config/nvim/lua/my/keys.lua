@@ -74,6 +74,7 @@ return {
   { "<leader>f", group = "files" },
   { "<leader>fF", "<cmd>lua Snacks.picker.files({hidden = true})<cr>", desc = "find file" },
   { "<leader>ff", "<cmd>lua Snacks.picker.smart()<cr>", desc = "find file with recency bonus" },
+  { "<leader>fj", "<cmd>lua Snacks.picker.jumps()<cr>", desc = "jumps" },
   { "<leader>fg", "<cmd>lua Snacks.picker.grep({hidden = true})<cr>", desc = "search text in files" },
   {
     "<leader>fG",
@@ -124,6 +125,7 @@ return {
   },
   -- git hunks
   { "<leader>g", group = "Git" },
+  { "<leader>gb", "<cmd>Gitsigns blame<cr>", desc = "git blame" },
   { "<leader>gj", "<cmd>Gitsigns next_hunk<cr>", desc = "next hunk" },
   { "<leader>gk", "<cmd>Gitsigns prev_hunk<cr>", desc = "prev hunk" },
   { "<leader>s", group = "symbols" },
