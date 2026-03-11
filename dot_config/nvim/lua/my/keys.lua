@@ -74,6 +74,8 @@ return {
   { "<leader>f", group = "files" },
   { "<leader>fF", "<cmd>lua Snacks.picker.files({hidden = true})<cr>", desc = "find file" },
   { "<leader>ff", "<cmd>lua Snacks.picker.smart()<cr>", desc = "find file with recency bonus" },
+  { "<leader>fd", "<cmd>lua Snacks.picker.git_diff()<cr>", desc = "git diff (hunks)" },
+  { "<leader>fD", "<cmd>lua Snacks.picker.git_diff({staged=true})<cr>", desc = "git diff (staged hunks)" },
   { "<leader>fj", "<cmd>lua Snacks.picker.jumps()<cr>", desc = "jumps" },
   { "<leader>fg", "<cmd>lua Snacks.picker.grep({hidden = true})<cr>", desc = "search text in files" },
   {
@@ -163,8 +165,13 @@ return {
   },
   {
     "<leader>dt",
-    "<cmd>Trouble telescope toggle<cr>",
-    desc = "toggle telescope",
+    "<cmd>lua Snacks.picker.diagnostics()<cr>",
+    desc = "toggle picker",
+  },
+  {
+    "<leader>dT",
+    "<cmd>lua Snacks.picker.todo_comments()<cr>",
+    desc = "toggle TODO picker",
   },
 
   { "<leader>T", group = "in a wezterm pane, ..." },
