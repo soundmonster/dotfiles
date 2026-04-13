@@ -135,34 +135,26 @@ cmp.setup.cmdline(":", {
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local lsp_notify = function(client, message_text)
-  local Manager = require("noice.message.manager")
-  local Message = require("noice.message")
-  local Format = require("noice.text.format")
-  local Config = require("noice.config")
-
-  local message = Message("lsp", "progress")
-  message.opts.progress = {
-    message = message_text,
-    client_id = client.id,
-    client = client.name,
-    percentage = 100,
-    kind = "end",
-  }
-
-  -- message.level = 4 -- debug
-  -- message.opts.title = "LSP Message (" .. client.name .. ")"
-  -- for level, type in pairs(M.message_type) do
-  --   if type == result.type then
-  --     message.level = level
-  --   end
-  -- end
-  -- Manag ger.add(message)
-  Manager.add(Format.format(message, Config.options.lsp.progress.format_done))
+  -- local Manager = require("noice.message.manager")
+  -- local Message = require("noice.message")
+  -- local Format = require("noice.text.format")
+  -- local Config = require("noice.config")
+  --
+  -- local message = Message("lsp", "progress")
+  -- message.opts.progress = {
+  --   message = message_text,
+  --   client_id = client.id,
+  --   client = client.name,
+  --   percentage = 100,
+  --   kind = "end",
+  -- }
+  --
+  -- Manager.add(Format.format(message, Config.options.lsp.progress.format_done))
 end
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(client, bufnr)
-  require("inlay-hints").on_attach(client, bufnr)
+  -- require("inlay-hints").on_attach(client, bufnr)
   -- print("Started LSP client for " .. client.name)
   lsp_notify(client, "Started LSP client")
   if client.server_capabilities.documentSymbolProvider then
@@ -217,9 +209,9 @@ local on_attach = function(client, bufnr)
   require("my/autoformat").on_attach(client, bufnr)
 
   -- this doesn't always work reliably, and cause visual noise when logging errors
-  if client.server_capabilities.codeLensProvider and elixir_lsp ~= "lexical" then
-    vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
-  end
+  -- if client.server_capabilities.codeLensProvider and elixir_lsp ~= "lexical" then
+  --   vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.enable(true)]])
+  -- end
 end
 
 require("mason").setup()

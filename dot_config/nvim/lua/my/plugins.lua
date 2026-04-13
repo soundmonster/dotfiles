@@ -57,12 +57,15 @@ local plugins = {
       })
     end,
   },
-  { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
   {
     "nvim-treesitter/nvim-treesitter-context", -- Sticky headers for functions
     opts = { max_lines = 3 },
   },
-  -- { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
   "aaronik/treewalker.nvim",
   {
     "lewis6991/gitsigns.nvim",
@@ -91,59 +94,10 @@ local plugins = {
     },
   },
   {
-    "elixir-tools/elixir-tools.nvim",
-    enabled = false,
-    version = "*",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local elixir = require("elixir")
-      -- local elixirls = require("elixir.elixirls")
-
-      elixir.setup({
-        nextls = {
-          enable = true,
-          -- cmd = "/Users/leonid.batyuk/Playground/elixir/next-ls/burrito_out/next_ls_darwin_arm64",
-          init_options = {
-            extensions = {
-              credo = {
-                enable = true,
-              },
-            },
-            experimental = {
-              completions = {
-                enable = true,
-              },
-            },
-          },
-        },
-        credo = { enable = false },
-        elixirls = { enable = false },
-      })
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
-  { "simrat39/inlay-hints.nvim", config = true },
-  {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = { indent = { char = "▏" } },
   },
-  {
-    "sphamba/smear-cursor.nvim",
-    enabled = false,
-    opts = {
-      -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-      -- Smears will blend better on all backgrounds.
-      legacy_computing_symbols_support = false,
-      -- Smear cursor in insert mode.
-      -- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
-      smear_insert_mode = false,
-      smear_terminal_mode = false,
-    },
-  },
-
   -- LS for all files with handy actions; e.g. git blame
   { "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   {
@@ -415,7 +369,7 @@ local plugins = {
             :map("<leader>uc")
           Snacks.toggle.treesitter():map("<leader>uT")
           Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
-          Snacks.toggle.inlay_hints():map("<leader>uh")
+          -- Snacks.toggle.inlay_hints():map("<leader>uh")
           Snacks.toggle.indent():map("<leader>ug")
           Snacks.toggle.dim():map("<leader>uD")
         end,
@@ -502,12 +456,13 @@ local plugins = {
   },
   {
     "copilotlsp-nvim/copilot-lsp",
-    enabled = false,
     config = function()
-      local nes = require("copilot-lsp.nes")
-      nes.setup({
-        move_count_threshold = 2, -- Clear after 2 cursor movements
+      require("copilot-lsp").setup({
+        nes = {
+          move_count_threshold = 3, -- Clear after 3 cursor movements
+        },
       })
+      local nes = require("copilot-lsp.nes")
       vim.g.copilot_nes_debounce = 1500
       vim.lsp.enable("copilot_ls")
       vim.keymap.set("n", "<leader><cr>", function()
@@ -521,66 +476,6 @@ local plugins = {
       end, { desc = "Clear Copilot suggestion or fallback" })
     end,
   },
-  {
-    "olimorris/codecompanion.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {
-      -- NOTE: The log_level is in `opts.opts`
-      opts = {
-        log_level = "DEBUG", -- or "TRACE"
-      },
-    },
-  },
-  -- {
-  --   "yetone/avante.nvim",
-  --   event = "VeryLazy",
-  --   version = false, -- Never set this value to "*"! Never!
-  --   build = "make",
-  --   opts = {
-  --     provider = "copilot",
-  --     auto_suggestions_provider = "ollama", -- ollama or copilot
-  --     providers = {
-  --       ollama = {
-  --         endpoint = "http://localhost:11434",
-  --         model = "llama3.2:3b",
-  --       },
-  --       copilot = {
-  --         -- model = "claude-3.5-sonnet", -- Optional, specify a model to use
-  --         disabled_tools = { "python" }
-  --       }
-  --     },
-  --     -- auto_suggestions_provider = "copilot",
-  --     behaviour = {
-  --       auto_suggestions = false,           -- Experimental stage
-  --       enable_cursor_planning_mode = true, -- enable cursor planning mode!
-  --     },
-  --     -- File selector configuration
-  --     --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
-  --     file_selector = {
-  --       provider = "telescope", -- Avoid native provider issues
-  --       provider_opts = {},
-  --     },
-  --     input = {
-  --       provider = "snacks",
-  --       provider_opts = {
-  --         -- Additional snacks.input options
-  --         title = "Avante Input",
-  --         icon = " ",
-  --       },
-  --     }
-  --   },
-  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  --   -- build = "make",
-  --   dependencies = {
-  --     "nvim-treesitter/nvim-treesitter",
-  --     "nvim-lua/plenary.nvim",
-  --     "MunifTanjim/nui.nvim",
-  --     "folke/snacks.nvim", -- for input provider snacks
-  --   },
-  -- },
   -- Snippets
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
@@ -690,8 +585,9 @@ local plugins = {
   },
   "ryanoasis/vim-devicons",
   -- telescope (fzf replacement)
-  "nvim-lua/popup.nvim",
-  "nvim-lua/plenary.nvim",
+  -- "nvim-lua/popup.nvim",
+  -- "nvim-lua/plenary.nvim",
+  -- TODO remove telescope
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
@@ -702,6 +598,7 @@ local plugins = {
       "folke/trouble.nvim",
     },
     lazy = true,
+    enabled = false,
     cmd = "Telescope",
     config = function()
       local trouble = require("trouble.sources.telescope")
@@ -740,62 +637,7 @@ local plugins = {
       telescope.load_extension("live_grep_args")
     end,
   },
-
-  -- Search and replace
-  {
-    "MagicDuck/grug-far.nvim",
-    opts = {
-      -- options, see Configuration section below
-      -- there are no required options atm
-      -- engine = 'ripgrep' is default, but 'astgrep' can be specified
-      engine = "astgrep",
-    },
-  },
-  -- Fancy undo
-  {
-    "XXiaoA/atone.nvim",
-    cmd = "Atone",
-    opts = {}, -- your configuration here
-  },
   -- Themes
-  { "Mofiqul/dracula.nvim" },
-  {
-    "rose-pine/neovim",
-    enabled = true,
-    lazy = false,
-    priority = 1000,
-    name = "rose-pine",
-    config = function()
-      -- vim.cmd.colorscheme("rose-pine")
-    end,
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    enabled = true,
-    lazy = false,
-    opts = {
-      -- flavour = "mocha",
-      -- background = {},
-      dim_inactive = { enabled = true },
-    },
-    config = function()
-      -- vim.cmd.colorscheme("catppuccin")
-    end,
-  },
-  {
-    "uhs-robert/oasis.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require("oasis").setup({
-        -- dark_style = "lagoon",
-        -- light_style = "dawn"
-      })
-      -- vim.cmd.colorscheme("oasis")
-    end,
-  },
   {
     "folke/tokyonight.nvim",
     enabled = true,
@@ -1020,22 +862,22 @@ local plugins = {
       })
     end,
   },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    opts = {
-      file_types = { "markdown", "codecompanion", "Avante" },
-      win_options = { conceallevel = { rendered = 0 } },
-    },
-    ft = { "markdown", "codecompanion", "Avante" },
-  },
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-  },
+  -- {
+  --   "MeanderingProgrammer/render-markdown.nvim",
+  --   opts = {
+  --     file_types = { "markdown", "codecompanion", "Avante" },
+  --     win_options = { conceallevel = { rendered = 0 } },
+  --   },
+  --   ft = { "markdown", "codecompanion", "Avante" },
+  -- },
+  -- {
+  --   "iamcco/markdown-preview.nvim",
+  --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+  --   ft = { "markdown" },
+  --   build = function()
+  --     vim.fn["mkdp#util#install"]()
+  --   end,
+  -- },
   -- towolf/vim-helm provides basic syntax highlighting and filetype detection
   -- ft = 'helm' is important to not start yamlls
   { "towolf/vim-helm", ft = "helm" },
