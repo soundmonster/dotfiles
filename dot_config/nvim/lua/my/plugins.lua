@@ -446,16 +446,152 @@ local plugins = {
   { "zbirenbaum/copilot-cmp", config = true },
   "AndreM222/copilot-lualine",
   {
+    "folke/sidekick.nvim",
+    enabled = true,
+    opts = {},
+    keys = {
+      {
+        "<tab>",
+        function()
+          -- if there is a next edit, jump to it, otherwise apply it if any
+          if not require("sidekick").nes_jump_or_apply() then
+            return "<Tab>" -- fallback to normal tab
+          end
+        end,
+        expr = true,
+        desc = "Goto/Apply Next Edit Suggestion",
+      },
+      {
+        "<c-.>",
+        function()
+          require("sidekick.cli").focus()
+        end,
+        desc = "Sidekick Focus",
+        mode = { "n", "t", "i", "x" },
+      },
+      {
+        "<leader>aa",
+        function()
+          require("sidekick.cli").toggle()
+        end,
+        desc = "Sidekick Toggle CLI",
+      },
+      {
+        "<leader>as",
+        function()
+          require("sidekick.cli").select()
+        end,
+        -- Or to select only installed tools:
+        -- require("sidekick.cli").select({ filter = { installed = true } })
+        desc = "Select CLI",
+      },
+      {
+        "<leader>ad",
+        function()
+          require("sidekick.cli").close()
+        end,
+        desc = "Detach a CLI Session",
+      },
+      {
+        "<leader>at",
+        function()
+          require("sidekick.cli").send({ msg = "{this}" })
+        end,
+        mode = { "x", "n" },
+        desc = "Send This",
+      },
+      {
+        "<leader>af",
+        function()
+          require("sidekick.cli").send({ msg = "{file}" })
+        end,
+        desc = "Send File",
+      },
+      {
+        "<leader>av",
+        function()
+          require("sidekick.cli").send({ msg = "{selection}" })
+        end,
+        mode = { "x" },
+        desc = "Send Visual Selection",
+      },
+      {
+        "<leader>ap",
+        function()
+          require("sidekick.cli").prompt()
+        end,
+        mode = { "n", "x" },
+        desc = "Sidekick Select Prompt",
+      },
+      -- Example of a keybinding to open Claude directly
+      {
+        "<leader>ac",
+        function()
+          require("sidekick.cli").toggle({ name = "claude", focus = true })
+        end,
+        desc = "Sidekick Toggle Claude",
+      },
+    },
+  },
+  {
     "CopilotC-Nvim/CopilotChat.nvim",
+    enabled = false,
     branch = "main",
     dependencies = {
       { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
     opts = { debug = false },
+    keys = {
+      { "<leader>cc", group = "copilot-chat" },
+      {
+        "<leader>ccs",
+        "<cmd>lua require('codecompanion.adapters.copilot').show_copilot_stats()<cr>",
+        desc = "Copilot Usage Statistics",
+      },
+      {
+        "<leader>ccc",
+        "<cmd>CodeCompanionChat<cr>",
+        desc = "[CodeCompanion] Chat",
+      },
+      {
+        "<leader>cca",
+        "<cmd>CodeCompanionActions<cr>",
+        desc = "[CodeCompanion] Actions",
+      },
+      {
+        "<leader>ccq",
+        function()
+          local input = vim.fn.input("Quick Chat: ")
+          if input ~= "" then
+            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+          end
+        end,
+        desc = "[Copilot] Quick chat",
+      },
+      {
+        "<leader>cch",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+        end,
+        desc = "[Copilot] Help actions",
+      },
+      -- Show prompts actions with telescope
+      {
+        "<leader>ccp",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+        end,
+        desc = "[Copilot] Prompt actions",
+        mode = { "n", "v" },
+      },
+    },
   },
   {
     "copilotlsp-nvim/copilot-lsp",
+    enabled = false,
     config = function()
       require("copilot-lsp").setup({
         nes = {
@@ -584,58 +720,13 @@ local plugins = {
     },
   },
   "ryanoasis/vim-devicons",
-  -- telescope (fzf replacement)
-  -- "nvim-lua/popup.nvim",
-  -- "nvim-lua/plenary.nvim",
-  -- TODO remove telescope
+  -- Fancy undo tree
   {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-live-grep-args.nvim",
-      "nvim-telescope/telescope-ui-select.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      "folke/trouble.nvim",
-    },
-    lazy = true,
-    enabled = false,
-    cmd = "Telescope",
-    config = function()
-      local trouble = require("trouble.sources.telescope")
-      local telescope = require("telescope")
-      local actions = require("telescope.actions")
-      telescope.setup({
-        defaults = {
-          mappings = {
-            i = {
-              ["<c-t>"] = trouble.open,
-              ["<c-q>"] = actions.send_to_qflist + actions.open_qflist,
-              ["<c-a>"] = actions.add_to_qflist,
-              ["<c-f>"] = actions.send_selected_to_qflist + actions.open_qflist,
-            },
-            n = {
-              ["<c-t>"] = trouble.open,
-              ["<c-q>"] = actions.send_to_qflist + actions.open_qflist,
-              ["<c-a>"] = actions.add_to_qflist,
-              ["<c-f>"] = actions.send_selected_to_qflist + actions.open_qflist,
-            },
-          },
-        },
-        extensions = {
-          ["ui-select"] = {
-            require("telescope.themes").get_dropdown({}),
-          },
-          undo = {
-            use_delta = false,
-            use_custom_command = { "bash", "-c", "echo '$DIFF' | delta --no-gitconfig" },
-          },
-        },
-      })
-
-      telescope.load_extension("ui-select")
-      telescope.load_extension("fzf")
-      telescope.load_extension("live_grep_args")
-    end,
+    "XXiaoA/atone.nvim",
+    cmd = "Atone",
+    ---@module "atone"
+    ---@type AtoneConfig
+    opts = {},
   },
   -- Themes
   {
@@ -756,6 +847,10 @@ local plugins = {
               },
               show_colors = true,
               show_loading = true,
+            },
+            {
+              require("my/nes").print_nes_status,
+              on_click = require("my/nes").toggle_nes,
             },
             "encoding",
             "fileformat",
