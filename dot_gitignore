@@ -1,4 +1,5 @@
 .rake_tasks
+.bloop
 .elixir_ls
 .elixir-tools
 .lexical
