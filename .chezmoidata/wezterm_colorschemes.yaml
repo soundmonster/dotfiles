@@ -10,7 +10,14 @@ wezterm_colorschemes:
     sub_folder: "oasis.nvim-main/extras/wezterm/themes/dark"
     themes:
       - oasis_lagoon_dark
+      - oasis_starlight_dark
   - url: "https://github.com/uhs-robert/oasis.nvim/archive/main.zip"
     sub_folder: "oasis.nvim-main/extras/wezterm/themes/light/3"
     themes:
       - oasis_lagoon_light_3
+      - oasis_starlight_light_3
+  - url: "https://github.com/uhs-robert/oasis.nvim/archive/main.zip"
+    sub_folder: "oasis.nvim-main/extras/wezterm/themes/light/1"
+    themes:
+      - oasis_lagoon_light_1
+      - oasis_starlight_light_1

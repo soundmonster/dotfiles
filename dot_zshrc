@@ -12,8 +12,8 @@ eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 
 FPATH="$homebrew_prefix/share/zsh/site-functions:${FPATH}"
 zmodload zsh/complist
-autoload -Uz compinit
-compinit -u
+autoload -Uz bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 
 path=( 
   $HOME/.bin
@@ -56,6 +56,7 @@ eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 
 
+export _ZO_FZF_OPTS="--no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right --height=45% --info=inline --layout=reverse --tabstop=1 --exit-0"
 eval "$(zoxide init zsh)"
 
 # eval "$(zoxide init zsh --no-aliases)"
@@ -80,6 +81,12 @@ eval "$(atuin init zsh)"
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^v' edit-command-line
+
+## Custom completions
+
+complete -o nospace -C $(which terraform) terraform
+complete -C $(which aws_completer) aws
+
 
 ## History command configuration
 setopt extended_history       # record timestamp of command in HISTFILE
@@ -119,6 +126,15 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
   exec 3>&2 2>$HOME/startlog.$$
   setopt xtrace prompt_subst
 fi
+
+# Lazygit auto theme switching
+if (( $+commands[lazygit] )); then
+  LG_THEME="${XDG_CONFIG_HOME}/lazygit/$([[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]] \
+    && printf %s dark-mode \
+    || printf %s light-mode).yml"
+  alias lazygit='lazygit --use-config-file="${XDG_CONFIG_HOME}/lazygit/config.yml,${LG_THEME}"'
+fi
+
 #
 # Some  🤡 eNdPoInT sEcUrItY 🤡 tools keep automatically changing this file.
 # Watch out for these changes

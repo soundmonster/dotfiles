@@ -16,9 +16,9 @@
     conflictstyle = zdiff3
 [mergetool "nvimdiff"]
     # this creates a three-pane split 
-    # cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""
+    cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""
     # This creates a 3-pane-split at the top, and the working resolution file at the bottom
-    layout = "LOCAL,BASE,REMOTE / MERGED"
+    # layout = "LOCAL,BASE,REMOTE / MERGED"
 [mergetool]
     # automatically launch merge tool without displaying a prompt
     keepBackup = false

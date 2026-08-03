@@ -7,3 +7,6 @@ aws = "latest"
 rust = "stable"
 gleam = "latest"
 coursier = "latest"
+
+[settings]
+trusted_config_paths = ["/Users/leonid/Projects/**/mise.toml"]
