@@ -1,4 +1,5 @@
 local preferred_theme = "tokyonight"
+-- local preferred_theme = "oasis-starlight"
 local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -402,28 +403,97 @@ local plugins = {
     },
   },
   { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-  { -- optional completion source for require statements and module annotations
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, {
-        name = "lazydev",
-        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-      })
-    end,
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-    },
-  },
-  {
-    "petertriho/cmp-git",
-    config = true,
-    dependencies = { "nvim-lua/plenary.nvim" },
-  },
+  -- completion (nvim-cmp)
+  -- { -- optional completion source for require statements and module annotations
+  --   "hrsh7th/nvim-cmp",
+  --   opts = function(_, opts)
+  --     opts.sources = opts.sources or {}
+  --     table.insert(opts.sources, {
+  --       name = "lazydev",
+  --       group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "hrsh7th/cmp-nvim-lsp",
+  --     "hrsh7th/cmp-buffer",
+  --     "hrsh7th/cmp-path",
+  --     "hrsh7th/cmp-cmdline",
+  --   },
+  -- },
+  -- {
+  --   "petertriho/cmp-git",
+  --   config = true,
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  -- },
   "onsails/lspkind-nvim",
+  -- completion (blink)
+  {
+    "saghen/blink.cmp",
+    -- optional: provides snippets for the snippet source
+    dependencies = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
+
+    -- use a release tag to download pre-built binaries
+    version = "1.*",
+    -- AND/OR build from source
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source with:
+    -- build = 'nix run .#build-plugin',
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+      -- 'super-tab' for mappings similar to vscode (tab to accept)
+      -- 'enter' for enter to accept
+      -- 'none' for no mappings
+      --
+      -- All presets have the following mappings:
+      -- C-space: Open menu or open docs if already open
+      -- C-n/C-p or Up/Down: Select next/previous item
+      -- C-e: Hide menu
+      -- C-k: Toggle signature help (if signature.enabled = true)
+      --
+      -- See :h blink-cmp-config-keymap for defining your own keymap
+      keymap = { preset = "enter" },
+      signature = { enabled = true },
+      appearance = {
+        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = "mono",
+      },
+
+      -- (Default) Only show the documentation popup when manually triggered
+      completion = {
+        -- Show documentation when selecting a completion item
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
+
+        -- Display a preview of the selected item on the current line
+        ghost_text = { enabled = true },
+      },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer", "copilot" },
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-copilot",
+            score_offset = 100,
+            async = true,
+          },
+        },
+      },
+
+      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+      -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+      -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+      --
+      -- See the fuzzy documentation for more information
+      fuzzy = { implementation = "prefer_rust_with_warning" },
+    },
+    opts_extend = { "sources.default" },
+  },
   {
     "echasnovski/mini.diff",
     config = function()
@@ -443,7 +513,7 @@ local plugins = {
       copilot_node_command = "/opt/homebrew/opt/node/bin/node", -- Node.js version must be > 22
     },
   },
-  { "zbirenbaum/copilot-cmp", config = true },
+  -- { "zbirenbaum/copilot-cmp", config = true },
   "AndreM222/copilot-lualine",
   {
     "folke/sidekick.nvim",
@@ -614,11 +684,10 @@ local plugins = {
   },
   -- Snippets
   "L3MON4D3/LuaSnip",
-  "saadparwaiz1/cmp_luasnip",
+  -- "saadparwaiz1/cmp_luasnip",
   -- Quickfix replacement of sorts
   {
     "folke/trouble.nvim",
-    optional = true,
     opts = {
       padding = false,
       modes = { symbols = { win = { size = 50 } } },
@@ -729,6 +798,16 @@ local plugins = {
     opts = {},
   },
   -- Themes
+  {
+    "uhs-robert/oasis.nvim",
+    lazy = false,
+    enabled = true,
+    priority = 1000,
+    config = function()
+      require("oasis").setup({ style = "lagoon", light_intensity = 1 })
+      -- vim.cmd.colorscheme("oasis")
+    end,
+  },
   {
     "folke/tokyonight.nvim",
     enabled = true,
@@ -957,25 +1036,35 @@ local plugins = {
       })
     end,
   },
-  -- {
-  --   "MeanderingProgrammer/render-markdown.nvim",
-  --   opts = {
-  --     file_types = { "markdown", "codecompanion", "Avante" },
-  --     win_options = { conceallevel = { rendered = 0 } },
-  --   },
-  --   ft = { "markdown", "codecompanion", "Avante" },
-  -- },
-  -- {
-  --   "iamcco/markdown-preview.nvim",
-  --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-  --   ft = { "markdown" },
-  --   build = function()
-  --     vim.fn["mkdp#util#install"]()
-  --   end,
-  -- },
-  -- towolf/vim-helm provides basic syntax highlighting and filetype detection
-  -- ft = 'helm' is important to not start yamlls
-  { "towolf/vim-helm", ft = "helm" },
+  {
+    "scalameta/nvim-metals",
+    ft = { "scala", "sbt", "java" },
+    opts = function()
+      local metals_config = require("metals").bare_config()
+      metals_config.settings = {
+        metals = {
+          scalafixConfigPath = "project/.scalafix.conf",
+          scalafixLintEnabled = true,
+          scalafmtConfigPath = "project/.scalafmt.conf",
+          enableSemanticHighlighting = true,
+          -- customProjectRoot = "project",
+          superMethodLensesEnabled = true,
+        },
+      }
+
+      return metals_config
+    end,
+    config = function(self, metals_config)
+      local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = self.ft,
+        callback = function()
+          require("metals").initialize_or_attach(metals_config)
+        end,
+        group = nvim_metals_group,
+      })
+    end,
+  },
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

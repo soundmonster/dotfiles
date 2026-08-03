@@ -1,138 +1,139 @@
 -- Enable logs for LSP
 -- vim.lsp.set_log_level("debug")
 -- Setup nvim-cmp.
-local cmp = require("cmp")
+-- local cmp = require("cmp")
 local lspkind = require("lspkind")
 local luasnip = require("luasnip")
 
 -- Set preferred LSP server for Elixir here
 local elixir_lsp = "expert" -- 'expert', 'nextls', 'elixirls' or 'lexical'
 
-local deprioritize_copilot = function(entry1, entry2)
-  if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
-    return false
-  elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
-    return true
-  end
-end
-
-local default_cmp_conf = require("cmp.config.default")
-
-local has_words_before = function()
-  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
-    return false
-  end
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
-end
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      -- vim.fn["vsnip#anonymous"](args.body)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    -- C-space is taken by language switcher and also not sure what this is for; the completion is super aggressive already
-    -- ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-      select = true,
-    }),
-    ["<Tab>"] = vim.schedule_wrap(function(fallback)
-      if cmp.visible() and has_words_before() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end),
-    ["<S-Tab>"] = function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end,
-  }),
-  sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "nvim_lua" },
-    -- { name = 'vsnip' },
-    { name = "luasnip" },
-    { name = "git" },
-    { name = "copilot" },
-    -- { name = "nvim_lsp", priority = 4 },
-    -- { name = "nvim_lua" },
-    -- -- { name = 'vsnip' },
-    -- { name = "luasnip",  priority = 2 },
-    -- { name = "git" },
-    -- { name = "copilot",  priority = 1 },
-  }, {
-    {
-      name = "buffer",
-      option = {
-        keyword_length = 4,
-        get_bufnrs = function()
-          local bufs = {}
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            bufs[vim.api.nvim_win_get_buf(win)] = true
-          end
-          return vim.tbl_keys(bufs)
-        end,
-      },
-    },
-  }),
-  sorting = {
-    comparators = vim.iter({ deprioritize_copilot, default_cmp_conf().sorting.comparators }):flatten():totable(),
-  },
-  formatting = {
-    format = lspkind.cmp_format({
-      mode = "symbol_text",
-      symbol_map = { Copilot = "" },
-      maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-      menu = {
-        git = "[Git]",
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-        copilot = "[Copilot]",
-      },
-    }),
-  },
-})
-
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = "buffer" },
-  },
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "path" },
-  }, {
-    { name = "cmdline" },
-  }),
-})
-
+-- local deprioritize_copilot = function(entry1, entry2)
+--   if entry1.source.name == "copilot" and entry2.source.name ~= "copilot" then
+--     return false
+--   elseif entry2.copilot == "copilot" and entry1.source.name ~= "copilot" then
+--     return true
+--   end
+-- end
+--
+-- local default_cmp_conf = require("cmp.config.default")
+--
+-- local has_words_before = function()
+--   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+--     return false
+--   end
+--   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+-- end
+--
+-- cmp.setup({
+--   snippet = {
+--     expand = function(args)
+--       -- vim.fn["vsnip#anonymous"](args.body)
+--       luasnip.lsp_expand(args.body)
+--     end,
+--   },
+--   mapping = cmp.mapping.preset.insert({
+--     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+--     ["<C-f>"] = cmp.mapping.scroll_docs(4),
+--     -- C-space is taken by language switcher and also not sure what this is for; the completion is super aggressive already
+--     -- ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+--     ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+--     ["<C-e>"] = cmp.mapping.abort(),
+--     ["<CR>"] = cmp.mapping.confirm({
+--       behavior = cmp.ConfirmBehavior.Replace,
+--       -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+--       select = true,
+--     }),
+--     ["<Tab>"] = vim.schedule_wrap(function(fallback)
+--       if cmp.visible() and has_words_before() then
+--         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+--       elseif luasnip.expand_or_jumpable() then
+--         luasnip.expand_or_jump()
+--       else
+--         fallback()
+--       end
+--     end),
+--     ["<S-Tab>"] = function(fallback)
+--       if cmp.visible() then
+--         cmp.select_prev_item()
+--       elseif luasnip.jumpable(-1) then
+--         luasnip.jump(-1)
+--       else
+--         fallback()
+--       end
+--     end,
+--   }),
+--   sources = cmp.config.sources({
+--     { name = "nvim_lsp" },
+--     { name = "nvim_lua" },
+--     -- { name = 'vsnip' },
+--     { name = "luasnip" },
+--     { name = "git" },
+--     { name = "copilot" },
+--     -- { name = "nvim_lsp", priority = 4 },
+--     -- { name = "nvim_lua" },
+--     -- -- { name = 'vsnip' },
+--     -- { name = "luasnip",  priority = 2 },
+--     -- { name = "git" },
+--     -- { name = "copilot",  priority = 1 },
+--   }, {
+--     {
+--       name = "buffer",
+--       option = {
+--         keyword_length = 4,
+--         get_bufnrs = function()
+--           local bufs = {}
+--           for _, win in ipairs(vim.api.nvim_list_wins()) do
+--             bufs[vim.api.nvim_win_get_buf(win)] = true
+--           end
+--           return vim.tbl_keys(bufs)
+--         end,
+--       },
+--     },
+--   }),
+--   sorting = {
+--     comparators = vim.iter({ deprioritize_copilot, default_cmp_conf().sorting.comparators }):flatten():totable(),
+--   },
+--   formatting = {
+--     format = lspkind.cmp_format({
+--       mode = "symbol_text",
+--       symbol_map = { Copilot = "" },
+--       maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+--       menu = {
+--         git = "[Git]",
+--         buffer = "[Buffer]",
+--         nvim_lsp = "[LSP]",
+--         luasnip = "[LuaSnip]",
+--         nvim_lua = "[Lua]",
+--         copilot = "[Copilot]",
+--       },
+--     }),
+--   },
+-- })
+--
+-- -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline("/", {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = "buffer" },
+--   },
+-- })
+--
+-- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline(":", {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources({
+--     { name = "path" },
+--   }, {
+--     { name = "cmdline" },
+--   }),
+-- })
+--
 -- Neovim doesn't support snippets out of the box, so we need to mutate the
 -- capabilities we send to the language server to let them know we want snippets.
-local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local lsp_notify = function(client, message_text)
   -- local Manager = require("noice.message.manager")
@@ -257,13 +258,22 @@ vim.lsp.enable(elixir_lsp)
 vim.lsp.enable("gleam")
 vim.lsp.enable("rust_analyzer")
 
-vim.lsp.config("metals", {
-  filetypes = { "scala", "sbt", "java" },
-  cmd = { vim.fn.expand("$HOME/Library/Application Support/Coursier/bin/metals") },
-  root_markers = { "build.sbt", "build.sc", "build.gradle", "pom.xml", ".scala-build", ".git" },
-  settings = {},
-})
-vim.lsp.enable("metals")
+-- vim.lsp.config("metals", {
+--   filetypes = { "scala", "sbt", "java" },
+--   cmd = { vim.fn.expand("$HOME/Library/Application Support/Coursier/bin/metals") },
+--   root_markers = { "build.sbt", "build.sc", "build.gradle", "pom.xml", ".scala-build", ".git" },
+--   settings = {
+--     metals = {
+--       scalafixConfigPath = "project/.scalafix.conf",
+--       scalafixLintEnabled = true,
+--       scalafmtConfigPath = "project/.scalafmt.conf",
+--       enableSemanticHighlighting = true,
+--       -- customProjectRoot = "project",
+--       superMethodLensesEnabled = true,
+--     },
+--   },
+-- })
+-- vim.lsp.enable("metals")
 
 require("mason-lspconfig").setup()
 
