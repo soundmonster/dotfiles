@@ -237,22 +237,22 @@ vim.lsp.config("elixirls", {
   },
 })
 
-vim.lsp.config("expert", {
-  filetypes = { "elixir", "eelixir", "heex" },
-  cmd = {
-    vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/_build/prod/rel/plain/bin/start_expert"),
-    "--stdio",
-  },
-  root_markers = { "mix.lock", ".git" },
-  settings = {},
-})
-
-vim.lsp.config("lexical", {
-  filetypes = { "elixir", "eelixir", "heex" },
-  cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
-  root_markers = { "mix.lock", ".git" },
-  settings = {},
-})
+-- vim.lsp.config("expert", {
+--   filetypes = { "elixir", "eelixir", "heex" },
+--   cmd = {
+--     vim.fn.expand("$HOME/Playground/elixir/expert/apps/expert/_build/prod/rel/plain/bin/start_expert"),
+--     "--stdio",
+--   },
+--   root_markers = { "mix.lock", ".git" },
+--   settings = {},
+-- })
+--
+-- vim.lsp.config("lexical", {
+--   filetypes = { "elixir", "eelixir", "heex" },
+--   cmd = { vim.fn.expand("$HOME/Playground/elixir/lexical/_build/dev/package/lexical/bin/start_lexical.sh") },
+--   root_markers = { "mix.lock", ".git" },
+--   settings = {},
+-- })
 
 vim.lsp.enable(elixir_lsp)
 vim.lsp.enable("gleam")
